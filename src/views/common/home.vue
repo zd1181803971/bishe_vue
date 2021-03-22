@@ -33,7 +33,8 @@ export default {
       chartLine: null,
       chartBar: null,
       chartLineData: [],
-      chartLineList: []
+      chartLineList: [],
+      chartLineList2: []
     }
   },
   mounted () {
@@ -57,48 +58,63 @@ export default {
         method: 'get'
       }).then(({data}) => {
         this.chartLineData = data.data
-        console.log(Object.keys(this.chartLineData))
-      })
-      var option = {
-        tooltip: {
-          trigger: 'axis',
-          axisPointer: {            // 坐标轴指示器，坐标轴触发有效
-            type: 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
-          }
-        },
-        grid: {
-          left: '3%',
-          right: '4%',
-          bottom: '3%',
-          containLabel: true
-        },
-        xAxis: [
-          {
-            type: 'category',
-            data: Object.keys(this.chartLineData),
-            axisTick: {
-              alignWithLabel: true
+        for (let i = 0; i < Object.keys(this.chartLineData).length; i++) {
+          this.chartLineList.push(Object.keys(this.chartLineData)[i])
+        }
+        for (let i = 0; i < Object.values(this.chartLineData).length; i++) {
+          this.chartLineList2.push(Object.values(this.chartLineData)[i])
+        }
+
+        var option = {
+          title: {
+            text: '公司人口总量',
+            subtext: '数据来自系统'
+          },
+          tooltip: {
+            trigger: 'axis',
+            axisPointer: {            // 坐标轴指示器，坐标轴触发有效
+              type: 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
             }
-          }
-        ],
-        yAxis: [
-          {
-            type: 'value'
-          }
-        ],
-        series: [
-          {
-            name: '直接访问',
-            type: 'bar',
-            barWidth: '60%',
-            data: [10, 52, 200, 334, 390, 330, 220]
-          }
-        ]
-      }
-      this.chartLine = echarts.init(document.getElementById('J_chartLineBox'))
-      this.chartLine.setOption(option)
-      window.addEventListener('resize', () => {
-        this.chartLine.resize()
+          },
+          grid: {
+            left: '3%',
+            right: '4%',
+            bottom: '3%',
+            containLabel: true
+          },
+          xAxis: [
+            {
+              type: 'category',
+              data: this.chartLineList,
+              axisTick: {
+                alignWithLabel: true
+              }
+            }
+          ],
+          yAxis: [
+            {
+              type: 'value',
+              boundaryGap: [0, 0.01],
+              minInterval: 1,
+              axisLabel: {
+                formatter: '{value} 人'
+              }
+            }
+          ],
+          series: [
+            {
+              name: '员工人数',
+              type: 'bar',
+              barWidth: '60%',
+              data: this.chartLineList2
+            }
+          ]
+        }
+        this.chartLine = echarts.init(document.getElementById('J_chartLineBox'))
+        this.chartLine.setOption(option)
+        window.addEventListener('resize', () => {
+          this.chartLine.resize()
+        })
       })
     },
     // 柱状图
