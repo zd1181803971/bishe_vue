@@ -244,7 +244,6 @@ export default {
         if (data && data.code === 0) {
           this.dataList = data.page.list
           this.totalPage = data.page.totalCount
-          console.log(this.dataList)
           this.$http({
             url: this.$http.adornUrl(`/dzu/nation/list`),
             method: 'get',

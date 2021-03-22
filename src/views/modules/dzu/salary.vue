@@ -1,225 +1,125 @@
 <template>
   <div class="mod-config">
-    <el-form :inline="true" :model="dataForm" @keyup.enter.native="getDataList()">
-      <el-form-item>
-        <el-input v-model="dataForm.key" placeholder="参数名" clearable></el-input>
+    <h3>个人薪资信息</h3>
+    <el-form :model="dataForm"  ref="dataForm" @keyup.enter.native="dataFormSubmit()"
+             label-width="auto">
+
+      <el-form-item label="基本工资" prop="basicsalary">
+        <el-input v-model="dataForm.basicsalary" placeholder="基本工资"></el-input>
       </el-form-item>
-      <el-form-item>
-        <el-button @click="getDataList()">查询</el-button>
-        <el-button v-if="isAuth('dzu:salary:save')" type="primary" @click="addOrUpdateHandle()">新增</el-button>
-        <el-button v-if="isAuth('dzu:salary:delete')" type="danger" @click="deleteHandle()" :disabled="dataListSelections.length <= 0">批量删除</el-button>
+      <el-form-item label="奖金" prop="bonus">
+        <el-input v-model="dataForm.bonus" placeholder="奖金"></el-input>
       </el-form-item>
+      <el-form-item label="午餐补助" prop="lunchsalary">
+        <el-input v-model="dataForm.lunchsalary" placeholder="午餐补助"></el-input>
+      </el-form-item>
+      <el-form-item label="交通补助" prop="trafficsalary">
+        <el-input v-model="dataForm.trafficsalary" placeholder="交通补助"></el-input>
+      </el-form-item>
+      <el-form-item label="应发工资" prop="allsalary">
+        <el-input v-model="dataForm.allsalary" placeholder="应发工资"></el-input>
+      </el-form-item>
+      <el-form-item label="养老金基数" prop="pensionbase">
+        <el-input v-model="dataForm.pensionbase" placeholder="养老金基数"></el-input>
+      </el-form-item>
+      <el-form-item label="养老金比率" prop="pensionper">
+        <el-input v-model="dataForm.pensionper" placeholder="养老金比率"></el-input>
+      </el-form-item>
+      <el-form-item label="启用时间" prop="createdate">
+        <el-input v-model="dataForm.createdate" placeholder="启用时间"></el-input>
+      </el-form-item>
+      <el-form-item label="医疗基数" prop="medicalbase">
+        <el-input v-model="dataForm.medicalbase" placeholder="医疗基数"></el-input>
+      </el-form-item>
+      <el-form-item label="医疗保险比率" prop="medicalper">
+        <el-input v-model="dataForm.medicalper" placeholder="医疗保险比率"></el-input>
+      </el-form-item>
+      <el-form-item label="公积金基数" prop="accumulationfundbase">
+        <el-input v-model="dataForm.accumulationfundbase" placeholder="公积金基数"></el-input>
+      </el-form-item>
+      <el-form-item label="公积金比率" prop="accumulationfundper">
+        <el-input v-model="dataForm.accumulationfundper" placeholder="公积金比率"></el-input>
+      </el-form-item>
+
     </el-form>
-    <el-table
-      :data="dataList"
-      border
-      v-loading="dataListLoading"
-      @selection-change="selectionChangeHandle"
-      style="width: 100%;">
-      <el-table-column
-        type="selection"
-        header-align="center"
-        align="center"
-        width="50">
-      </el-table-column>
-      <el-table-column
-        prop="id"
-        header-align="center"
-        align="center"
-        label="">
-      </el-table-column>
-      <el-table-column
-        prop="eid"
-        header-align="center"
-        align="center"
-        label="">
-      </el-table-column>
-      <el-table-column
-        prop="basicsalary"
-        header-align="center"
-        align="center"
-        label="基本工资">
-      </el-table-column>
-      <el-table-column
-        prop="bonus"
-        header-align="center"
-        align="center"
-        label="奖金">
-      </el-table-column>
-      <el-table-column
-        prop="lunchsalary"
-        header-align="center"
-        align="center"
-        label="午餐补助">
-      </el-table-column>
-      <el-table-column
-        prop="trafficsalary"
-        header-align="center"
-        align="center"
-        label="交通补助">
-      </el-table-column>
-      <el-table-column
-        prop="allsalary"
-        header-align="center"
-        align="center"
-        label="应发工资">
-      </el-table-column>
-      <el-table-column
-        prop="pensionbase"
-        header-align="center"
-        align="center"
-        label="养老金基数">
-      </el-table-column>
-      <el-table-column
-        prop="pensionper"
-        header-align="center"
-        align="center"
-        label="养老金比率">
-      </el-table-column>
-      <el-table-column
-        prop="createdate"
-        header-align="center"
-        align="center"
-        label="启用时间">
-      </el-table-column>
-      <el-table-column
-        prop="medicalbase"
-        header-align="center"
-        align="center"
-        label="医疗基数">
-      </el-table-column>
-      <el-table-column
-        prop="medicalper"
-        header-align="center"
-        align="center"
-        label="医疗保险比率">
-      </el-table-column>
-      <el-table-column
-        prop="accumulationfundbase"
-        header-align="center"
-        align="center"
-        label="公积金基数">
-      </el-table-column>
-      <el-table-column
-        prop="accumulationfundper"
-        header-align="center"
-        align="center"
-        label="公积金比率">
-      </el-table-column>
-      <el-table-column
-        prop="name"
-        header-align="center"
-        align="center"
-        label="">
-      </el-table-column>
-      <el-table-column
-        fixed="right"
-        header-align="center"
-        align="center"
-        width="150"
-        label="操作">
-        <template slot-scope="scope">
-          <el-button type="text" size="small" @click="addOrUpdateHandle(scope.row.id)">修改</el-button>
-          <el-button type="text" size="small" @click="deleteHandle(scope.row.id)">删除</el-button>
-        </template>
-      </el-table-column>
-    </el-table>
-    <el-pagination
-      @size-change="sizeChangeHandle"
-      @current-change="currentChangeHandle"
-      :current-page="pageIndex"
-      :page-sizes="[10, 20, 50, 100]"
-      :page-size="pageSize"
-      :total="totalPage"
-      layout="total, sizes, prev, pager, next, jumper">
-    </el-pagination>
-    <!-- 弹窗, 新增 / 修改 -->
-    <add-or-update v-if="addOrUpdateVisible" ref="addOrUpdate" @refreshDataList="getDataList"></add-or-update>
   </div>
 </template>
 
 <script>
-  import AddOrUpdate from './salary-add-or-update'
-  export default {
-    data () {
-      return {
-        dataForm: {
-          key: ''
-        },
-        dataList: [],
-        pageIndex: 1,
-        pageSize: 10,
-        totalPage: 0,
-        dataListLoading: false,
-        dataListSelections: [],
-        addOrUpdateVisible: false
+export default {
+  data () {
+    return {
+      visible: false,
+      dataForm: {
+        id: 0,
+        eid: '',
+        basicsalary: '',
+        bonus: '',
+        lunchsalary: '',
+        trafficsalary: '',
+        allsalary: '',
+        pensionbase: '',
+        pensionper: '',
+        createdate: '',
+        medicalbase: '',
+        medicalper: '',
+        accumulationfundbase: '',
+        accumulationfundper: '',
+        name: ''
       }
+    }
+  },
+  activated () {
+    this.init()
+  },
+  methods: {
+    init () {
+      this.$http({
+        url: this.$http.adornUrl(`/dzu/salary/salaryEid/${this.$store.state.user.eid}`),
+        method: 'get',
+        params: this.$http.adornParams()
+      }).then(({data}) => {
+        if (data && data.code === 0) {
+          this.dataForm.basicsalary = data.salary.basicsalary
+          this.dataForm.bonus = data.salary.bonus
+          this.dataForm.lunchsalary = data.salary.lunchsalary
+          this.dataForm.trafficsalary = data.salary.trafficsalary
+          this.dataForm.allsalary = data.salary.allsalary + this.dataForm.trafficsalary + this.dataForm.lunchsalary + this.dataForm.bonus + this.dataForm.basicsalary
+          this.dataForm.pensionbase = data.salary.pensionbase
+          this.dataForm.pensionper = data.salary.pensionper
+          this.dataForm.createdate = data.salary.createdate
+          this.dataForm.medicalbase = data.salary.medicalbase
+          this.dataForm.medicalper = data.salary.medicalper
+          this.dataForm.accumulationfundbase = data.salary.accumulationfundbase
+          this.dataForm.accumulationfundper = data.salary.accumulationfundper
+          this.dataForm.name = data.salary.name
+        }
+      })
     },
-    components: {
-      AddOrUpdate
-    },
-    activated () {
-      this.getDataList()
-    },
-    methods: {
-      // 获取数据列表
-      getDataList () {
-        this.dataListLoading = true
-        this.$http({
-          url: this.$http.adornUrl('/dzu/salary/list'),
-          method: 'get',
-          params: this.$http.adornParams({
-            'page': this.pageIndex,
-            'limit': this.pageSize,
-            'key': this.dataForm.key
-          })
-        }).then(({data}) => {
-          if (data && data.code === 0) {
-            this.dataList = data.page.list
-            this.totalPage = data.page.totalCount
-          } else {
-            this.dataList = []
-            this.totalPage = 0
-          }
-          this.dataListLoading = false
-        })
-      },
-      // 每页数
-      sizeChangeHandle (val) {
-        this.pageSize = val
-        this.pageIndex = 1
-        this.getDataList()
-      },
-      // 当前页
-      currentChangeHandle (val) {
-        this.pageIndex = val
-        this.getDataList()
-      },
-      // 多选
-      selectionChangeHandle (val) {
-        this.dataListSelections = val
-      },
-      // 新增 / 修改
-      addOrUpdateHandle (id) {
-        this.addOrUpdateVisible = true
-        this.$nextTick(() => {
-          this.$refs.addOrUpdate.init(id)
-        })
-      },
-      // 删除
-      deleteHandle (id) {
-        var ids = id ? [id] : this.dataListSelections.map(item => {
-          return item.id
-        })
-        this.$confirm(`确定对[id=${ids.join(',')}]进行[${id ? '删除' : '批量删除'}]操作?`, '提示', {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          type: 'warning'
-        }).then(() => {
+    // 表单提交
+    dataFormSubmit () {
+      this.$refs['dataForm'].validate((valid) => {
+        if (valid) {
           this.$http({
-            url: this.$http.adornUrl('/dzu/salary/delete'),
+            url: this.$http.adornUrl(`/dzu/salary/${!this.dataForm.id ? 'save' : 'update'}`),
             method: 'post',
-            data: this.$http.adornData(ids, false)
+            data: this.$http.adornData({
+              'id': this.dataForm.id || undefined,
+              'eid': this.dataForm.eid,
+              'basicsalary': this.dataForm.basicsalary,
+              'bonus': this.dataForm.bonus,
+              'lunchsalary': this.dataForm.lunchsalary,
+              'trafficsalary': this.dataForm.trafficsalary,
+              'allsalary': this.dataForm.allsalary,
+              'pensionbase': this.dataForm.pensionbase,
+              'pensionper': this.dataForm.pensionper,
+              'createdate': this.dataForm.createdate,
+              'medicalbase': this.dataForm.medicalbase,
+              'medicalper': this.dataForm.medicalper,
+              'accumulationfundbase': this.dataForm.accumulationfundbase,
+              'accumulationfundper': this.dataForm.accumulationfundper,
+              'name': this.dataForm.name
+            })
           }).then(({data}) => {
             if (data && data.code === 0) {
               this.$message({
@@ -227,15 +127,17 @@
                 type: 'success',
                 duration: 1500,
                 onClose: () => {
-                  this.getDataList()
+                  this.visible = false
+                  this.$emit('refreshDataList')
                 }
               })
             } else {
               this.$message.error(data.msg)
             }
           })
-        })
-      }
+        }
+      })
     }
   }
+}
 </script>

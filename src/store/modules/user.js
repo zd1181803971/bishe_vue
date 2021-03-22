@@ -3,7 +3,7 @@ export default {
   state: {
     id: 0,
     name: '',
-    email: ''
+    eid: ''
   },
   mutations: {
     updateId (state, id) {
@@ -12,8 +12,8 @@ export default {
     updateName (state, name) {
       state.name = name
     },
-    updateEmail (state, email) {
-      state.email = email
+    updateEid (state, eid) {
+      state.eid = eid
     }
   }
 }
