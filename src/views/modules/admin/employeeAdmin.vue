@@ -23,12 +23,6 @@
         width="50">
       </el-table-column>
       <el-table-column
-        prop="id"
-        header-align="center"
-        align="center"
-        label="员工编号">
-      </el-table-column>
-      <el-table-column
         fixed="left"
         prop="name"
         header-align="center"
@@ -37,6 +31,7 @@
       </el-table-column>
       <el-table-column
         prop="jobnumber"
+        fixed="left"
         header-align="center"
         align="center"
         label="员工工号">
@@ -233,13 +228,13 @@ export default {
     getDataList () {
       this.dataListLoading = true
       this.$http({
-        url: this.$http.adornUrl('/dzu/employee/list'),
-        method: 'get',
-        params: this.$http.adornParams({
-          'name': this.dataForm.name,
-          'page': this.pageIndex,
-          'limit': this.pageSize
-        })
+        url: this.$http.adornUrl('/dzu/employee/getEmpFormList'),
+        method: 'get'
+        // params: this.$http.adornParams({
+        //   'name': this.dataForm.name,
+        //   'page': this.pageIndex,
+        //   'limit': this.pageSize
+        // })
       }).then(({data}) => {
         if (data && data.code === 0) {
           this.dataList = data.page.list

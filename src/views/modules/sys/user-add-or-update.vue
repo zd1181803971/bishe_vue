@@ -4,7 +4,7 @@
     :close-on-click-modal="false"
     :visible.sync="visible">
     <el-form :model="dataForm" :rules="dataRule" ref="dataForm" @keyup.enter.native="dataFormSubmit()" label-width="80px">
-      <el-form-item label="用户名" prop="userName">
+      <el-form-item label="员工工号" prop="userName">
         <el-input v-model="dataForm.userName" placeholder="登录帐号"></el-input>
       </el-form-item>
       <el-form-item label="密码" prop="password" :class="{ 'is-required': !dataForm.id }">
