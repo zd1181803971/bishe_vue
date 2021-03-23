@@ -6,7 +6,6 @@
       </el-form-item>
       <el-form-item>
         <el-button @click="getDataList()">查询</el-button>
-        <el-button v-if="isAuth('dzu:salary:save')" type="primary" @click="addOrUpdateHandle()">新增</el-button>
         <el-button v-if="isAuth('dzu:salary:delete')" type="danger" @click="deleteHandle()" :disabled="dataListSelections.length <= 0">批量删除</el-button>
       </el-form-item>
     </el-form>
@@ -26,13 +25,19 @@
         prop="id"
         header-align="center"
         align="center"
-        label="">
+        label="id">
       </el-table-column>
       <el-table-column
-        prop="eid"
+        prop="name"
         header-align="center"
         align="center"
-        label="">
+        label="姓名">
+      </el-table-column>
+      <el-table-column
+        prop="jobnumber"
+        header-align="center"
+        align="center"
+        label="员工工号">
       </el-table-column>
       <el-table-column
         prop="basicsalary"
@@ -65,61 +70,13 @@
         label="应发工资">
       </el-table-column>
       <el-table-column
-        prop="pensionbase"
-        header-align="center"
-        align="center"
-        label="养老金基数">
-      </el-table-column>
-      <el-table-column
-        prop="pensionper"
-        header-align="center"
-        align="center"
-        label="养老金比率">
-      </el-table-column>
-      <el-table-column
-        prop="createdate"
-        header-align="center"
-        align="center"
-        label="启用时间">
-      </el-table-column>
-      <el-table-column
-        prop="medicalbase"
-        header-align="center"
-        align="center"
-        label="医疗基数">
-      </el-table-column>
-      <el-table-column
-        prop="medicalper"
-        header-align="center"
-        align="center"
-        label="医疗保险比率">
-      </el-table-column>
-      <el-table-column
-        prop="accumulationfundbase"
-        header-align="center"
-        align="center"
-        label="公积金基数">
-      </el-table-column>
-      <el-table-column
-        prop="accumulationfundper"
-        header-align="center"
-        align="center"
-        label="公积金比率">
-      </el-table-column>
-      <el-table-column
-        prop="name"
-        header-align="center"
-        align="center"
-        label="">
-      </el-table-column>
-      <el-table-column
         fixed="right"
         header-align="center"
         align="center"
         width="150"
         label="操作">
         <template slot-scope="scope">
-          <el-button type="text" size="small" @click="addOrUpdateHandle(scope.row.id)">修改</el-button>
+          <el-button type="text" size="small" @click="addOrUpdateHandle(scope.row.id)">调整薪资</el-button>
           <el-button type="text" size="small" @click="deleteHandle(scope.row.id)">删除</el-button>
         </template>
       </el-table-column>
@@ -166,7 +123,7 @@
       getDataList () {
         this.dataListLoading = true
         this.$http({
-          url: this.$http.adornUrl('/dzu/salary/list'),
+          url: this.$http.adornUrl('/dzu/salary/formList'),
           method: 'get',
           params: this.$http.adornParams({
             'page': this.pageIndex,
@@ -198,13 +155,6 @@
       // 多选
       selectionChangeHandle (val) {
         this.dataListSelections = val
-      },
-      // 新增 / 修改
-      addOrUpdateHandle (id) {
-        this.addOrUpdateVisible = true
-        this.$nextTick(() => {
-          this.$refs.addOrUpdate.init(id)
-        })
       },
       // 删除
       deleteHandle (id) {

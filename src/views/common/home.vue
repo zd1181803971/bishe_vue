@@ -13,12 +13,12 @@
     <el-row :gutter="20">
       <el-col :span="24">
         <el-card>
-          <div id="J_chartLineBox" class="chart-box"></div>
+          <div id="J_chartBarBox" class="chart-box"></div>
         </el-card>
       </el-col>
       <el-col :span="24">
         <el-card>
-          <div id="J_chartBarBox" class="chart-box"></div>
+          <div id="J_chartLineBox" class="chart-box"></div>
         </el-card>
       </el-col>
     </el-row>
@@ -34,7 +34,9 @@ export default {
       chartBar: null,
       chartLineData: [],
       chartLineList: [],
-      chartLineList2: []
+      chartLineNumberList: [],
+      ChartBarData: [],
+      ChartBarList: []
     }
   },
   mounted () {
@@ -53,6 +55,7 @@ export default {
   methods: {
     // 折线图
     initChartLine () {
+      let sum = 0
       this.$http({
         url: this.$http.adornUrl('/dzu/employee/chartLine'),
         method: 'get'
@@ -62,13 +65,16 @@ export default {
           this.chartLineList.push(Object.keys(this.chartLineData)[i])
         }
         for (let i = 0; i < Object.values(this.chartLineData).length; i++) {
-          this.chartLineList2.push(Object.values(this.chartLineData)[i])
+          sum += parseInt(Object.values(this.chartLineData)[i])
+          this.chartLineNumberList.push(Object.values(this.chartLineData)[i])
         }
+        this.chartLineList.push('总计')
+        this.chartLineNumberList.push(sum)
 
         var option = {
           title: {
             text: '公司人口总量',
-            subtext: '数据来自系统'
+            subtext: '员工毕业院校'
           },
           tooltip: {
             trigger: 'axis',
@@ -85,7 +91,7 @@ export default {
           xAxis: [
             {
               type: 'category',
-              data: this.chartLineList,
+              data: ['西安电子科技学校', '海南侨中', '武汉大学', '西北大学', '哈尔滨理工大学', '华胥中学', '深圳大学', '清华大学', '总计'],
               axisTick: {
                 alignWithLabel: true
               }
@@ -106,7 +112,7 @@ export default {
               name: '员工人数',
               type: 'bar',
               barWidth: '60%',
-              data: this.chartLineList2
+              data: this.chartLineNumberList
             }
           ]
         }
@@ -119,103 +125,53 @@ export default {
     },
     // 柱状图
     initChartBar () {
-      var option = {
-        tooltip: {
-          trigger: 'axis',
-          axisPointer: {
-            type: 'shadow'
-          }
-        },
-        legend: {
-          data: ['直接访问', '邮件营销', '联盟广告', '视频广告', '搜索引擎', '百度', '谷歌', '必应', '其他']
-        },
-        grid: {
-          left: '3%',
-          right: '4%',
-          bottom: '3%',
-          containLabel: true
-        },
-        xAxis: [
-          {
-            type: 'category',
-            data: ['周一', '周二', '周三', '周四', '周五', '周六', '周日']
-          }
-        ],
-        yAxis: [
-          {
-            type: 'value'
-          }
-        ],
-        series: [
-          {
-            name: '直接访问',
-            type: 'bar',
-            data: [320, 332, 301, 334, 390, 330, 320]
+      this.$http({
+        url: this.$http.adornUrl('/dzu/salary/getChartBar'),
+        method: 'get'
+      }).then(({data}) => {
+        this.ChartBarData = data.salaryData
+        for (let i = 0; i < Object.keys(this.ChartBarData).length; i++) {
+          this.ChartBarList.push({
+            value: Object.values(this.ChartBarData)[i],
+            name: Object.keys(this.ChartBarData)[i]
+          })
+        }
+
+        var option = {
+          title: {
+            text: '员工薪资水平',
+            subtext: '绝对真实',
+            left: 'center'
           },
-          {
-            name: '邮件营销',
-            type: 'bar',
-            stack: '广告',
-            data: [120, 132, 101, 134, 90, 230, 210]
+          tooltip: {
+            trigger: 'item'
           },
-          {
-            name: '联盟广告',
-            type: 'bar',
-            stack: '广告',
-            data: [220, 182, 191, 234, 290, 330, 310]
+          legend: {
+            orient: 'vertical',
+            left: 'left',
+            data: ['2k-3k', '3k-5k', '5k-8k', '8k-10k', '10k以上']
           },
-          {
-            name: '视频广告',
-            type: 'bar',
-            stack: '广告',
-            data: [150, 232, 201, 154, 190, 330, 410]
-          },
-          {
-            name: '搜索引擎',
-            type: 'bar',
-            data: [862, 1018, 964, 1026, 1679, 1600, 1570],
-            markLine: {
-              lineStyle: {
-                normal: {
-                  type: 'dashed'
+          series: [
+            {
+              name: '薪资水平',
+              type: 'pie',
+              radius: '50%',
+              data: this.ChartBarList,
+              emphasis: {
+                itemStyle: {
+                  shadowBlur: 10,
+                  shadowOffsetX: 0,
+                  shadowColor: 'rgba(0, 0, 0, 0.5)'
                 }
-              },
-              data: [
-                [{ type: 'min' }, { type: 'max' }]
-              ]
+              }
             }
-          },
-          {
-            name: '百度',
-            type: 'bar',
-            barWidth: 5,
-            stack: '搜索引擎',
-            data: [620, 732, 701, 734, 1090, 1130, 1120]
-          },
-          {
-            name: '谷歌',
-            type: 'bar',
-            stack: '搜索引擎',
-            data: [120, 132, 101, 134, 290, 230, 220]
-          },
-          {
-            name: '必应',
-            type: 'bar',
-            stack: '搜索引擎',
-            data: [60, 72, 71, 74, 190, 130, 110]
-          },
-          {
-            name: '其他',
-            type: 'bar',
-            stack: '搜索引擎',
-            data: [62, 82, 91, 84, 109, 110, 120]
-          }
-        ]
-      }
-      this.chartBar = echarts.init(document.getElementById('J_chartBarBox'))
-      this.chartBar.setOption(option)
-      window.addEventListener('resize', () => {
-        this.chartBar.resize()
+          ]
+        }
+        this.chartBar = echarts.init(document.getElementById('J_chartBarBox'))
+        this.chartBar.setOption(option)
+        window.addEventListener('resize', () => {
+          this.chartBar.resize()
+        })
       })
     }
 
