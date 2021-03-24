@@ -4,14 +4,20 @@
     :close-on-click-modal="false"
     :visible.sync="visible">
     <el-form :model="dataForm" :rules="dataRule" ref="dataForm" @keyup.enter.native="dataFormSubmit()" label-width="80px">
-    <el-form-item label="" prop="title">
-      <el-input v-model="dataForm.title" placeholder=""></el-input>
+    <el-form-item label="标题" prop="title">
+      <el-input v-model="dataForm.title" placeholder="请输入标题"></el-input>
     </el-form-item>
-    <el-form-item label="" prop="message">
-      <el-input v-model="dataForm.message" placeholder=""></el-input>
+    <el-form-item label="内容" prop="message">
+      <el-input   type="textarea" :rows="2" v-model="dataForm.message" placeholder="请输入内容"></el-input>
     </el-form-item>
-    <el-form-item label="" prop="createdate">
-      <el-input v-model="dataForm.createdate" placeholder=""></el-input>
+    <el-form-item label="创建日期" prop="createdate">
+<!--      <el-input v-model="dataForm.createdate" placeholder=""></el-input>-->
+      <el-date-picker
+        v-model="dataForm.createdate"
+        type="datetime"
+        value-format="yyyy-MM-dd HH:mm:ss"
+        placeholder="选择日期时间">
+      </el-date-picker>
     </el-form-item>
     </el-form>
     <span slot="footer" class="dialog-footer">

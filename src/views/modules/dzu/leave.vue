@@ -2,7 +2,7 @@
   <div class="mod-config">
     <el-form :inline="true" :model="dataForm" @keyup.enter.native="getDataList()">
       <el-form-item>
-        <el-button v-if="isAuth('dzu:leave:save')" type="primary" @click="addOrUpdateHandle()">新增请假</el-button>
+        <el-button v-if="isAuth('dzu:leave:save')" type="primary" @click="addOrUpdateHandle(dataForm.id)">我要请假</el-button>
       </el-form-item>
       <h3>{{this.dataForm.name}}请假记录：</h3>
     </el-form>
@@ -43,8 +43,9 @@
         align="center"
         label="请假状态">
         <template slot-scope="scope">
-          <span v-if="scope.row.status === 0">未通过</span>
+          <span v-if="scope.row.status === 0">待批准</span>
           <span v-if="scope.row.status === 1">通过</span>
+          <span v-if="scope.row.status === 2">不通过</span>
         </template>
       </el-table-column>
       <el-table-column
@@ -74,6 +75,7 @@
     data () {
       return {
         dataForm: {
+          id: 0,
           name: ''
         },
         dataList: [],
@@ -89,33 +91,31 @@
     },
     activated () {
       this.getDataList()
-      this.getEmpName()
     },
     methods: {
-      getEmpName () {
-        this.$http({
-          url: this.$http.adornUrl(`/dzu/employee/info/${this.$store.state.user.eid}`),
-          method: 'get'
-        }).then(({data}) => {
-          this.dataForm.name = data.employee.name
-          console.log(this.dataForm)
-        })
-      },
       // 获取数据列表
       getDataList () {
         this.dataListLoading = true
         this.$http({
-          url: this.$http.adornUrl('/dzu/leave/list'),
+          url: this.$http.adornUrl('/dzu/leave/getLeaveListByjobNumber'),
           method: 'get',
           params: this.$http.adornParams({
             'page': this.pageIndex,
             'limit': this.pageSize,
-            'eid': this.$store.state.user.eid
+            'jobNumber': this.$store.state.user.name
           })
         }).then(({data}) => {
+          console.log(data)
           if (data && data.code === 0) {
             this.dataList = data.page.list
             this.totalPage = data.page.totalCount
+            this.$http({
+              url: this.$http.adornUrl(`/dzu/employee/getIdNameByjob/${this.$store.state.user.name}`),
+              method: 'get'
+            }).then(({data}) => {
+              this.dataForm.name = data.empIdNameDto.name
+              this.dataForm.id = data.empIdNameDto.id
+            })
           } else {
             this.dataList = []
             this.totalPage = 0
@@ -135,10 +135,10 @@
         this.getDataList()
       },
       // 新增
-      addOrUpdateHandle () {
+      addOrUpdateHandle (id) {
         this.addOrUpdateVisible = true
         this.$nextTick(() => {
-          this.$refs.addOrUpdate.init()
+          this.$refs.addOrUpdate.init(id)
         })
       }
     }

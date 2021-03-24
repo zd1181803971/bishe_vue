@@ -61,7 +61,7 @@
         label="婚姻状况">
       </el-table-column>
       <el-table-column
-        prop="nationid"
+        prop="nation"
         header-align="center"
         align="center"
         label="民族">
@@ -73,7 +73,7 @@
         label="籍贯">
       </el-table-column>
       <el-table-column
-        prop="politicid"
+        prop="politic"
         header-align="center"
         align="center"
         label="政治面貌">
@@ -97,19 +97,19 @@
         label="联系地址">
       </el-table-column>
       <el-table-column
-        prop="departmentid"
+        prop="department"
         header-align="center"
         align="center"
         label="所属部门">
       </el-table-column>
       <el-table-column
-        prop="joblevelid"
+        prop="joblevel"
         header-align="center"
         align="center"
         label="职称ID">
       </el-table-column>
       <el-table-column
-        prop="posid"
+        prop="pos"
         header-align="center"
         align="center"
         label="职位ID">
@@ -202,16 +202,10 @@ export default {
       dataForm: {
         name: ''
       },
-      posidList: [],
-      joblevelidList: [],
-      departmentidList: [],
-      politicidList: [],
-      nationList: [],
       dataList: [],
       pageIndex: 1,
       pageSize: 10,
       totalPage: 0,
-      pageLimit: 200,
       dataListLoading: false,
       dataListSelections: [],
       addOrUpdateVisible: false
@@ -229,88 +223,16 @@ export default {
       this.dataListLoading = true
       this.$http({
         url: this.$http.adornUrl('/dzu/employee/getEmpFormList'),
-        method: 'get'
-        // params: this.$http.adornParams({
-        //   'name': this.dataForm.name,
-        //   'page': this.pageIndex,
-        //   'limit': this.pageSize
-        // })
+        method: 'get',
+        params: this.$http.adornParams({
+          'name': this.dataForm.name,
+          'page': this.pageIndex,
+          'limit': this.pageSize
+        })
       }).then(({data}) => {
         if (data && data.code === 0) {
           this.dataList = data.page.list
           this.totalPage = data.page.totalCount
-          this.$http({
-            url: this.$http.adornUrl(`/dzu/nation/list`),
-            method: 'get',
-            params: this.$http.adornParams({
-              'limit': this.pageLimit
-            })
-          }).then(({data}) => {
-            this.nationList = data.page.list
-            this.$http({
-              url: this.$http.adornUrl(`/dzu/oliticsstatus/list`),
-              method: 'get',
-              params: this.$http.adornParams({
-                'limit': this.pageLimit
-              })
-            }).then(({data}) => {
-              this.politicidList = data.page.list
-              this.$http({
-                url: this.$http.adornUrl(`/dzu/position/list`),
-                method: 'get',
-                params: this.$http.adornParams({
-                  'limit': this.pageLimit
-                })
-              }).then(({data}) => {
-                this.posidList = data.page.list
-                this.$http({
-                  url: this.$http.adornUrl(`/dzu/joblevel/list`),
-                  method: 'get',
-                  params: this.$http.adornParams({
-                    'limit': this.pageLimit
-                  })
-                }).then(({data}) => {
-                  this.joblevelidList = data.page.list
-                  this.$http({
-                    url: this.$http.adornUrl(`/dzu/department/list`),
-                    method: 'get',
-                    params: this.$http.adornParams({
-                      'limit': this.pageLimit
-                    })
-                  }).then(({data}) => {
-                    this.departmentidList = data.page.list
-                    for (let i = 0; i < this.dataList.length; i++) {
-                      for (let j = 0; j < this.nationList.length; j++) {
-                        if (this.dataList[i].nationid === this.nationList[j].id) {
-                          this.dataList[i].nationid = this.nationList[j].name
-                        }
-                      }
-                      for (let p = 0; p < this.politicidList.length; p++) {
-                        if (this.dataList[i].politicid === this.politicidList[p].id) {
-                          this.dataList[i].politicid = this.politicidList[p].name
-                        }
-                      }
-                      for (let d = 0; d < this.posidList.length; d++) {
-                        if (this.dataList[i].posid === this.posidList[d].id) {
-                          this.dataList[i].posid = this.posidList[d].name
-                        }
-                      }
-                      for (let e = 0; e < this.joblevelidList.length; e++) {
-                        if (this.dataList[i].joblevelid === this.joblevelidList[e].id) {
-                          this.dataList[i].joblevelid = this.joblevelidList[e].name
-                        }
-                      }
-                      for (let r = 0; r < this.departmentidList.length; r++) {
-                        if (this.dataList[i].departmentid === this.departmentidList[r].id) {
-                          this.dataList[i].departmentid = this.departmentidList[r].name
-                        }
-                      }
-                    }
-                  })
-                })
-              })
-            })
-          })
         } else {
           this.dataList = []
           this.totalPage = 0

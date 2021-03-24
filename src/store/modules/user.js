@@ -2,8 +2,7 @@ export default {
   namespaced: true,
   state: {
     id: 0,
-    name: '',
-    eid: ''
+    name: ''
   },
   mutations: {
     updateId (state, id) {
@@ -11,9 +10,6 @@ export default {
     },
     updateName (state, name) {
       state.name = name
-    },
-    updateEid (state, eid) {
-      state.eid = eid
     }
   }
 }

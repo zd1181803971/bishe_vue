@@ -128,6 +128,7 @@
               method: 'get',
               params: this.$http.adornParams()
             }).then(({data}) => {
+              console.log(data)
               if (data && data.code === 0) {
                 this.dataForm.userName = data.user.username
                 this.dataForm.salt = data.user.salt

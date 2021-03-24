@@ -22,17 +22,17 @@
         align="center"
         width="50">
       </el-table-column>
-<!--      <el-table-column-->
-<!--        prop="id"-->
-<!--        header-align="center"-->
-<!--        align="center"-->
-<!--        label="">-->
-<!--      </el-table-column>-->
       <el-table-column
-        prop="eid"
+        prop="name"
         header-align="center"
         align="center"
-        label="姓名">
+        label="员工姓名">
+      </el-table-column>
+      <el-table-column
+        prop="jobnumber"
+        header-align="center"
+        align="center"
+        label="员工工号">
       </el-table-column>
       <el-table-column
         prop="starttime"
@@ -58,8 +58,9 @@
         align="center"
         label="请假状态">
         <template slot-scope="scope">
-          <span v-if="scope.row.status === 0">未通过</span>
+          <span v-if="scope.row.status === 0">待审批</span>
           <span v-if="scope.row.status === 1">通过</span>
+          <span v-if="scope.row.status === 2">不通过</span>
         </template>
       </el-table-column>
       <el-table-column
@@ -75,8 +76,8 @@
         width="150"
         label="操作">
         <template slot-scope="scope">
-          <el-button type="text" size="small" @click="addOrUpdateHandle(scope.row.id)">批准情况</el-button>
-          <el-button type="text" size="small" @click="deleteHandle(scope.row.id)">删除</el-button>
+          <el-button type="primary" size="mini" @click="addOrUpdateHandle(scope.row.id)">审批</el-button>
+          <el-button type="danger" size="mini" @click="deleteHandle(scope.row.id)">删除</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -100,10 +101,8 @@
     data () {
       return {
         dataForm: {
-          name: null
+          name: ''
         },
-        employeeList: [],
-        eidList: [],
         dataList: [],
         pageIndex: 1,
         pageSize: 10,
@@ -120,30 +119,11 @@
       this.getDataList()
     },
     methods: {
-      getEmpName () {
-        const lists = Array.from(new Set(this.eidList))
-        this.$http({
-          url: this.$http.adornUrl(`/dzu/employee/getEmpsByIds`),
-          method: 'get',
-          params: this.$http.adornParams({
-            'ids': lists.toString()
-          })
-        }).then(({data}) => {
-          this.employeeList = data.employeeList
-          for (let i = 0; i < this.dataList.length; i++) {
-            for (let j = 0; j < this.employeeList.length; j++) {
-              if (this.dataList[i].eid === this.employeeList[j].id) {
-                this.dataList[i].eid = this.employeeList[j].name
-              }
-            }
-          }
-        })
-      },
       // 获取数据列表
       getDataList () {
         this.dataListLoading = true
         this.$http({
-          url: this.$http.adornUrl('/dzu/leave/list'),
+          url: this.$http.adornUrl('/dzu/leave/leaveFormList'),
           method: 'get',
           params: this.$http.adornParams({
             'page': this.pageIndex,
@@ -154,13 +134,6 @@
           if (data && data.code === 0) {
             this.dataList = data.page.list
             this.totalPage = data.page.totalCount
-            for (let i = 0; i < this.dataList.length; i++) {
-              // eslint-disable-next-line eqeqeq
-              if (!(this.dataList[i].eid == null || this.dataList[i].eid == 'null')) {
-                this.eidList.push(this.dataList[i].eid)
-              }
-            }
-            this.getEmpName()
           } else {
             this.dataList = []
             this.totalPage = 0

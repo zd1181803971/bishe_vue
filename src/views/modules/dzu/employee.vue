@@ -126,15 +126,15 @@
           </el-option>
         </el-select>
       </el-form-item>
-      <el-form-item label="离职日期：" prop="notworkdate">
-        <!--      <el-input v-model="dataForm.notworkdate" placeholder="离职日期"></el-input>-->
-        <el-date-picker disabled
-                        v-model="dataForm.notworkdate"
-                        value-format="yyyy-MM-dd"
-                        type="date"
-                        placeholder="选择日期">
-        </el-date-picker>
-      </el-form-item>
+<!--      <el-form-item label="离职日期：" prop="notworkdate">-->
+<!--        &lt;!&ndash;      <el-input v-model="dataForm.notworkdate" placeholder="离职日期"></el-input>&ndash;&gt;-->
+<!--        <el-date-picker disabled-->
+<!--                        v-model="dataForm.notworkdate"-->
+<!--                        value-format="yyyy-MM-dd"-->
+<!--                        type="date"-->
+<!--                        placeholder="选择日期">-->
+<!--        </el-date-picker>-->
+<!--      </el-form-item>-->
       <el-form-item label="合同起始日期：" prop="begincontract">
         <!--      <el-input v-model="dataForm.begincontract" placeholder="合同起始日期"></el-input>-->
         <el-date-picker disabled
@@ -154,7 +154,7 @@
         </el-date-picker>
       </el-form-item>
       <span>
-      <el-button type="primary" @click="dataFormSubmit()">保存信息</el-button>
+      <el-button type="primary" @click="dataFormSubmit()">修改个人信息</el-button>
     </span>
     </el-form>
 
@@ -165,8 +165,9 @@
 export default {
   data () {
     return {
-      employee: '',
-      pageLimit: 200,
+      posids: [],
+      joblevelids: [],
+      departmentids: [],
       politicids: [],
       nationids: [],
       wedlocks: [
@@ -193,7 +194,8 @@ export default {
           label: '在职'
         }, {
           value: '离职',
-          label: '离职'
+          label: '离职',
+          disabled: false
         }
       ],
       tiptopdegrees: [
@@ -288,99 +290,116 @@ export default {
     this.getDataList()
   },
   methods: {
+    clearList () {
+      this.posids = []
+      this.joblevelids = []
+      this.departmentids = []
+      this.politicids = []
+      this.nationids = []
+    },
+    getDirectoryDataList () {
+      this.clearList()
+      this.$http({
+        url: this.$http.adornUrl(`/dzu/nation/listAll`),
+        method: 'get'
+      }).then(({data}) => {
+        if (data.page !== null) {
+          for (let i = 0; i < data.page.length; i++) {
+            this.nationids.push({
+              value: data.page[i].id,
+              label: data.page[i].name
+            })
+          }
+        }
+      })
+      this.$http({
+        url: this.$http.adornUrl(`/dzu/oliticsstatus/listAll`),
+        method: 'get'
+      }).then(({data}) => {
+        if (data.page !== null) {
+          for (let o = 0; o < data.page.length; o++) {
+            this.politicids.push({
+              value: data.page[o].id,
+              label: data.page[o].name
+            })
+          }
+        }
+      })
+      this.$http({
+        url: this.$http.adornUrl(`/dzu/department/listAll`),
+        method: 'get'
+      }).then(({data}) => {
+        if (data.page !== null) {
+          for (let d = 0; d < data.page.length; d++) {
+            this.departmentids.push({
+              value: data.page[d].id,
+              label: data.page[d].name
+            })
+          }
+        }
+      })
+      this.$http({
+        url: this.$http.adornUrl(`/dzu/joblevel/listAll`),
+        method: 'get'
+      }).then(({data}) => {
+        if (data.page !== null) {
+          for (let j = 0; j < data.page.length; j++) {
+            this.joblevelids.push({
+              value: data.page[j].id,
+              label: data.page[j].name
+            })
+          }
+        }
+      })
+
+      this.$http({
+        url: this.$http.adornUrl(`/dzu/position/listAll`),
+        method: 'get'
+      }).then(({data}) => {
+        if (data.page !== null) {
+          for (let p = 0; p < data.page.length; p++) {
+            this.posids.push({
+              value: data.page[p].id,
+              label: data.page[p].name
+            })
+          }
+        }
+      })
+    },
     // 获取数据列表
     getDataList () {
+      this.getDirectoryDataList()
       this.dataListLoading = true
       this.$http({
         url: this.$http.adornUrl(`/dzu/employee/jobNumber/${this.$store.state.user.name}`),
         method: 'get'
       }).then(({data}) => {
         if (data && data.code === 0) {
-          this.employee = data.employee
-          this.$http({
-            url: this.$http.adornUrl(`/dzu/employee/info/${this.employee.id}`),
-            method: 'get'
-          }).then(({data}) => {
-            this.dataForm = data.employee
-            this.$http({
-              url: this.$http.adornUrl(`/dzu/nation/list`),
-              method: 'get',
-              params: this.$http.adornParams({
-                'limit': this.pageLimit
-              })
-            }).then(({data}) => {
-              this.nationList = data.page.list
-              this.$http({
-                url: this.$http.adornUrl(`/dzu/oliticsstatus/list`),
-                method: 'get',
-                params: this.$http.adornParams({
-                  'limit': this.pageLimit
-                })
-              }).then(({data}) => {
-                this.politicidList = data.page.list
-                this.$http({
-                  url: this.$http.adornUrl(`/dzu/position/list`),
-                  method: 'get',
-                  params: this.$http.adornParams({
-                    'limit': this.pageLimit
-                  })
-                }).then(({data}) => {
-                  this.posidList = data.page.list
-                  this.$http({
-                    url: this.$http.adornUrl(`/dzu/joblevel/list`),
-                    method: 'get',
-                    params: this.$http.adornParams({
-                      'limit': this.pageLimit
-                    })
-                  }).then(({data}) => {
-                    this.joblevelidList = data.page.list
-                    this.$http({
-                      url: this.$http.adornUrl(`/dzu/department/list`),
-                      method: 'get',
-                      params: this.$http.adornParams({
-                        'limit': this.pageLimit
-                      })
-                    }).then(({data}) => {
-                      this.departmentidList = data.page.list
-                      for (let j = 0; j < this.nationList.length; j++) {
-                        this.nationids.push({
-                          value: this.nationList[j].id,
-                          label: this.nationList[j].name
-                        })
-                        if (this.employee.nationid === this.nationList[j].id) {
-                          this.employee.nationid = this.nationList[j].name
-                        }
-                      }
-                      for (let p = 0; p < this.politicidList.length; p++) {
-                        this.politicids.push({
-                          value: this.politicidList[p].id,
-                          label: this.politicidList[p].name
-                        })
-                        if (this.employee.politicid === this.politicidList[p].id) {
-                          this.employee.politicid = this.politicidList[p].name
-                        }
-                      }
-                      for (let d = 0; d < this.posidList.length; d++) {
-                        if (this.employee.posid === this.posidList[d].id) {
-                          this.employee.posid = this.posidList[d].name
-                        }
-                      }
-                      for (let e = 0; e < this.joblevelidList.length; e++) {
-                        if (this.employee.joblevelid === this.joblevelidList[e].id) {
-                          this.employee.joblevelid = this.joblevelidList[e].name
-                        }
-                      }
-                      for (let r = 0; r < this.departmentidList.length; r++) {
-                        if (this.employee.departmentid === this.departmentidList[r].id) {
-                          this.employee.departmentid = this.departmentidList[r].name
-                        }
-                      }
-                    })
-                  })
-                })
-              })
-            })
-          })
+          this.dataForm.id = data.employee.id
+          this.dataForm.name = data.employee.name
+          this.dataForm.jobnumber = data.employee.jobnumber
+          this.dataForm.gender = data.employee.gender
+          this.dataForm.birthday = data.employee.birthday
+          this.dataForm.idcard = data.employee.idcard
+          this.dataForm.wedlock = data.employee.wedlock
+          this.dataForm.nationid = data.employee.nationid
+          this.dataForm.nativeplace = data.employee.nativeplace
+          this.dataForm.politicid = data.employee.politicid
+          this.dataForm.email = data.employee.email
+          this.dataForm.phone = data.employee.phone
+          this.dataForm.address = data.employee.address
+          this.dataForm.departmentid = data.employee.departmentid
+          this.dataForm.joblevelid = data.employee.joblevelid
+          this.dataForm.posid = data.employee.posid
+          this.dataForm.engageform = data.employee.engageform
+          this.dataForm.tiptopdegree = data.employee.tiptopdegree
+          this.dataForm.specialty = data.employee.specialty
+          this.dataForm.school = data.employee.school
+          this.dataForm.begindate = data.employee.begindate
+          this.dataForm.workstate = data.employee.workstate
+          this.dataForm.notworkdate = data.employee.notworkdate
+          this.dataForm.begincontract = data.employee.begincontract
+          this.dataForm.endcontract = data.employee.endcontract
         }
       })
     },

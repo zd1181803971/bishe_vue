@@ -34,7 +34,7 @@
       </el-select>
     </el-form-item>
     <el-form-item label="请假状态" prop="status">
-      <el-input disabled v-model="dataForm.status" placeholder="请假状态 0未通过 1通过"></el-input>
+      <el-input disabled  placeholder="待批准"></el-input>
     </el-form-item>
     <el-form-item label="备注信息" prop="message">
       <el-input v-model="dataForm.message" placeholder="备注信息"></el-input>
@@ -120,28 +120,8 @@
     },
     methods: {
       init (id) {
-        this.dataForm.id = id || 0
         this.visible = true
-        this.$nextTick(() => {
-          this.$refs['dataForm'].resetFields()
-          if (this.dataForm.id) {
-            this.$http({
-              url: this.$http.adornUrl(`/dzu/leave/info/${this.dataForm.id}`),
-              method: 'get',
-              params: this.$http.adornParams()
-            }).then(({data}) => {
-              console.log(data)
-              if (data && data.code === 0) {
-                this.dataForm.eid = data.leave.eid
-                this.dataForm.starttime = data.leave.starttime
-                this.dataForm.endtime = data.leave.endtime
-                this.dataForm.reason = data.leave.reason
-                this.dataForm.status = data.leave.status
-                this.dataForm.message = data.leave.message
-              }
-            })
-          }
-        })
+        this.dataForm.eid = id
       },
       // 表单提交
       dataFormSubmit () {
@@ -151,7 +131,7 @@
               url: this.$http.adornUrl(`/dzu/leave/save`),
               method: 'post',
               data: this.$http.adornData({
-                'eid': this.$store.state.user.eid,
+                'eid': this.dataForm.eid,
                 'starttime': this.dataForm.starttime,
                 'endtime': this.dataForm.endtime,
                 'reason': this.dataForm.reason,

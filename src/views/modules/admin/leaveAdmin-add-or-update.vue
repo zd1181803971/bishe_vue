@@ -1,6 +1,6 @@
 <template>
   <el-dialog
-    :title="!dataForm.id ? '新增' : '修改'"
+    :title="'审批页面'"
     :close-on-click-modal="false"
     :visible.sync="visible">
     <el-form :model="dataForm" :rules="dataRule" ref="dataForm" @keyup.enter.native="dataFormSubmit()" label-width="130px">
@@ -45,12 +45,16 @@
         visible: false,
         statusSelect: [
           {
-            value: 0,
-            label: '未通过'
+            value: 2,
+            label: '不通过'
           },
           {
             value: 1,
             label: '通过'
+          },
+          {
+            value: 0,
+            label: '待审批'
           }
         ],
         dataForm: {
@@ -113,10 +117,10 @@
         this.$refs['dataForm'].validate((valid) => {
           if (valid) {
             this.$http({
-              url: this.$http.adornUrl(`/dzu/leave/${!this.dataForm.id ? 'save' : 'update'}`),
+              url: this.$http.adornUrl(`/dzu/leave/update`),
               method: 'post',
               data: this.$http.adornData({
-                'id': this.dataForm.id || undefined,
+                'id': this.dataForm.id,
                 'eid': this.dataForm.eid,
                 'starttime': this.dataForm.starttime,
                 'endtime': this.dataForm.endtime,

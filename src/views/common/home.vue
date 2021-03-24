@@ -1,6 +1,7 @@
 <template>
   <div class="mod-demo-echarts">
-    <h2>企业运营支撑</h2>
+    <h1>{{empname}}</h1>
+    <h2>欢迎来到运营支撑</h2>
 <!--    <el-alert-->
 <!--      title="提示："-->
 <!--      type="warning"-->
@@ -11,9 +12,14 @@
 <!--    </el-alert>-->
 
     <el-row :gutter="20">
-      <el-col :span="24">
+      <el-col :span="12">
         <el-card>
           <div id="J_chartBarBox" class="chart-box"></div>
+        </el-card>
+      </el-col>
+      <el-col :span="12">
+        <el-card>
+          <div id="J_chartBar2Box" class="chart-box"></div>
         </el-card>
       </el-col>
       <el-col :span="24">
@@ -30,18 +36,23 @@ import echarts from 'echarts'
 export default {
   data () {
     return {
+      empname: '',
+      msgDataList: [],
       chartLine: null,
       chartBar: null,
+      chartBar2: null,
       chartLineData: [],
       chartLineList: [],
       chartLineNumberList: [],
       ChartBarData: [],
-      ChartBarList: []
+      ChartBarList: [],
+      titleIndex: 0
     }
   },
   mounted () {
     this.initChartLine()
     this.initChartBar()
+    this.initChartBar2()
   },
   activated () {
     // 由于给echart添加了resize事件, 在组件激活时需要重新resize绘画一次, 否则出现空白bug
@@ -51,9 +62,39 @@ export default {
     if (this.chartBar) {
       this.chartBar.resize()
     }
+    if (this.chartBar2) {
+      this.chartBar2.resize()
+    }
+    this.open()
+    this.getEmpNameByJob()
   },
   methods: {
-    // 折线图
+    getEmpNameByJob () {
+      this.$http({
+        url: this.$http.adornUrl(`/dzu/employee/getIdNameByjob/${this.$store.state.user.name}`),
+        method: 'get'
+      }).then(({data}) => {
+        this.empname = data.empIdNameDto.name
+      })
+    },
+    open () {
+      this.$http({
+        url: this.$http.adornUrl('/dzu/msgcontent/list'),
+        method: 'get',
+        params: this.$http.adornParams({
+        })
+      }).then(({data}) => {
+        this.msgDataList = data.page.list
+        for (let i = 0; i < this.msgDataList.length; i++) {
+          this.$notify.info({
+            title: this.msgDataList[i].title,
+            message: this.msgDataList[i].message,
+            duration: 0,
+            offset: 55
+          })
+        }
+      })
+    },
     initChartLine () {
       let sum = 0
       this.$http({
@@ -70,6 +111,7 @@ export default {
         }
         this.chartLineList.push('总计')
         this.chartLineNumberList.push(sum)
+        console.log(this.chartLineList)
 
         var option = {
           title: {
@@ -91,7 +133,7 @@ export default {
           xAxis: [
             {
               type: 'category',
-              data: ['西安电子科技学校', '海南侨中', '武汉大学', '西北大学', '哈尔滨理工大学', '华胥中学', '深圳大学', '清华大学', '总计'],
+              data: this.chartLineList,
               axisTick: {
                 alignWithLabel: true
               }
@@ -123,7 +165,8 @@ export default {
         })
       })
     },
-    // 柱状图
+
+    // 小的那俩
     initChartBar () {
       this.$http({
         url: this.$http.adornUrl('/dzu/salary/getChartBar'),
@@ -131,10 +174,12 @@ export default {
       }).then(({data}) => {
         this.ChartBarData = data.salaryData
         for (let i = 0; i < Object.keys(this.ChartBarData).length; i++) {
-          this.ChartBarList.push({
-            value: Object.values(this.ChartBarData)[i],
-            name: Object.keys(this.ChartBarData)[i]
-          })
+          if (Object.values(this.ChartBarData)[i] !== 0) {
+            this.ChartBarList.push({
+              value: Object.values(this.ChartBarData)[i],
+              name: Object.keys(this.ChartBarData)[i]
+            })
+          }
         }
 
         var option = {
@@ -153,7 +198,7 @@ export default {
           },
           series: [
             {
-              name: '薪资水平',
+              name: '薪资水平人数',
               type: 'pie',
               radius: '50%',
               data: this.ChartBarList,
@@ -173,8 +218,49 @@ export default {
           this.chartBar.resize()
         })
       })
+    },
+    initChartBar2 () {
+      this.$http({
+        url: this.$http.adornUrl('/dzu/employee/getDeptAndEmpCount'),
+        method: 'get'
+      }).then(({data}) => {
+        var option = {
+          title: {
+            text: '部门员工情况',
+            subtext: '绝对真实',
+            left: 'center'
+          },
+          tooltip: {
+            trigger: 'item'
+          },
+          legend: {
+            orient: 'vertical',
+            left: 'left',
+            data: data.deptAndEmpCount.map(d => d.name)
+          },
+          series: [
+            {
+              name: '员工人数',
+              type: 'pie',
+              radius: '50%',
+              data: data.deptAndEmpCount,
+              emphasis: {
+                itemStyle: {
+                  shadowBlur: 10,
+                  shadowOffsetX: 0,
+                  shadowColor: 'rgba(0, 0, 0, 0.5)'
+                }
+              }
+            }
+          ]
+        }
+        this.chartBar2 = echarts.init(document.getElementById('J_chartBar2Box'))
+        this.chartBar2.setOption(option)
+        window.addEventListener('resize', () => {
+          this.chartBar2.resize()
+        })
+      })
     }
-
   }
 }
 </script>

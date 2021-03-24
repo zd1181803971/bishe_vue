@@ -1,11 +1,8 @@
 <template>
   <div class="mod-config">
     <el-form :inline="true" :model="dataForm" @keyup.enter.native="getDataList()">
+
       <el-form-item>
-        <el-input v-model="dataForm.key" placeholder="参数名" clearable></el-input>
-      </el-form-item>
-      <el-form-item>
-        <el-button @click="getDataList()">查询</el-button>
         <el-button v-if="isAuth('dzu:msgcontent:save')" type="primary" @click="addOrUpdateHandle()">新增</el-button>
         <el-button v-if="isAuth('dzu:msgcontent:delete')" type="danger" @click="deleteHandle()" :disabled="dataListSelections.length <= 0">批量删除</el-button>
       </el-form-item>
@@ -23,28 +20,22 @@
         width="50">
       </el-table-column>
       <el-table-column
-        prop="id"
-        header-align="center"
-        align="center"
-        label="">
-      </el-table-column>
-      <el-table-column
         prop="title"
         header-align="center"
         align="center"
-        label="">
+        label="标题">
       </el-table-column>
       <el-table-column
         prop="message"
         header-align="center"
         align="center"
-        label="">
+        label="内容">
       </el-table-column>
       <el-table-column
         prop="createdate"
         header-align="center"
         align="center"
-        label="">
+        label="创建日期">
       </el-table-column>
       <el-table-column
         fixed="right"
@@ -78,7 +69,6 @@
     data () {
       return {
         dataForm: {
-          key: ''
         },
         dataList: [],
         pageIndex: 1,
@@ -104,8 +94,7 @@
           method: 'get',
           params: this.$http.adornParams({
             'page': this.pageIndex,
-            'limit': this.pageSize,
-            'key': this.dataForm.key
+            'limit': this.pageSize
           })
         }).then(({data}) => {
           if (data && data.code === 0) {

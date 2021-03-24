@@ -27,9 +27,9 @@
         </el-menu-item>
         <el-submenu index="3">
           <template slot="title">Git地址</template>
-          <el-menu-item index="2-1"><a href="#" target="_blank">前端</a></el-menu-item>
-          <el-menu-item index="2-2"><a href="#" target="_blank">后台</a></el-menu-item>
-          <el-menu-item index="2-3"><a href="#" target="_blank">个人博客</a></el-menu-item>
+          <el-menu-item index="2-1"><a href="https://gitee.com/zhao_dong1181803971/bishe_vue.git" target="_blank">前端源码</a></el-menu-item>
+          <el-menu-item index="2-2"><a href="https://gitee.com/zhao_dong1181803971/bishe.git" target="_blank">后端源码</a></el-menu-item>
+          <el-menu-item index="2-3"><a href="https://blog.csdn.net/weixin_43950014?spm=1001.2101.3001.5343" target="_blank">个人博客</a></el-menu-item>
         </el-submenu>
         <el-menu-item class="site-navbar__avatar" index="3">
           <el-dropdown :show-timeout="0" placement="bottom">
