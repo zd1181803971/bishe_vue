@@ -2,7 +2,7 @@
   <div class="mod-config">
     <el-form :inline="true" :model="dataForm" @keyup.enter.native="getDataList()">
       <el-form-item>
-        <el-input v-model="dataForm.key" placeholder="参数名" clearable></el-input>
+        <el-input v-model="dataForm.name" placeholder="职位名称" clearable></el-input>
       </el-form-item>
       <el-form-item>
         <el-button @click="getDataList()">查询</el-button>
@@ -23,28 +23,19 @@
         width="50">
       </el-table-column>
       <el-table-column
-        prop="id"
-        header-align="center"
-        align="center"
-        label="">
-      </el-table-column>
-      <el-table-column
         prop="name"
         header-align="center"
         align="center"
-        label="职位">
+        label="职位名称">
       </el-table-column>
       <el-table-column
-        prop="createdate"
+        prop="count"
         header-align="center"
         align="center"
-        label="">
-      </el-table-column>
-      <el-table-column
-        prop="enabled"
-        header-align="center"
-        align="center"
-        label="">
+        label="公司人数">
+        <template slot-scope="scope">
+          {{scope.row.count}}人
+        </template>
       </el-table-column>
       <el-table-column
         fixed="right"
@@ -53,8 +44,8 @@
         width="150"
         label="操作">
         <template slot-scope="scope">
-          <el-button type="text" size="small" @click="addOrUpdateHandle(scope.row.id)">修改</el-button>
-          <el-button type="text" size="small" @click="deleteHandle(scope.row.id)">删除</el-button>
+          <el-button type="primary" size="small" @click="addOrUpdateHandle(scope.row.id)">修改</el-button>
+          <el-button type="danger" size="small" @click="deleteHandle(scope.row.id)">删除</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -78,7 +69,7 @@
     data () {
       return {
         dataForm: {
-          key: ''
+          name: ''
         },
         dataList: [],
         pageIndex: 1,
@@ -100,17 +91,22 @@
       getDataList () {
         this.dataListLoading = true
         this.$http({
-          url: this.$http.adornUrl('/dzu/position/list'),
+          url: this.$http.adornUrl('/dzu/position/getPositionForm'),
           method: 'get',
           params: this.$http.adornParams({
             'page': this.pageIndex,
             'limit': this.pageSize,
-            'key': this.dataForm.key
+            'name': this.dataForm.name
           })
         }).then(({data}) => {
           if (data && data.code === 0) {
-            this.dataList = data.page.list
-            this.totalPage = data.page.totalCount
+            this.dataList = data.PositionForm.list
+            this.dataList.map(item => {
+              if (item.count == null) {
+                item.count = 0
+              }
+            })
+            this.totalPage = data.PositionForm.totalCount
           } else {
             this.dataList = []
             this.totalPage = 0

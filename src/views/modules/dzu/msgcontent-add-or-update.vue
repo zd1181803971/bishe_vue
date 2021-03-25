@@ -1,16 +1,16 @@
 <template>
   <el-dialog
-    :title="!dataForm.id ? '新增' : '修改'"
+    :title="!dataForm.id ? '新增首页通知' : '修改首页通知'"
     :close-on-click-modal="false"
     :visible.sync="visible">
-    <el-form :model="dataForm" :rules="dataRule" ref="dataForm" @keyup.enter.native="dataFormSubmit()" label-width="80px">
-    <el-form-item label="标题" prop="title">
+    <el-form :model="dataForm" :rules="dataRule" ref="dataForm" @keyup.enter.native="dataFormSubmit()" label-width="auto">
+    <el-form-item label="通知标题：" prop="title">
       <el-input v-model="dataForm.title" placeholder="请输入标题"></el-input>
     </el-form-item>
-    <el-form-item label="内容" prop="message">
-      <el-input   type="textarea" :rows="2" v-model="dataForm.message" placeholder="请输入内容"></el-input>
+    <el-form-item label="通知内容：" prop="message">
+      <el-input   type="textarea" :rows="5" v-model="dataForm.message" placeholder="请输入内容"></el-input>
     </el-form-item>
-    <el-form-item label="创建日期" prop="createdate">
+    <el-form-item label="创建日期：" prop="createdate">
 <!--      <el-input v-model="dataForm.createdate" placeholder=""></el-input>-->
       <el-date-picker
         v-model="dataForm.createdate"
@@ -22,7 +22,7 @@
     </el-form>
     <span slot="footer" class="dialog-footer">
       <el-button @click="visible = false">取消</el-button>
-      <el-button type="primary" @click="dataFormSubmit()">确定</el-button>
+      <el-button type="primary" @click="dataFormSubmit()">确认</el-button>
     </span>
   </el-dialog>
 </template>

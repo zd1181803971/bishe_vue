@@ -1,23 +1,23 @@
 <template>
   <el-dialog
-    :title="!dataForm.id ? '新增' : '修改'"
+    :title="!dataForm.id ? '新增部门' : '修改部门'"
     :close-on-click-modal="false"
     :visible.sync="visible">
-    <el-form :model="dataForm" :rules="dataRule" ref="dataForm" @keyup.enter.native="dataFormSubmit()" label-width="80px">
+    <el-form :model="dataForm" :rules="dataRule" ref="dataForm" @keyup.enter.native="dataFormSubmit()" label-width="auto">
     <el-form-item label="部门名称" prop="name">
       <el-input v-model="dataForm.name" placeholder="部门名称"></el-input>
     </el-form-item>
-    <el-form-item label="上级部门id" prop="parentid">
-      <el-input v-model="dataForm.parentid" placeholder="上级部门id"></el-input>
-    </el-form-item>
-    <el-form-item label="路径" prop="deppath">
-      <el-input v-model="dataForm.deppath" placeholder="路径"></el-input>
-    </el-form-item>
-    <el-form-item label="默认开启" prop="enabled">
-      <el-input v-model="dataForm.enabled" placeholder="默认开启"></el-input>
-    </el-form-item>
-    <el-form-item label="默认为父标签" prop="isparent">
-      <el-input v-model="dataForm.isparent" placeholder="默认为父标签"></el-input>
+    <el-form-item label="上级部门" prop="parentid">
+<!--      <el-input v-model="dataForm.parentid" placeholder="上级部门"></el-input>-->
+      <el-select v-model="dataForm.parentid" placeholder="请选择">
+        <el-option
+          v-for="item in parentids"
+          :key="item.value"
+          :label="item.label"
+          :value="item.value"
+          :disabled="item.disabled">
+        </el-option>
+      </el-select>
     </el-form-item>
     </el-form>
     <span slot="footer" class="dialog-footer">
@@ -31,36 +31,41 @@
   export default {
     data () {
       return {
+        parentids: [],
         visible: false,
         dataForm: {
           id: 0,
           name: '',
-          parentid: '',
-          deppath: '',
-          enabled: '',
-          isparent: ''
+          parentid: ''
         },
         dataRule: {
           name: [
             { required: true, message: '部门名称不能为空', trigger: 'blur' }
           ],
           parentid: [
-            { required: true, message: '上级部门id不能为空', trigger: 'blur' }
-          ],
-          deppath: [
-            { required: true, message: '路径不能为空', trigger: 'blur' }
-          ],
-          enabled: [
-            { required: true, message: '默认开启不能为空', trigger: 'blur' }
-          ],
-          isparent: [
-            { required: true, message: '默认为父标签不能为空', trigger: 'blur' }
+            { required: true, message: '上级部门不能为空', trigger: 'blur' }
           ]
         }
       }
     },
     methods: {
+      getAllDeptList () {
+        this.$http({
+          url: this.$http.adornUrl(`/dzu/department/listAll`),
+          method: 'get'
+        }).then(({data}) => {
+          for (let i = 0; i < data.page.length; i++) {
+            this.parentids.push({
+              value: data.page[i].id,
+              label: data.page[i].name
+            })
+          }
+        })
+      },
+
       init (id) {
+        this.parentids = []
+        this.getAllDeptList()
         this.dataForm.id = id || 0
         this.visible = true
         this.$nextTick(() => {
@@ -74,9 +79,6 @@
               if (data && data.code === 0) {
                 this.dataForm.name = data.department.name
                 this.dataForm.parentid = data.department.parentid
-                this.dataForm.deppath = data.department.deppath
-                this.dataForm.enabled = data.department.enabled
-                this.dataForm.isparent = data.department.isparent
               }
             })
           }
@@ -92,10 +94,7 @@
               data: this.$http.adornData({
                 'id': this.dataForm.id || undefined,
                 'name': this.dataForm.name,
-                'parentid': this.dataForm.parentid,
-                'deppath': this.dataForm.deppath,
-                'enabled': this.dataForm.enabled,
-                'isparent': this.dataForm.isparent
+                'parentid': this.dataForm.parentid
               })
             }).then(({data}) => {
               if (data && data.code === 0) {

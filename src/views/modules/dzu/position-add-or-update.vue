@@ -1,17 +1,11 @@
 <template>
   <el-dialog
-    :title="!dataForm.id ? '新增' : '修改'"
+    :title="!dataForm.id ? '新增公司职位' : '修改公司职位'"
     :close-on-click-modal="false"
     :visible.sync="visible">
     <el-form :model="dataForm" :rules="dataRule" ref="dataForm" @keyup.enter.native="dataFormSubmit()" label-width="80px">
-    <el-form-item label="职位" prop="name">
+    <el-form-item label="职位名称" prop="name">
       <el-input v-model="dataForm.name" placeholder="职位"></el-input>
-    </el-form-item>
-    <el-form-item label="" prop="createdate">
-      <el-input v-model="dataForm.createdate" placeholder=""></el-input>
-    </el-form-item>
-    <el-form-item label="" prop="enabled">
-      <el-input v-model="dataForm.enabled" placeholder=""></el-input>
     </el-form-item>
     </el-form>
     <span slot="footer" class="dialog-footer">
@@ -35,12 +29,6 @@
         dataRule: {
           name: [
             { required: true, message: '职位不能为空', trigger: 'blur' }
-          ],
-          createdate: [
-            { required: true, message: '不能为空', trigger: 'blur' }
-          ],
-          enabled: [
-            { required: true, message: '不能为空', trigger: 'blur' }
           ]
         }
       }
@@ -59,8 +47,6 @@
             }).then(({data}) => {
               if (data && data.code === 0) {
                 this.dataForm.name = data.position.name
-                this.dataForm.createdate = data.position.createdate
-                this.dataForm.enabled = data.position.enabled
               }
             })
           }
@@ -75,9 +61,7 @@
               method: 'post',
               data: this.$http.adornData({
                 'id': this.dataForm.id || undefined,
-                'name': this.dataForm.name,
-                'createdate': this.dataForm.createdate,
-                'enabled': this.dataForm.enabled
+                'name': this.dataForm.name
               })
             }).then(({data}) => {
               if (data && data.code === 0) {

@@ -2,15 +2,12 @@
   <div class="mod-demo-echarts">
     <h1>{{empname}}</h1>
     <h2>欢迎来到运营支撑</h2>
-<!--    <el-alert-->
-<!--      title="提示："-->
-<!--      type="warning"-->
-<!--      :closable="false">-->
-<!--      <div slot-scope="description">-->
-<!--        <p class="el-alert__description">1. 此Demo只提供ECharts官方使用文档，入门部署和体验功能。具体使用请参考：http://echarts.baidu.com/index.html</p>-->
-<!--      </div>-->
-<!--    </el-alert>-->
+    <el-alert
+      title="提示：开源不易，需要鼓励。去友情链接 点个 star 吧  [不再提示]？"
+      type="warning"
+      :closable="false">
 
+    </el-alert>
     <el-row :gutter="20">
       <el-col :span="12">
         <el-card>

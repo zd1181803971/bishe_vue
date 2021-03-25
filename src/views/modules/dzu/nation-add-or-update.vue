@@ -1,10 +1,10 @@
 <template>
   <el-dialog
-    :title="!dataForm.id ? '新增' : '修改'"
+    :title="!dataForm.id ? '新增民族' : '修改民族'"
     :close-on-click-modal="false"
     :visible.sync="visible">
     <el-form :model="dataForm" :rules="dataRule" ref="dataForm" @keyup.enter.native="dataFormSubmit()" label-width="80px">
-    <el-form-item label="" prop="name">
+    <el-form-item label="民族：" prop="name">
       <el-input v-model="dataForm.name" placeholder=""></el-input>
     </el-form-item>
     </el-form>

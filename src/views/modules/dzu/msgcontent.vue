@@ -3,7 +3,7 @@
     <el-form :inline="true" :model="dataForm" @keyup.enter.native="getDataList()">
 
       <el-form-item>
-        <el-button v-if="isAuth('dzu:msgcontent:save')" type="primary" @click="addOrUpdateHandle()">新增</el-button>
+        <el-button v-if="isAuth('dzu:msgcontent:save')" type="primary" @click="addOrUpdateHandle()">新增首页通知</el-button>
         <el-button v-if="isAuth('dzu:msgcontent:delete')" type="danger" @click="deleteHandle()" :disabled="dataListSelections.length <= 0">批量删除</el-button>
       </el-form-item>
     </el-form>
@@ -23,13 +23,13 @@
         prop="title"
         header-align="center"
         align="center"
-        label="标题">
+        label="通知标题">
       </el-table-column>
       <el-table-column
         prop="message"
         header-align="center"
         align="center"
-        label="内容">
+        label="通知内容">
       </el-table-column>
       <el-table-column
         prop="createdate"
@@ -44,8 +44,8 @@
         width="150"
         label="操作">
         <template slot-scope="scope">
-          <el-button type="text" size="small" @click="addOrUpdateHandle(scope.row.id)">修改</el-button>
-          <el-button type="text" size="small" @click="deleteHandle(scope.row.id)">删除</el-button>
+          <el-button type="primary" size="small" @click="addOrUpdateHandle(scope.row.id)">修改</el-button>
+          <el-button type="danger" size="small" @click="deleteHandle(scope.row.id)">删除</el-button>
         </template>
       </el-table-column>
     </el-table>
