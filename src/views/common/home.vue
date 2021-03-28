@@ -1,67 +1,110 @@
 <template>
   <div class="mod-demo-echarts">
     <h1>{{empname}}</h1>
-    <h2>欢迎来到运营支撑</h2>
+    <h2>欢迎来到运营支撑系统,请记得报工</h2>
     <el-alert
       title="提示：开源不易，需要鼓励。去友情链接 点个 star 吧  [不再提示]？"
       type="warning"
       :closable="false">
-
     </el-alert>
-    <el-row :gutter="20">
-      <el-col :span="12">
-        <el-card>
-          <div id="J_chartBarBox" class="chart-box"></div>
-        </el-card>
-      </el-col>
-      <el-col :span="12">
-        <el-card>
-          <div id="J_chartBar2Box" class="chart-box"></div>
-        </el-card>
-      </el-col>
-      <el-col :span="24">
-        <el-card>
-          <div id="J_chartLineBox" class="chart-box"></div>
-        </el-card>
-      </el-col>
-    </el-row>
+    <el-form :model="dataForm" :rules="dataRule" ref="dataForm" @keyup.enter.native="dataFormSubmit()" label-width="80px">
+      <el-form-item label="员工编号" prop="eid">
+        <el-input disabled v-model="dataForm.eid" placeholder="员工编号"></el-input>
+      </el-form-item>
+      <el-form-item label="报工日期" prop="ecdate">
+<!--        <el-input v-model="dataForm.ecdate" placeholder="报工日期"></el-input>-->
+        <el-date-picker
+                        v-model="dataForm.ecdate"
+                        type="date"
+                        value-format="yyyy-MM-dd"
+                        placeholder="选择日期">
+        </el-date-picker>
+      </el-form-item>
+      <el-form-item label="工作内容" prop="ecreason">
+        <el-input v-model="dataForm.ecreason" placeholder="工作内容"></el-input>
+      </el-form-item>
+      <el-form-item label="工作时长" prop="ecpoint">
+<!--        <el-input v-model="dataForm.ecpoint" placeholder="工作时长"></el-input>-->
+        <el-select v-model="dataForm.ecpoint" placeholder="请选择" >
+          <el-option
+            v-for="item in ecpoints"
+            :key="item.value"
+            :label="item.label"
+            :value="item.value">
+          </el-option>
+        </el-select>
+      </el-form-item>
+<!--      <el-form-item label="报工情况" prop="ectype">-->
+<!--        <el-input v-model="dataForm.ectype" placeholder="报工情况"></el-input>-->
+<!--      </el-form-item>-->
+      <el-form-item label="备注" prop="remark">
+        <el-input v-model="dataForm.remark" placeholder="备注"></el-input>
+      </el-form-item>
+    </el-form>
+    <span>
+      <el-button type="primary" @click="dataFormSubmit()">立即报工</el-button>
+    </span>
   </div>
 </template>
 
 <script>
-import echarts from 'echarts'
 export default {
   data () {
+    var validateTime1 = (rule, value, callback) => {
+      const nowTime = new Date().getDate()
+      const start = new Date(this.dataForm.ecdate).getDate()
+      if (start === nowTime) {
+        callback()
+      } else {
+        return callback(new Error('只能报当天的工作！'))
+      }
+    }
     return {
+      ecpoints: [
+        {
+          label: '7小时',
+          value: 7
+        }, {
+          label: '8小时',
+          value: 8
+        }, {
+          label: '9小时',
+          value: 9
+        },
+        {
+          label: '10小时',
+          value: 10
+        }
+      ],
       empname: '',
       msgDataList: [],
-      chartLine: null,
-      chartBar: null,
-      chartBar2: null,
-      chartLineData: [],
-      chartLineList: [],
-      chartLineNumberList: [],
-      ChartBarData: [],
-      ChartBarList: [],
-      titleIndex: 0
+      visible: false,
+      dataForm: {
+        eid: this.$store.state.user.name,
+        ecdate: '',
+        ecreason: '',
+        ecpoint: '',
+        ectype: 0,
+        remark: ''
+      },
+      dataRule: {
+        ecdate: [
+          { required: true, message: '报工日期不能为空', trigger: 'blur' },
+          { validator: validateTime1, trigger: 'blur' }
+        ],
+        ecreason: [
+          { required: true, message: '工作内容不能为空', trigger: 'blur' }
+        ],
+        ecpoint: [
+          { required: true, message: '工作时长不能为空', trigger: 'blur' }
+        ]
+      }
     }
   },
   mounted () {
-    this.initChartLine()
-    this.initChartBar()
-    this.initChartBar2()
+
   },
   activated () {
-    // 由于给echart添加了resize事件, 在组件激活时需要重新resize绘画一次, 否则出现空白bug
-    if (this.chartLine) {
-      this.chartLine.resize()
-    }
-    if (this.chartBar) {
-      this.chartBar.resize()
-    }
-    if (this.chartBar2) {
-      this.chartBar2.resize()
-    }
     this.open()
     this.getEmpNameByJob()
   },
@@ -92,191 +135,35 @@ export default {
         }
       })
     },
-    initChartLine () {
-      let sum = 0
-      this.$http({
-        url: this.$http.adornUrl('/dzu/employee/chartLine'),
-        method: 'get'
-      }).then(({data}) => {
-        this.chartLineData = data.data
-        for (let i = 0; i < Object.keys(this.chartLineData).length; i++) {
-          this.chartLineList.push(Object.keys(this.chartLineData)[i])
-        }
-        for (let i = 0; i < Object.values(this.chartLineData).length; i++) {
-          sum += parseInt(Object.values(this.chartLineData)[i])
-          this.chartLineNumberList.push(Object.values(this.chartLineData)[i])
-        }
-        this.chartLineList.push('总计')
-        this.chartLineNumberList.push(sum)
-        console.log(this.chartLineList)
-
-        var option = {
-          title: {
-            text: '公司人口总量',
-            subtext: '员工毕业院校'
-          },
-          tooltip: {
-            trigger: 'axis',
-            axisPointer: {            // 坐标轴指示器，坐标轴触发有效
-              type: 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
-            }
-          },
-          grid: {
-            left: '3%',
-            right: '4%',
-            bottom: '3%',
-            containLabel: true
-          },
-          xAxis: [
-            {
-              type: 'category',
-              data: this.chartLineList,
-              axisTick: {
-                alignWithLabel: true
-              }
-            }
-          ],
-          yAxis: [
-            {
-              type: 'value',
-              boundaryGap: [0, 0.01],
-              minInterval: 1,
-              axisLabel: {
-                formatter: '{value} 人'
-              }
-            }
-          ],
-          series: [
-            {
-              name: '员工人数',
-              type: 'bar',
-              barWidth: '60%',
-              data: this.chartLineNumberList
-            }
-          ]
-        }
-        this.chartLine = echarts.init(document.getElementById('J_chartLineBox'))
-        this.chartLine.setOption(option)
-        window.addEventListener('resize', () => {
-          this.chartLine.resize()
-        })
-      })
-    },
-
-    // 小的那俩
-    initChartBar () {
-      this.$http({
-        url: this.$http.adornUrl('/dzu/salary/getChartBar'),
-        method: 'get'
-      }).then(({data}) => {
-        this.ChartBarData = data.salaryData
-        for (let i = 0; i < Object.keys(this.ChartBarData).length; i++) {
-          if (Object.values(this.ChartBarData)[i] !== 0) {
-            this.ChartBarList.push({
-              value: Object.values(this.ChartBarData)[i],
-              name: Object.keys(this.ChartBarData)[i]
+    // 表单提交
+    dataFormSubmit () {
+      this.$refs['dataForm'].validate((valid) => {
+        if (valid) {
+          this.$http({
+            url: this.$http.adornUrl(`/dzu/employeeec/save`),
+            method: 'post',
+            data: this.$http.adornData({
+              'eid': this.dataForm.eid,
+              'ecdate': this.dataForm.ecdate,
+              'ecreason': this.dataForm.ecreason,
+              'ecpoint': this.dataForm.ecpoint,
+              'ectype': this.dataForm.ectype,
+              'remark': this.dataForm.remark
             })
-          }
-        }
-
-        var option = {
-          title: {
-            text: '员工薪资水平',
-            subtext: '绝对真实',
-            left: 'center'
-          },
-          tooltip: {
-            trigger: 'item'
-          },
-          legend: {
-            orient: 'vertical',
-            left: 'left',
-            data: ['2k-3k', '3k-5k', '5k-8k', '8k-10k', '10k以上']
-          },
-          series: [
-            {
-              name: '薪资水平人数',
-              type: 'pie',
-              radius: '50%',
-              data: this.ChartBarList,
-              emphasis: {
-                itemStyle: {
-                  shadowBlur: 10,
-                  shadowOffsetX: 0,
-                  shadowColor: 'rgba(0, 0, 0, 0.5)'
-                }
-              }
+          }).then(({data}) => {
+            if (data && data.code === 0) {
+              this.$message({
+                message: '报工成功',
+                type: 'success',
+                duration: 1500
+              })
+            } else {
+              this.$message.error(data.msg)
             }
-          ]
+          })
         }
-        this.chartBar = echarts.init(document.getElementById('J_chartBarBox'))
-        this.chartBar.setOption(option)
-        window.addEventListener('resize', () => {
-          this.chartBar.resize()
-        })
-      })
-    },
-    initChartBar2 () {
-      this.$http({
-        url: this.$http.adornUrl('/dzu/employee/getDeptAndEmpCount'),
-        method: 'get'
-      }).then(({data}) => {
-        var option = {
-          title: {
-            text: '部门员工情况',
-            subtext: '绝对真实',
-            left: 'center'
-          },
-          tooltip: {
-            trigger: 'item'
-          },
-          legend: {
-            orient: 'vertical',
-            left: 'left',
-            data: data.deptAndEmpCount.map(d => d.name)
-          },
-          series: [
-            {
-              name: '员工人数',
-              type: 'pie',
-              radius: '50%',
-              data: data.deptAndEmpCount,
-              emphasis: {
-                itemStyle: {
-                  shadowBlur: 10,
-                  shadowOffsetX: 0,
-                  shadowColor: 'rgba(0, 0, 0, 0.5)'
-                }
-              }
-            }
-          ]
-        }
-        this.chartBar2 = echarts.init(document.getElementById('J_chartBar2Box'))
-        this.chartBar2.setOption(option)
-        window.addEventListener('resize', () => {
-          this.chartBar2.resize()
-        })
       })
     }
   }
 }
 </script>
-
-<style lang="scss">
-.mod-demo-echarts {
-  > .el-alert {
-    margin-bottom: 10px;
-  }
-  > .el-row {
-    margin-top: -10px;
-    margin-bottom: -10px;
-    .el-col {
-      padding-top: 10px;
-      padding-bottom: 10px;
-    }
-  }
-  .chart-box {
-    min-height: 400px;
-  }
-}
-</style>
