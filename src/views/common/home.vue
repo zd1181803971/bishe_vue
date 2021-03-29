@@ -1,30 +1,32 @@
 <template>
-  <div class="mod-demo-echarts">
-    <h1>{{empname}}</h1>
-    <h2>欢迎来到运营支撑系统,请记得报工</h2>
+  <div>
     <el-alert
       title="提示：开源不易，需要鼓励。去友情链接 点个 star 吧  [不再提示]？"
       type="warning"
       :closable="false">
     </el-alert>
-    <el-form :model="dataForm" :rules="dataRule" ref="dataForm" @keyup.enter.native="dataFormSubmit()" label-width="80px">
-      <el-form-item label="员工编号" prop="eid">
+    <div style="width: 30%;margin: 0 auto">
+      <h1>{{empname}}</h1>
+      <h2>欢迎来到运营支撑系统,请记得报工</h2>
+
+      <el-form :model="dataForm" :rules="dataRule" ref="dataForm" @keyup.enter.native="dataFormSubmit()" label-width="auto">
+      <el-form-item label="员工工号：" prop="eid">
         <el-input disabled v-model="dataForm.eid" placeholder="员工编号"></el-input>
       </el-form-item>
-      <el-form-item label="报工日期" prop="ecdate">
-<!--        <el-input v-model="dataForm.ecdate" placeholder="报工日期"></el-input>-->
+      <el-form-item label="报工日期：" prop="ecdate">
+        <!--        <el-input v-model="dataForm.ecdate" placeholder="报工日期"></el-input>-->
         <el-date-picker
-                        v-model="dataForm.ecdate"
-                        type="date"
-                        value-format="yyyy-MM-dd"
-                        placeholder="选择日期">
+          v-model="dataForm.ecdate"
+          type="date"
+          value-format="yyyy-MM-dd"
+          placeholder="选择日期">
         </el-date-picker>
       </el-form-item>
-      <el-form-item label="工作内容" prop="ecreason">
+      <el-form-item label="工作内容：" prop="ecreason">
         <el-input v-model="dataForm.ecreason" placeholder="工作内容"></el-input>
       </el-form-item>
-      <el-form-item label="工作时长" prop="ecpoint">
-<!--        <el-input v-model="dataForm.ecpoint" placeholder="工作时长"></el-input>-->
+      <el-form-item label="工作时长：" prop="ecpoint">
+        <!--        <el-input v-model="dataForm.ecpoint" placeholder="工作时长"></el-input>-->
         <el-select v-model="dataForm.ecpoint" placeholder="请选择" >
           <el-option
             v-for="item in ecpoints"
@@ -34,16 +36,17 @@
           </el-option>
         </el-select>
       </el-form-item>
-<!--      <el-form-item label="报工情况" prop="ectype">-->
-<!--        <el-input v-model="dataForm.ectype" placeholder="报工情况"></el-input>-->
-<!--      </el-form-item>-->
-      <el-form-item label="备注" prop="remark">
+      <!--      <el-form-item label="报工情况" prop="ectype">-->
+      <!--        <el-input v-model="dataForm.ectype" placeholder="报工情况"></el-input>-->
+      <!--      </el-form-item>-->
+      <el-form-item label="备注：" prop="remark">
         <el-input v-model="dataForm.remark" placeholder="备注"></el-input>
       </el-form-item>
     </el-form>
-    <span>
+      <span>
       <el-button type="primary" @click="dataFormSubmit()">立即报工</el-button>
-    </span>
+    </span></div>
+
   </div>
 </template>
 

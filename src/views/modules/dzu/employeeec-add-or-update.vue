@@ -4,20 +4,20 @@
     :close-on-click-modal="false"
     :visible.sync="visible">
     <el-form :model="dataForm" :rules="dataRule" ref="dataForm" @keyup.enter.native="dataFormSubmit()" label-width="80px">
-    <el-form-item label="员工编号" prop="eid">
-      <el-input v-model="dataForm.eid" placeholder="员工编号"></el-input>
+    <el-form-item label="员工工号" prop="eid">
+      <el-input v-model="dataForm.eid" placeholder="员工工号"></el-input>
     </el-form-item>
-    <el-form-item label="奖罚日期" prop="ecdate">
-      <el-input v-model="dataForm.ecdate" placeholder="奖罚日期"></el-input>
+    <el-form-item label="报工日期" prop="ecdate">
+      <el-input v-model="dataForm.ecdate" placeholder="报工日期"></el-input>
     </el-form-item>
-    <el-form-item label="奖罚原因" prop="ecreason">
-      <el-input v-model="dataForm.ecreason" placeholder="奖罚原因"></el-input>
+    <el-form-item label="工作内容" prop="ecreason">
+      <el-input v-model="dataForm.ecreason" placeholder="工作内容"></el-input>
     </el-form-item>
-    <el-form-item label="奖罚分" prop="ecpoint">
-      <el-input v-model="dataForm.ecpoint" placeholder="奖罚分"></el-input>
+    <el-form-item label="工作时长" prop="ecpoint">
+      <el-input v-model="dataForm.ecpoint" placeholder="工作时长"></el-input>
     </el-form-item>
-    <el-form-item label="奖罚类别，0：奖，1：罚" prop="ectype">
-      <el-input v-model="dataForm.ectype" placeholder="奖罚类别，0：奖，1：罚"></el-input>
+    <el-form-item label="报工情况" prop="ectype">
+      <el-input v-model="dataForm.ectype" placeholder="报工情况"></el-input>
     </el-form-item>
     <el-form-item label="备注" prop="remark">
       <el-input v-model="dataForm.remark" placeholder="备注"></el-input>
@@ -46,19 +46,19 @@
         },
         dataRule: {
           eid: [
-            { required: true, message: '员工编号不能为空', trigger: 'blur' }
+            { required: true, message: '员工工号不能为空', trigger: 'blur' }
           ],
           ecdate: [
-            { required: true, message: '奖罚日期不能为空', trigger: 'blur' }
+            { required: true, message: '报工日期不能为空', trigger: 'blur' }
           ],
           ecreason: [
-            { required: true, message: '奖罚原因不能为空', trigger: 'blur' }
+            { required: true, message: '工作内容不能为空', trigger: 'blur' }
           ],
           ecpoint: [
-            { required: true, message: '奖罚分不能为空', trigger: 'blur' }
+            { required: true, message: '工作时长不能为空', trigger: 'blur' }
           ],
           ectype: [
-            { required: true, message: '奖罚类别，0：奖，1：罚不能为空', trigger: 'blur' }
+            { required: true, message: '报工情况不能为空', trigger: 'blur' }
           ],
           remark: [
             { required: true, message: '备注不能为空', trigger: 'blur' }
