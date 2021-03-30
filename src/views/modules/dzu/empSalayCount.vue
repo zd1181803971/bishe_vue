@@ -1,9 +1,7 @@
 <template>
   <div class="mod-demo-echarts">
-    <h1>{{empname}}</h1>
-    <h2>欢迎来到运营支撑</h2>
     <el-alert
-      title="提示：开源不易，需要鼓励。去友情链接 点个 star 吧  [不再提示]？"
+      title="提示：这里展现的是公司员工工资分布情况以及今日报工情况"
       type="warning"
       :closable="false">
 
@@ -33,11 +31,12 @@ import echarts from 'echarts'
 export default {
   data () {
     return {
-      empname: '',
       msgDataList: [],
       chartLine: null,
       chartBar: null,
       chartBar2: null,
+      chartBar2Data: [],
+      chartBar2List: [],
       chartLineData: [],
       chartLineList: [],
       chartLineNumberList: [],
@@ -62,18 +61,8 @@ export default {
     if (this.chartBar2) {
       this.chartBar2.resize()
     }
-
-    this.getEmpNameByJob()
   },
   methods: {
-    getEmpNameByJob () {
-      this.$http({
-        url: this.$http.adornUrl(`/dzu/employee/getIdNameByjob/${this.$store.state.user.name}`),
-        method: 'get'
-      }).then(({data}) => {
-        this.empname = data.empIdNameDto.name
-      })
-    },
     initChartLine () {
       let sum = 0
       this.$http({
@@ -200,12 +189,19 @@ export default {
     },
     initChartBar2 () {
       this.$http({
-        url: this.$http.adornUrl('/dzu/employee/getDeptAndEmpCount'),
+        url: this.$http.adornUrl('/dzu/employeeec/getEmpClock'),
         method: 'get'
       }).then(({data}) => {
+        this.chartBar2Data = data.list
+        for (let i = 0; i < Object.keys(this.chartBar2Data).length; i++) {
+          this.chartBar2List.push({
+            value: Object.values(this.chartBar2Data)[i],
+            name: Object.keys(this.chartBar2Data)[i]
+          })
+        }
         var option = {
           title: {
-            text: '部门员工情况',
+            text: '员工报工情况',
             subtext: '绝对真实',
             left: 'center'
           },
@@ -215,14 +211,16 @@ export default {
           legend: {
             orient: 'vertical',
             left: 'left',
-            data: data.deptAndEmpCount.map(d => d.name)
+            data: this.chartBar2List.map(item => {
+              return item.name
+            })
           },
           series: [
             {
               name: '员工人数',
               type: 'pie',
               radius: '50%',
-              data: data.deptAndEmpCount,
+              data: this.chartBar2List,
               emphasis: {
                 itemStyle: {
                   shadowBlur: 10,

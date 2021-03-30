@@ -2,11 +2,17 @@
   <div class="mod-config">
     <el-form :inline="true" :model="dataForm" @keyup.enter.native="getDataList()">
       <el-form-item>
-        <el-input v-model="dataForm.name" placeholder="员工工号" clearable></el-input>
-        <el-input v-model="dataForm.empTime" placeholder="报工日期" clearable></el-input>
+        <el-input v-model="dataForm.name" placeholder="员工工号" clearable style="width: 180px"></el-input>
+<!--        <el-input v-model="dataForm.empTime" placeholder="报工日期" clearable></el-input>-->
+        <el-date-picker
+          v-model="dataForm.empTime"
+          type="date"
+          value-format="yyyy-MM-dd"
+          placeholder="选择日期">
+        </el-date-picker>
       </el-form-item>
       <el-form-item>
-        <el-button @click="getDataList()">查询全部</el-button>
+        <el-button @click="getDataList()">查询全部报工</el-button>
         <el-button v-if="isAuth('dzu:employeeec:save')" type="primary" @click="addOrUpdateHandle()">新增</el-button>
         <el-button v-if="isAuth('dzu:employeeec:delete')" type="danger" @click="deleteHandle()" :disabled="dataListSelections.length <= 0">批量删除</el-button>
       </el-form-item>
@@ -74,8 +80,8 @@
         width="150"
         label="操作">
         <template slot-scope="scope">
-          <el-button type="text" size="small" @click="addOrUpdateHandle(scope.row.id)">修改</el-button>
-          <el-button type="text" size="small" @click="deleteHandle(scope.row.id)">删除</el-button>
+          <el-button type="primary" size="small" @click="addOrUpdateHandle(scope.row.id)">修改</el-button>
+          <el-button type="danger" size="small" @click="deleteHandle(scope.row.id)">删除</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -115,11 +121,34 @@
       AddOrUpdate
     },
     activated () {
-      this.getDataList()
+      this.getDataListByToday()
     },
     methods: {
+      getDataListByToday () {
+        // http://localhost:8080/dzu/employeeec/getCurrentData
+        this.dataListLoading = true
+        this.$http({
+          url: this.$http.adornUrl('/dzu/employeeec/getCurrentData'),
+          method: 'get',
+          params: this.$http.adornParams({
+            'page': this.pageIndex,
+            'limit': this.pageSize
+          })
+        }).then(({data}) => {
+          if (data && data.code === 0) {
+            this.dataList = data.page.list
+            this.totalPage = data.page.totalCount
+          } else {
+            this.dataList = []
+            this.totalPage = 0
+          }
+          this.dataListLoading = false
+        })
+      },
       // 获取数据列表
       getDataList () {
+        this.dataList = []
+        this.totalPage = 0
         this.dataListLoading = true
         this.$http({
           url: this.$http.adornUrl('/dzu/employeeec/list'),

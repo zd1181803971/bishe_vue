@@ -8,16 +8,38 @@
       <el-input v-model="dataForm.eid" placeholder="员工工号"></el-input>
     </el-form-item>
     <el-form-item label="报工日期" prop="ecdate">
-      <el-input v-model="dataForm.ecdate" placeholder="报工日期"></el-input>
+<!--      <el-input v-model="dataForm.ecdate" placeholder="报工日期"></el-input>-->
+      <el-date-picker
+        v-model="dataForm.ecdate"
+        type="date"
+        value-format="yyyy-MM-dd"
+        placeholder="选择日期">
+      </el-date-picker>
     </el-form-item>
     <el-form-item label="工作内容" prop="ecreason">
       <el-input v-model="dataForm.ecreason" placeholder="工作内容"></el-input>
     </el-form-item>
     <el-form-item label="工作时长" prop="ecpoint">
-      <el-input v-model="dataForm.ecpoint" placeholder="工作时长"></el-input>
+<!--      <el-input v-model="dataForm.ecpoint" placeholder="工作时长"></el-input>-->
+      <el-select v-model="dataForm.ecpoint" placeholder="请选择" >
+        <el-option
+          v-for="item in ecpoints"
+          :key="item.value"
+          :label="item.label"
+          :value="item.value">
+        </el-option>
+      </el-select>
     </el-form-item>
     <el-form-item label="报工情况" prop="ectype">
-      <el-input v-model="dataForm.ectype" placeholder="报工情况"></el-input>
+<!--      <el-input v-model="dataForm.ectype" placeholder="报工情况"></el-input>-->
+      <el-select v-model="dataForm.ectype" placeholder="请选择" >
+        <el-option
+          v-for="item in ectypes"
+          :key="item.value"
+          :label="item.label"
+          :value="item.value">
+        </el-option>
+      </el-select>
     </el-form-item>
     <el-form-item label="备注" prop="remark">
       <el-input v-model="dataForm.remark" placeholder="备注"></el-input>
@@ -34,6 +56,36 @@
   export default {
     data () {
       return {
+        ectypes: [
+          {
+            label: '正常报工',
+            value: 0
+          },
+          {
+            label: '请假',
+            value: 1
+          },
+          {
+            label: '矿工',
+            value: 2
+          }
+        ],
+        ecpoints: [
+          {
+            label: '7小时',
+            value: 7
+          }, {
+            label: '8小时',
+            value: 8
+          }, {
+            label: '9小时',
+            value: 9
+          },
+          {
+            label: '10小时',
+            value: 10
+          }
+        ],
         visible: false,
         dataForm: {
           id: 0,

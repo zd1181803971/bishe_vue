@@ -132,7 +132,6 @@ export default {
           this.$notify.info({
             title: this.msgDataList[i].title,
             message: this.msgDataList[i].message,
-            duration: 0,
             offset: 55
           })
         }
