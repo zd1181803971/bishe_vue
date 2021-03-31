@@ -3,14 +3,14 @@
     <div class="site-content__wrapper">
       <div class="site-content">
         <div class="brand-info">
-          <h2 class="brand-info__text">renren-fast-vue</h2>
-          <p class="brand-info__intro">renren-fast-vue基于vue、element-ui构建开发，实现renren-fast后台管理前端功能，提供一套更优的前端解决方案。</p>
+          <h2 class="brand-info__text">德州学院（Dezhou University）</h2>
+          <p class="brand-info__intro">德州学院（Dezhou University）是一所山东省综合性普通公办本科院校，坐落在山东省德州市。学校始建于1971年5月，2000年3月由国家教育部批准成为普通本科院校。2017年，学校成为山东省省级硕士立项建设单位。</p>
         </div>
         <div class="login-main">
-          <h3 class="login-title">管理员登录</h3>
+          <h3 class="login-title">用户登录</h3>
           <el-form :model="dataForm" :rules="dataRule" ref="dataForm" @keyup.enter.native="dataFormSubmit()" status-icon>
             <el-form-item prop="userName">
-              <el-input v-model="dataForm.userName" placeholder="帐号"></el-input>
+              <el-input v-model="dataForm.userName" placeholder="工号"></el-input>
             </el-form-item>
             <el-form-item prop="password">
               <el-input v-model="dataForm.password" type="password" placeholder="密码"></el-input>
