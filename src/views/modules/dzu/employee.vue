@@ -1,8 +1,8 @@
 <template>
   <div class="mod-config">
-    <h3>个人基本信息</h3>
+    <h2>个人基本信息:</h2>
     <el-form :model="dataForm" :rules="dataRule" ref="dataForm" @keyup.enter.native="dataFormSubmit()"
-             label-width="auto">
+             label-width="auto" style="padding: 0px 300px">
       <el-form-item label="员工姓名：" prop="name">
         <el-input v-model="dataForm.name" placeholder="员工姓名" disabled></el-input>
       </el-form-item>
@@ -78,13 +78,37 @@
         <el-input v-model="dataForm.address" placeholder="联系地址"></el-input>
       </el-form-item>
       <el-form-item label="所属部门：" prop="departmentid">
-        <el-input v-model="dataForm.departmentid" placeholder="所属部门" disabled></el-input>
+<!--        <el-input v-model="dataForm.departmentid" placeholder="所属部门" disabled></el-input>-->
+        <el-select v-model="dataForm.departmentid" placeholder="请选择" disabled>
+          <el-option
+            v-for="item in departmentids"
+            :key="item.value"
+            :label="item.label"
+            :value="item.value">
+          </el-option>
+        </el-select>
       </el-form-item>
       <el-form-item label="公司职称：" prop="joblevelid">
-        <el-input v-model="dataForm.joblevelid" placeholder="职称" disabled></el-input>
+<!--        <el-input v-model="dataForm.joblevelid" placeholder="职称" disabled></el-input>-->
+        <el-select v-model="dataForm.joblevelid" placeholder="请选择" disabled>
+          <el-option
+            v-for="item in joblevelids"
+            :key="item.value"
+            :label="item.label"
+            :value="item.value">
+          </el-option>
+        </el-select>
       </el-form-item>
       <el-form-item label="公司职位：" prop="posid">
-        <el-input v-model="dataForm.posid" placeholder="职位" disabled></el-input>
+<!--        <el-input v-model="dataForm.posid" placeholder="职位" disabled></el-input>-->
+        <el-select v-model="dataForm.posid" placeholder="请选择" disabled>
+          <el-option
+            v-for="item in posids"
+            :key="item.value"
+            :label="item.label"
+            :value="item.value">
+          </el-option>
+        </el-select>
       </el-form-item>
       <el-form-item label="聘用形式：" prop="engageform">
         <el-input v-model="dataForm.engageform" placeholder="聘用形式" disabled></el-input>
@@ -126,15 +150,15 @@
           </el-option>
         </el-select>
       </el-form-item>
-<!--      <el-form-item label="离职日期：" prop="notworkdate">-->
-<!--        &lt;!&ndash;      <el-input v-model="dataForm.notworkdate" placeholder="离职日期"></el-input>&ndash;&gt;-->
-<!--        <el-date-picker disabled-->
-<!--                        v-model="dataForm.notworkdate"-->
-<!--                        value-format="yyyy-MM-dd"-->
-<!--                        type="date"-->
-<!--                        placeholder="选择日期">-->
-<!--        </el-date-picker>-->
-<!--      </el-form-item>-->
+      <!--      <el-form-item label="离职日期：" prop="notworkdate">-->
+      <!--        &lt;!&ndash;      <el-input v-model="dataForm.notworkdate" placeholder="离职日期"></el-input>&ndash;&gt;-->
+      <!--        <el-date-picker disabled-->
+      <!--                        v-model="dataForm.notworkdate"-->
+      <!--                        value-format="yyyy-MM-dd"-->
+      <!--                        type="date"-->
+      <!--                        placeholder="选择日期">-->
+      <!--        </el-date-picker>-->
+      <!--      </el-form-item>-->
       <el-form-item label="合同起始日期：" prop="begincontract">
         <!--      <el-input v-model="dataForm.begincontract" placeholder="合同起始日期"></el-input>-->
         <el-date-picker disabled
@@ -153,12 +177,12 @@
                         placeholder="选择日期">
         </el-date-picker>
       </el-form-item>
-      <span>
+      <el-form-item>
       <el-button type="primary" @click="dataFormSubmit()">修改个人信息</el-button>
-    </span>
+      </el-form-item>
     </el-form>
-
   </div>
+
 </template>
 
 <script>
@@ -351,7 +375,6 @@ export default {
           }
         }
       })
-
       this.$http({
         url: this.$http.adornUrl(`/dzu/position/listAll`),
         method: 'get'
@@ -369,6 +392,7 @@ export default {
     // 获取数据列表
     getDataList () {
       this.getDirectoryDataList()
+      console.log(this.departmentids)
       this.dataListLoading = true
       this.$http({
         url: this.$http.adornUrl(`/dzu/employee/jobNumber/${this.$store.state.user.name}`),

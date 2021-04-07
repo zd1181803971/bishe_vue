@@ -17,11 +17,11 @@
           <div id="J_chartBar2Box" class="chart-box"></div>
         </el-card>
       </el-col>
-      <el-col :span="24">
-        <el-card>
-          <div id="J_chartLineBox" class="chart-box"></div>
-        </el-card>
-      </el-col>
+<!--      <el-col :span="24">-->
+<!--        <el-card>-->
+<!--          <div id="J_chartLineBox" class="chart-box"></div>-->
+<!--        </el-card>-->
+<!--      </el-col>-->
     </el-row>
   </div>
 </template>
@@ -46,15 +46,15 @@ export default {
     }
   },
   mounted () {
-    this.initChartLine()
+    // this.initChartLine()
     this.initChartBar()
     this.initChartBar2()
   },
   activated () {
     // 由于给echart添加了resize事件, 在组件激活时需要重新resize绘画一次, 否则出现空白bug
-    if (this.chartLine) {
-      this.chartLine.resize()
-    }
+    // if (this.chartLine) {
+    //   this.chartLine.resize()
+    // }
     if (this.chartBar) {
       this.chartBar.resize()
     }
@@ -63,76 +63,76 @@ export default {
     }
   },
   methods: {
-    initChartLine () {
-      let sum = 0
-      this.$http({
-        url: this.$http.adornUrl('/dzu/employee/chartLine'),
-        method: 'get'
-      }).then(({data}) => {
-        this.chartLineData = data.data
-        for (let i = 0; i < Object.keys(this.chartLineData).length; i++) {
-          this.chartLineList.push(Object.keys(this.chartLineData)[i])
-        }
-        for (let i = 0; i < Object.values(this.chartLineData).length; i++) {
-          sum += parseInt(Object.values(this.chartLineData)[i])
-          this.chartLineNumberList.push(Object.values(this.chartLineData)[i])
-        }
-        this.chartLineList.push('总计')
-        this.chartLineNumberList.push(sum)
-        console.log(this.chartLineList)
-
-        var option = {
-          title: {
-            text: '公司人口总量',
-            subtext: '员工毕业院校'
-          },
-          tooltip: {
-            trigger: 'axis',
-            axisPointer: {            // 坐标轴指示器，坐标轴触发有效
-              type: 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
-            }
-          },
-          grid: {
-            left: '3%',
-            right: '4%',
-            bottom: '3%',
-            containLabel: true
-          },
-          xAxis: [
-            {
-              type: 'category',
-              data: this.chartLineList,
-              axisTick: {
-                alignWithLabel: true
-              }
-            }
-          ],
-          yAxis: [
-            {
-              type: 'value',
-              boundaryGap: [0, 0.01],
-              minInterval: 1,
-              axisLabel: {
-                formatter: '{value} 人'
-              }
-            }
-          ],
-          series: [
-            {
-              name: '员工人数',
-              type: 'bar',
-              barWidth: '60%',
-              data: this.chartLineNumberList
-            }
-          ]
-        }
-        this.chartLine = echarts.init(document.getElementById('J_chartLineBox'))
-        this.chartLine.setOption(option)
-        window.addEventListener('resize', () => {
-          this.chartLine.resize()
-        })
-      })
-    },
+    // initChartLine () {
+    //   let sum = 0
+    //   this.$http({
+    //     url: this.$http.adornUrl('/dzu/employee/chartLine'),
+    //     method: 'get'
+    //   }).then(({data}) => {
+    //     this.chartLineData = data.data
+    //     for (let i = 0; i < Object.keys(this.chartLineData).length; i++) {
+    //       this.chartLineList.push(Object.keys(this.chartLineData)[i])
+    //     }
+    //     for (let i = 0; i < Object.values(this.chartLineData).length; i++) {
+    //       sum += parseInt(Object.values(this.chartLineData)[i])
+    //       this.chartLineNumberList.push(Object.values(this.chartLineData)[i])
+    //     }
+    //     this.chartLineList.push('总计')
+    //     this.chartLineNumberList.push(sum)
+    //     console.log(this.chartLineList)
+    //
+    //     var option = {
+    //       title: {
+    //         text: '公司人口总量',
+    //         subtext: '员工毕业院校'
+    //       },
+    //       tooltip: {
+    //         trigger: 'axis',
+    //         axisPointer: {            // 坐标轴指示器，坐标轴触发有效
+    //           type: 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
+    //         }
+    //       },
+    //       grid: {
+    //         left: '3%',
+    //         right: '4%',
+    //         bottom: '3%',
+    //         containLabel: true
+    //       },
+    //       xAxis: [
+    //         {
+    //           type: 'category',
+    //           data: this.chartLineList,
+    //           axisTick: {
+    //             alignWithLabel: true
+    //           }
+    //         }
+    //       ],
+    //       yAxis: [
+    //         {
+    //           type: 'value',
+    //           boundaryGap: [0, 0.01],
+    //           minInterval: 1,
+    //           axisLabel: {
+    //             formatter: '{value} 人'
+    //           }
+    //         }
+    //       ],
+    //       series: [
+    //         {
+    //           name: '员工人数',
+    //           type: 'bar',
+    //           barWidth: '60%',
+    //           data: this.chartLineNumberList
+    //         }
+    //       ]
+    //     }
+    //     this.chartLine = echarts.init(document.getElementById('J_chartLineBox'))
+    //     this.chartLine.setOption(option)
+    //     window.addEventListener('resize', () => {
+    //       this.chartLine.resize()
+    //     })
+    //   })
+    // },
 
     // 小的那俩
     initChartBar () {

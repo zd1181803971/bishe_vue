@@ -29,10 +29,16 @@
             <el-form-item>
               <el-button class="login-btn-submit" type="primary" @click="dataFormSubmit()">登录</el-button>
             </el-form-item>
+            <el-form-item>
+              <div class="login-div-msg">备案/许可证号：
+                鲁ICP备2021011735号</div>
+            </el-form-item>
           </el-form>
         </div>
+
       </div>
     </div>
+
   </div>
 </template>
 
@@ -173,6 +179,14 @@
     .login-btn-submit {
       width: 100%;
       margin-top: 38px;
+    }
+    .login-div-msg {
+      width: 100%;
+      text-align: center;
+      position: fixed;
+      right: 0;
+      bottom: 0;
+      color: #FFFFFF;
     }
   }
 </style>

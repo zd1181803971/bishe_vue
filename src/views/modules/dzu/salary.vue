@@ -1,25 +1,31 @@
 <template>
   <div class="mod-config">
-    <h3>个人薪资信息</h3>
-    <h4>您的姓名：{{dataForm.name}}</h4>
-    <h4>您的工号：{{dataForm.jobnumber}}</h4>
+    <h2>个人薪资信息</h2>
+    <h3>姓名：{{dataForm.name}}</h3>
+    <h3>工号：{{dataForm.jobnumber}}</h3>
     <el-form :model="dataForm"  ref="dataForm" @keyup.enter.native="getDataList()"
-             label-width="auto">
-      <el-form-item label="基本工资：" prop="basicsalary">
-        {{dataForm.basicsalary}}
-      </el-form-item>
-      <el-form-item label="项目奖金：" prop="bonus">
-        {{dataForm.bonus}}
-      </el-form-item>
-      <el-form-item label="午餐补助：" prop="lunchsalary">
-        {{dataForm.lunchsalary}}
-      </el-form-item>
-      <el-form-item label="交通补助：" prop="trafficsalary">
-        {{dataForm.trafficsalary}}
-      </el-form-item>
-      <h3>      <el-form-item label="应发工资：" prop="allsalary">
-        {{dataForm.allsalary}}
-      </el-form-item></h3>
+             label-width="auto" style="padding: 0 40%">
+      <div class="tagMsg">
+        <el-tag>基本工资：</el-tag>
+        <el-tag type="info">{{dataForm.basicsalary}}元</el-tag>
+      </div>
+      <div class="tagMsg">
+        <el-tag>项目奖金：</el-tag>
+        <el-tag type="info">{{dataForm.bonus}}元</el-tag>
+      </div >
+      <div class="tagMsg">
+        <el-tag>午餐补助：</el-tag>
+        <el-tag type="info">{{dataForm.lunchsalary}}元</el-tag>
+      </div>
+
+     <div class="tagMsg">
+       <el-tag>交通补助：</el-tag>
+       <el-tag type="info">{{dataForm.trafficsalary}}元</el-tag>
+     </div>
+      <div class="tagMsg">
+        <el-tag>应发工资：</el-tag>
+        <el-tag type="danger">{{dataForm.allsalary}}元</el-tag>
+      </div>
     </el-form>
   </div>
 </template>
@@ -58,3 +64,8 @@ export default {
   }
 }
 </script>
+<style lang="scss">
+.tagMsg {
+  padding-top: 60px;
+}
+</style>

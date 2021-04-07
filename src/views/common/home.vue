@@ -63,6 +63,7 @@ export default {
       }
     }
     return {
+      entity: '',
       ecpoints: [
         {
           label: '7小时',
@@ -110,8 +111,25 @@ export default {
   activated () {
     this.open()
     this.getEmpNameByJob()
+    this.getDataEntity()
   },
   methods: {
+    getDataEntity () {
+      this.$http({
+        url: this.$http.adornUrl(`/dzu/employeeec/getEmpClockByEid/${this.$store.state.user.name}`),
+        method: 'get'
+      }).then(({data}) => {
+        console.log(data)
+        if (data.entity !== null) {
+          this.entity = data.entity
+          this.dataForm.ecdate = this.entity.ecdate
+          this.dataForm.ecreason = this.entity.ecreason
+          this.dataForm.ecpoint = this.entity.ecpoint
+          this.dataForm.ectype = this.entity.ectype
+          this.dataForm.remark = this.entity.remark
+        }
+      })
+    },
     getEmpNameByJob () {
       this.$http({
         url: this.$http.adornUrl(`/dzu/employee/getIdNameByjob/${this.$store.state.user.name}`),
