@@ -8,8 +8,8 @@
 <!--      <el-input v-model="dataForm.starttime" placeholder="开始时间"></el-input>-->
       <el-date-picker
         v-model="dataForm.starttime"
-        type="datetime"
-        value-format="yyyy-MM-dd HH:mm:ss"
+        type="date"
+        value-format="yyyy-MM-dd"
         placeholder="选择日期时间">
       </el-date-picker>
     </el-form-item>
@@ -17,8 +17,8 @@
 <!--      <el-input v-model="dataForm.endtime" placeholder="结束时间"></el-input>-->
       <el-date-picker
         v-model="dataForm.endtime"
-        value-format="yyyy-MM-dd HH:mm:ss"
-        type="datetime"
+        type="date"
+        value-format="yyyy-MM-dd"
         placeholder="选择日期时间">
       </el-date-picker>
     </el-form-item>
@@ -118,7 +118,17 @@
         }
       }
     },
+    mounted () {
+      this.clear()
+    },
     methods: {
+      clear () {
+        this.dataForm.eid = ''
+        this.dataForm.starttime = ''
+        this.dataForm.endtime = ''
+        this.dataForm.reason = ''
+        this.dataForm.message = ''
+      },
       init (id) {
         this.visible = true
         this.dataForm.eid = id
@@ -132,8 +142,8 @@
               method: 'post',
               data: this.$http.adornData({
                 'eid': this.dataForm.eid,
-                'starttime': this.dataForm.starttime,
-                'endtime': this.dataForm.endtime,
+                'startTime': this.dataForm.starttime,
+                'endTime': this.dataForm.endtime,
                 'reason': this.dataForm.reason,
                 'status': this.dataForm.status,
                 'message': this.dataForm.message

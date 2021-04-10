@@ -35,13 +35,13 @@
         label="员工工号">
       </el-table-column>
       <el-table-column
-        prop="starttime"
+        prop="startTime"
         header-align="center"
         align="center"
         label="开始时间">
       </el-table-column>
       <el-table-column
-        prop="endtime"
+        prop="endTime"
         header-align="center"
         align="center"
         label="结束时间">

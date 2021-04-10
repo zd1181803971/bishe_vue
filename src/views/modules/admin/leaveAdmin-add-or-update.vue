@@ -7,11 +7,11 @@
 <!--    <el-form-item label="用户id" prop="eid">-->
 <!--      <el-input v-model="dataForm.eid" placeholder="用户id"></el-input>-->
 <!--    </el-form-item>-->
-    <el-form-item label="开始时间" prop="starttime">
-      <el-input disabled v-model="dataForm.starttime" placeholder="开始时间"></el-input>
+    <el-form-item label="开始时间" prop="startTime">
+      <el-input disabled v-model="dataForm.startTime" placeholder="开始时间"></el-input>
     </el-form-item>
-    <el-form-item label="结束时间" prop="endtime">
-      <el-input disabled v-model="dataForm.endtime" placeholder="结束时间"></el-input>
+    <el-form-item label="结束时间" prop="endTime">
+      <el-input disabled v-model="dataForm.endTime" placeholder="结束时间"></el-input>
     </el-form-item>
     <el-form-item label="请假原因" prop="reason">
       <el-input disabled v-model="dataForm.reason" placeholder="请假原因"></el-input>
@@ -102,8 +102,8 @@
             }).then(({data}) => {
               if (data && data.code === 0) {
                 this.dataForm.eid = data.leave.eid
-                this.dataForm.starttime = data.leave.starttime
-                this.dataForm.endtime = data.leave.endtime
+                this.dataForm.startTime = data.leave.startTime
+                this.dataForm.endTime = data.leave.endTime
                 this.dataForm.reason = data.leave.reason
                 this.dataForm.status = data.leave.status
                 this.dataForm.message = data.leave.message
@@ -122,8 +122,8 @@
               data: this.$http.adornData({
                 'id': this.dataForm.id,
                 'eid': this.dataForm.eid,
-                'starttime': this.dataForm.starttime,
-                'endtime': this.dataForm.endtime,
+                'startTime': this.dataForm.startTime,
+                'endTime': this.dataForm.endTime,
                 'reason': this.dataForm.reason,
                 'status': this.dataForm.status,
                 'message': this.dataForm.message
