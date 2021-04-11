@@ -10,8 +10,8 @@
       <h2>欢迎来到运营支撑系统,请记得报工</h2>
 
       <el-form :model="dataForm" :rules="dataRule" ref="dataForm" @keyup.enter.native="dataFormSubmit()" label-width="auto">
-      <el-form-item label="员工工号：" prop="eid">
-        <el-input disabled v-model="dataForm.eid" placeholder="员工编号"></el-input>
+      <el-form-item label="员工工号：" prop="name">
+        <el-input disabled v-model="dataForm.name" placeholder="员工编号"></el-input>
       </el-form-item>
       <el-form-item label="报工日期：" prop="ecdate">
         <!--        <el-input v-model="dataForm.ecdate" placeholder="报工日期"></el-input>-->
@@ -83,8 +83,9 @@ export default {
       empname: '',
       msgDataList: [],
       visible: false,
+      empId: '',
       dataForm: {
-        eid: this.$store.state.user.name,
+        name: this.$store.state.user.name,
         ecdate: '',
         ecreason: '',
         ecpoint: '',
@@ -135,6 +136,7 @@ export default {
         url: this.$http.adornUrl(`/dzu/employee/getIdNameByjob/${this.$store.state.user.name}`),
         method: 'get'
       }).then(({data}) => {
+        this.empId = data.empIdNameDto.id
         this.empname = data.empIdNameDto.name
       })
     },
@@ -163,7 +165,7 @@ export default {
             url: this.$http.adornUrl(`/dzu/employeeec/save`),
             method: 'post',
             data: this.$http.adornData({
-              'eid': this.dataForm.eid,
+              'eid': this.empId,
               'ecdate': this.dataForm.ecdate,
               'ecreason': this.dataForm.ecreason,
               'ecpoint': this.dataForm.ecpoint,

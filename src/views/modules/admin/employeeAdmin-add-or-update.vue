@@ -272,7 +272,7 @@ export default {
       dataForm: {
         id: 0,
         name: '',
-        jobnumber: '',
+        jobnumber: 'dzu',
         gender: '',
         birthday: '',
         idcard: '',
