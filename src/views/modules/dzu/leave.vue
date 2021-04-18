@@ -2,7 +2,7 @@
   <div class="mod-config">
     <el-form :inline="true" :model="dataForm" @keyup.enter.native="getDataList()">
       <el-form-item>
-        <el-button v-if="isAuth('dzu:leave:save')" type="primary" @click="addOrUpdateHandle(dataForm.id)">我要请假</el-button>
+        <el-button  type="primary" @click="addOrUpdateHandle(dataForm.id)">我要请假</el-button>
       </el-form-item>
       <h3>{{this.dataForm.name}}请假记录：</h3>
     </el-form>

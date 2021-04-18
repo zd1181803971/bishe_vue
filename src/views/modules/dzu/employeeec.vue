@@ -13,8 +13,8 @@
       </el-form-item>
       <el-form-item>
         <el-button @click="getDataList()">查询全部报工</el-button>
-        <el-button v-if="isAuth('dzu:employeeec:save')" type="primary" @click="addOrUpdateHandle()">新增</el-button>
-        <el-button v-if="isAuth('dzu:employeeec:delete')" type="danger" @click="deleteHandle()" :disabled="dataListSelections.length <= 0">批量删除</el-button>
+        <el-button  type="primary" @click="addOrUpdateHandle()">新增</el-button>
+        <el-button  type="danger" @click="deleteHandle()" :disabled="dataListSelections.length <= 0">批量删除</el-button>
       </el-form-item>
     </el-form>
     <el-table

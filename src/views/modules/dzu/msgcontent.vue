@@ -3,8 +3,8 @@
     <el-form :inline="true" :model="dataForm" @keyup.enter.native="getDataList()">
 
       <el-form-item>
-        <el-button v-if="isAuth('dzu:msgcontent:save')" type="primary" @click="addOrUpdateHandle()">新增首页通知</el-button>
-        <el-button v-if="isAuth('dzu:msgcontent:delete')" type="danger" @click="deleteHandle()" :disabled="dataListSelections.length <= 0">批量删除</el-button>
+        <el-button  type="primary" @click="addOrUpdateHandle()">新增首页通知</el-button>
+        <el-button  type="danger" @click="deleteHandle()" :disabled="dataListSelections.length <= 0">批量删除</el-button>
       </el-form-item>
     </el-form>
     <el-table
