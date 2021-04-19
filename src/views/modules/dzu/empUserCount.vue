@@ -62,27 +62,22 @@ export default {
   },
   methods: {
     initChartLine () {
-      let sum = 0
       this.$http({
         url: this.$http.adornUrl('/dzu/employee/chartLine'),
         method: 'get'
       }).then(({data}) => {
         this.chartLineData = data.data
+        console.log(this.chartLineData)
         for (let i = 0; i < Object.keys(this.chartLineData).length; i++) {
           this.chartLineList.push(Object.keys(this.chartLineData)[i])
         }
         for (let i = 0; i < Object.values(this.chartLineData).length; i++) {
-          sum += parseInt(Object.values(this.chartLineData)[i])
           this.chartLineNumberList.push(Object.values(this.chartLineData)[i])
         }
-        this.chartLineList.push('总计')
-        this.chartLineNumberList.push(sum)
-        console.log(this.chartLineList)
-
         var option = {
           title: {
             text: '员工毕业院校',
-            subtext: '员工毕业院校'
+            subtext: '展现的是员工所属毕业院校分布情况'
           },
           tooltip: {
             trigger: 'axis',
@@ -151,7 +146,7 @@ export default {
         var option = {
           title: {
             text: '员工职位人数',
-            subtext: '绝对真实',
+            subtext: '展现的是所有员工职位分布情况',
             left: 'center'
           },
           tooltip: {
@@ -166,7 +161,7 @@ export default {
           },
           series: [
             {
-              name: '薪资水平人数',
+              name: '员工人数',
               type: 'pie',
               radius: '50%',
               data: this.ChartBarList,
@@ -195,7 +190,7 @@ export default {
         var option = {
           title: {
             text: '部门员工情况',
-            subtext: '绝对真实',
+            subtext: '展现的是所有员工部门分布情况',
             left: 'center'
           },
           tooltip: {

@@ -23,14 +23,14 @@
           </template>
         </el-menu-item>
         <el-menu-item index="2">
-            <a href="http://www.dzu.edu.cn/" target="_blank">德州学院</a>
+            <a href="http://www.dzu.edu.cn/" target="_blank">官方网站</a>
         </el-menu-item>
-        <el-submenu index="3">
-          <template slot="title">友情链接</template>
-          <el-menu-item index="2-1"><a href="https://gitee.com/zhao_dong1181803971/bishe_vue.git" target="_blank">前端源码</a></el-menu-item>
-          <el-menu-item index="2-2"><a href="https://gitee.com/zhao_dong1181803971/bishe.git" target="_blank">后端源码</a></el-menu-item>
-          <el-menu-item index="2-3"><a href="https://blog.csdn.net/weixin_43950014?spm=1001.2101.3001.5343" target="_blank">个人博客</a></el-menu-item>
-        </el-submenu>
+<!--        <el-submenu index="3">-->
+<!--          <template slot="title">链接</template>-->
+<!--          <el-menu-item index="2-1"><a href="https://gitee.com/zhao_dong1181803971/bishe_vue.git" target="_blank">前端源码</a></el-menu-item>-->
+<!--          <el-menu-item index="2-2"><a href="https://gitee.com/zhao_dong1181803971/bishe.git" target="_blank">后端源码</a></el-menu-item>-->
+<!--&lt;!&ndash;          <el-menu-item index="2-3"><a href="https://blog.csdn.net/weixin_43950014?spm=1001.2101.3001.5343" target="_blank">个人博客</a></el-menu-item>&ndash;&gt;-->
+<!--        </el-submenu>-->
         <el-menu-item class="site-navbar__avatar" index="3">
           <el-dropdown :show-timeout="0" placement="bottom">
             <span class="el-dropdown-link">

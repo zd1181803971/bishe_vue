@@ -1,13 +1,13 @@
 <template>
   <div>
     <el-alert
-      title="提示：开源不易，需要鼓励。去友情链接 点个 star 吧  [不再提示]？"
+      title="提示：欢迎来到运营支撑系统"
       type="warning"
       :closable="false">
     </el-alert>
     <div style="width: 30%;margin: 0 auto">
-      <h1>{{empname}}</h1>
-      <h2>欢迎来到运营支撑系统,请记得报工</h2>
+      <h1>员工姓名：{{empname}}</h1>
+      <h2>欢迎登录运营支撑系统,请及时报工</h2>
 
       <el-form :model="dataForm" :rules="dataRule" ref="dataForm" @keyup.enter.native="dataFormSubmit()" label-width="auto">
       <el-form-item label="员工工号：" prop="name">
@@ -25,11 +25,11 @@
       <el-form-item label="工作内容：" prop="ecreason">
         <el-input v-model="dataForm.ecreason" placeholder="工作内容"></el-input>
       </el-form-item>
-      <el-form-item label="工作时长：" prop="ecpoint">
-        <!--        <el-input v-model="dataForm.ecpoint" placeholder="工作时长"></el-input>-->
-        <el-select v-model="dataForm.ecpoint" placeholder="请选择" >
+      <el-form-item label="工作时长：" prop="echour">
+        <!--        <el-input v-model="dataForm.echour" placeholder="工作时长"></el-input>-->
+        <el-select v-model="dataForm.echour" placeholder="请选择" >
           <el-option
-            v-for="item in ecpoints"
+            v-for="item in echours"
             :key="item.value"
             :label="item.label"
             :value="item.value">
@@ -46,10 +46,8 @@
       <span>
       <el-button type="primary" @click="dataFormSubmit()">立即报工</el-button>
     </span></div>
-
   </div>
 </template>
-
 <script>
 export default {
   data () {
@@ -64,7 +62,7 @@ export default {
     }
     return {
       entity: '',
-      ecpoints: [
+      echours: [
         {
           label: '7小时',
           value: 7
@@ -88,7 +86,7 @@ export default {
         name: this.$store.state.user.name,
         ecdate: '',
         ecreason: '',
-        ecpoint: '',
+        echour: '',
         ectype: 0,
         remark: ''
       },
@@ -100,7 +98,7 @@ export default {
         ecreason: [
           { required: true, message: '工作内容不能为空', trigger: 'blur' }
         ],
-        ecpoint: [
+        echour: [
           { required: true, message: '工作时长不能为空', trigger: 'blur' }
         ]
       }
@@ -125,7 +123,7 @@ export default {
           this.entity = data.entity
           this.dataForm.ecdate = this.entity.ecdate
           this.dataForm.ecreason = this.entity.ecreason
-          this.dataForm.ecpoint = this.entity.ecpoint
+          this.dataForm.echour = this.entity.echour
           this.dataForm.ectype = this.entity.ectype
           this.dataForm.remark = this.entity.remark
         }
@@ -168,7 +166,7 @@ export default {
               'eid': this.empId,
               'ecdate': this.dataForm.ecdate,
               'ecreason': this.dataForm.ecreason,
-              'ecpoint': this.dataForm.ecpoint,
+              'echour': this.dataForm.echour,
               'ectype': this.dataForm.ectype,
               'remark': this.dataForm.remark
             })
