@@ -12,40 +12,6 @@
       <el-form-item label="员工工号：" prop="jobnumber">
         <el-input v-model="dataForm.jobnumber" placeholder="员工工号"></el-input>
       </el-form-item>
-      <el-form-item label="性别：" prop="gender">
-        <!--        <el-input v-model="dataForm.gender" placeholder="性别"></el-input>-->
-        <el-select v-model="dataForm.gender" placeholder="请选择">
-          <el-option
-            v-for="item in genders"
-            :key="item.value"
-            :label="item.label"
-            :value="item.value">
-          </el-option>
-        </el-select>
-      </el-form-item>
-      <el-form-item label="出生日期：" prop="birthday">
-        <!--        <el-input v-model="dataForm.birthday" placeholder="出生日期"></el-input>-->
-        <el-date-picker
-          v-model="dataForm.birthday"
-          type="date"
-          value-format="yyyy-MM-dd"
-          placeholder="选择日期">
-        </el-date-picker>
-      </el-form-item>
-      <el-form-item label="身份证号：" prop="idcard">
-        <el-input v-model="dataForm.idcard" placeholder="身份证号"></el-input>
-      </el-form-item>
-      <el-form-item label="婚姻状况：" prop="wedlock">
-        <!--        <el-input v-model="dataForm.wedlock" placeholder="婚姻状况"></el-input>-->
-        <el-select v-model="dataForm.wedlock" placeholder="请选择">
-          <el-option
-            v-for="item in wedlocks"
-            :key="item.value"
-            :label="item.label"
-            :value="item.value">
-          </el-option>
-        </el-select>
-      </el-form-item>
       <el-form-item label="民族：" prop="nationid">
         <!--        <el-input v-model="dataForm.nationid" placeholder="民族"></el-input>-->
         <el-select v-model="dataForm.nationid" placeholder="请选择">
@@ -57,9 +23,6 @@
           </el-option>
         </el-select>
       </el-form-item>
-      <el-form-item label="籍贯：" prop="nativeplace">
-        <el-input v-model="dataForm.nativeplace" placeholder="籍贯"></el-input>
-      </el-form-item>
       <el-form-item label="政治面貌：" prop="politicid">
         <!--        <el-input v-model="dataForm.politicid" placeholder="政治面貌"></el-input>-->
         <el-select v-model="dataForm.politicid" placeholder="请选择">
@@ -70,15 +33,6 @@
             :value="item.value">
           </el-option>
         </el-select>
-      </el-form-item>
-      <el-form-item label="邮箱：" prop="email">
-        <el-input v-model="dataForm.email" placeholder="邮箱"></el-input>
-      </el-form-item>
-      <el-form-item label="电话号码：" prop="phone">
-        <el-input v-model="dataForm.phone" placeholder="电话号码"></el-input>
-      </el-form-item>
-      <el-form-item label="联系地址：" prop="address">
-        <el-input v-model="dataForm.address" placeholder="联系地址"></el-input>
       </el-form-item>
       <el-form-item label="所属部门：" prop="departmentid">
         <!--        <el-input v-model="dataForm.departmentid" placeholder="所属部门"  ></el-input>-->
@@ -114,7 +68,7 @@
         </el-select>
       </el-form-item>
       <el-form-item label="聘用形式：" prop="engageform">
-<!--        <el-input v-model="dataForm.engageform" placeholder="聘用形式"></el-input>-->
+        <!--        <el-input v-model="dataForm.engageform" placeholder="聘用形式"></el-input>-->
         <el-select v-model="dataForm.engageform" placeholder="请选择">
           <el-option
             v-for="item in engageforms"
@@ -123,23 +77,6 @@
             :value="item.value">
           </el-option>
         </el-select>
-      </el-form-item>
-      <el-form-item label="最高学历：" prop="tiptopdegree">
-        <!--      <el-input v-model="dataForm.tiptopdegree" placeholder="最高学历"></el-input>-->
-        <el-select v-model="dataForm.tiptopdegree" placeholder="请选择">
-          <el-option
-            v-for="item in tiptopdegrees"
-            :key="item.value"
-            :label="item.label"
-            :value="item.value">
-          </el-option>
-        </el-select>
-      </el-form-item>
-      <el-form-item label="所属专业：" prop="specialty">
-        <el-input v-model="dataForm.specialty" placeholder="所属专业"></el-input>
-      </el-form-item>
-      <el-form-item label="毕业院校：" prop="school">
-        <el-input v-model="dataForm.school" placeholder="毕业院校"></el-input>
       </el-form-item>
       <el-form-item label="入职日期：" prop="begindate">
         <!--      <el-input v-model="dataForm.begindate" placeholder="入职日期"></el-input>-->
@@ -189,6 +126,72 @@
           placeholder="选择日期">
         </el-date-picker>
       </el-form-item>
+      <el-form-item label="性别：" prop="gender">
+        <!--        <el-input v-model="dataForm.gender" placeholder="性别"></el-input>-->
+        <el-select v-model="dataForm.gender" placeholder="请选择">
+          <el-option
+            v-for="item in genders"
+            :key="item.value"
+            :label="item.label"
+            :value="item.value">
+          </el-option>
+        </el-select>
+      </el-form-item>
+      <el-form-item label="出生日期：" prop="birthday">
+        <!--        <el-input v-model="dataForm.birthday" placeholder="出生日期"></el-input>-->
+        <el-date-picker
+          v-model="dataForm.birthday"
+          type="date"
+          value-format="yyyy-MM-dd"
+          placeholder="选择日期">
+        </el-date-picker>
+      </el-form-item>
+      <el-form-item label="身份证号：" prop="idcard">
+        <el-input v-model="dataForm.idcard" placeholder="身份证号"></el-input>
+      </el-form-item>
+      <el-form-item label="婚姻状况：" prop="wedlock">
+        <!--        <el-input v-model="dataForm.wedlock" placeholder="婚姻状况"></el-input>-->
+        <el-select v-model="dataForm.wedlock" placeholder="请选择">
+          <el-option
+            v-for="item in wedlocks"
+            :key="item.value"
+            :label="item.label"
+            :value="item.value">
+          </el-option>
+        </el-select>
+      </el-form-item>
+
+      <el-form-item label="籍贯：" prop="nativeplace">
+        <el-input v-model="dataForm.nativeplace" placeholder="籍贯"></el-input>
+      </el-form-item>
+
+      <el-form-item label="邮箱：" prop="email">
+        <el-input v-model="dataForm.email" placeholder="邮箱"></el-input>
+      </el-form-item>
+      <el-form-item label="电话号码：" prop="phone">
+        <el-input v-model="dataForm.phone" placeholder="电话号码"></el-input>
+      </el-form-item>
+      <el-form-item label="联系地址：" prop="address">
+        <el-input v-model="dataForm.address" placeholder="联系地址"></el-input>
+      </el-form-item>
+
+      <el-form-item label="最高学历：" prop="tiptopdegree">
+        <!--      <el-input v-model="dataForm.tiptopdegree" placeholder="最高学历"></el-input>-->
+        <el-select v-model="dataForm.tiptopdegree" placeholder="请选择">
+          <el-option
+            v-for="item in tiptopdegrees"
+            :key="item.value"
+            :label="item.label"
+            :value="item.value">
+          </el-option>
+        </el-select>
+      </el-form-item>
+      <el-form-item label="所属专业：" prop="specialty">
+        <el-input v-model="dataForm.specialty" placeholder="所属专业"></el-input>
+      </el-form-item>
+      <el-form-item label="毕业院校：" prop="school">
+        <el-input v-model="dataForm.school" placeholder="毕业院校"></el-input>
+      </el-form-item>
     </el-form>
     <span slot="footer" class="dialog-footer">
       <el-button @click="visible = false">取消</el-button>
@@ -200,6 +203,60 @@
 <script>
 export default {
   data () {
+    var validBeginDate = (rule, value, callback) => {
+      if (this.dataForm.id === 0) {
+        const nowDate = new Date().getDate()
+        const dateVal = new Date(value).getDate()
+        if (nowDate < dateVal) {
+          callback()
+        } else {
+          callback(new Error('入职日期不能在当前日期之前！'))
+        }
+      } else {
+        callback()
+      }
+    }
+    // /^[\u4E00-\u9FA5A-Za-z]+$/;
+    var validName = (rule, value, callback) => {
+      let nameR = /^[\u4E00-\u9FA5]{2,4}$/
+      if (nameR.test(value)) {
+        callback()
+      } else {
+        callback(new Error('请输入正确的姓名(中文)！'))
+      }
+    }
+    var validJobNumber = (rule, value, callback) => {
+      var jobNumberR = /^[d][z][u][\d]{3}$/
+      if (jobNumberR.test(value)) {
+        callback()
+      } else {
+        callback(new Error('工号必须以dzu开头，后面要跟三位数字！'))
+      }
+    }
+    var validBeginContract = (rule, value, callback) => {
+      const dateVal = new Date(this.dataForm.begindate).getDate()
+      const dateVal2 = new Date(value).getDate()
+      if (dateVal === dateVal2) {
+        callback()
+      } else {
+        callback(new Error('合同起始日期必须和入职日期相同！'))
+      }
+    }
+    var validEndContract = (rule, value, callback) => {
+      const dateVal = new Date(this.dataForm.begincontract).getDate()
+      const dateVal2 = new Date(value).getDate()
+      const dateValYear1 = new Date(this.dataForm.begincontract).getFullYear()
+      const dateValYear2 = new Date(value).getFullYear()
+      if (dateVal < dateVal2) {
+        if ((dateValYear2 - dateValYear1) >= 1) {
+          callback()
+        } else {
+          callback(new Error('合同终止日期必须大于合同起始日期一年！'))
+        }
+      } else {
+        callback(new Error('合同终止日期必须大于合同起始日期！'))
+      }
+    }
     return {
       visible: false,
       posids: [],
@@ -240,10 +297,10 @@ export default {
       ],
       workstates: [
         {
-          value: '在职',
+          value: 1,
           label: '在职'
         }, {
-          value: '离职',
+          value: 0,
           label: '离职',
           disabled: false
         }
@@ -298,76 +355,46 @@ export default {
       },
       dataRule: {
         name: [
-          {required: true, message: '员工姓名不能为空', trigger: 'blur'}
+          {required: true, message: '员工姓名不能为空', trigger: 'blur'},
+          { validator: validName, trigger: 'blur' }
         ],
         jobnumber: [
-          {required: true, message: '工号不能为空', trigger: 'blur'}
+          {required: true, message: '工号不能为空', trigger: 'blur'},
+          { validator: validJobNumber, trigger: 'blur' }
         ],
-        // gender: [
-        //   { required: true, message: '性别不能为空', trigger: 'blur' }
-        // ],
-        // birthday: [
-        //   { required: true, message: '出生日期不能为空', trigger: 'blur' }
-        // ],
-        // idcard: [
-        //   { required: true, message: '身份证号不能为空', trigger: 'blur' }
-        // ],
-        // wedlock: [
-        //   { required: true, message: '婚姻状况不能为空', trigger: 'blur' }
-        // ],
         nationid: [
           { required: true, message: '民族不能为空', trigger: 'blur' }
         ],
-        // nativeplace: [
-        //   { required: true, message: '籍贯不能为空', trigger: 'blur' }
-        // ],
         politicid: [
           { required: true, message: '政治面貌不能为空', trigger: 'blur' }
         ],
-        // email: [
-        //   { required: true, message: '邮箱不能为空', trigger: 'blur' }
-        // ],
-        // phone: [
-        //   { required: true, message: '电话号码不能为空', trigger: 'blur' }
-        // ],
-        // address: [
-        //   { required: true, message: '联系地址不能为空', trigger: 'blur' }
-        // ],
         departmentid: [
           { required: true, message: '所属部门不能为空', trigger: 'blur' }
         ],
         joblevelid: [
-          { required: true, message: '职称ID不能为空', trigger: 'blur' }
+          { required: true, message: '职称不能为空', trigger: 'blur' }
         ],
         posid: [
-          { required: true, message: '职位ID不能为空', trigger: 'blur' }
+          { required: true, message: '职位不能为空', trigger: 'blur' }
         ],
         engageform: [
           { required: true, message: '聘用形式不能为空', trigger: 'blur' }
         ],
-        // tiptopdegree: [
-        //   { required: true, message: '最高学历不能为空', trigger: 'blur' }
-        // ],
-        // specialty: [
-        //   { required: true, message: '所属专业不能为空', trigger: 'blur' }
-        // ],
-        // school: [
-        //   { required: true, message: '毕业院校不能为空', trigger: 'blur' }
-        // ],
         begindate: [
-          { required: true, message: '入职日期不能为空', trigger: 'blur' }
+          { required: true, message: '入职日期不能为空', trigger: 'blur' },
+          { validator: validBeginDate, trigger: 'blur' }
         ],
         workstate: [
           { required: true, message: '在职状态不能为空', trigger: 'blur' }
         ],
-        // notworkdate: [
-        //   { required: true, message: '离职日期不能为空', trigger: 'blur' }
-        // ],
         begincontract: [
-          { required: true, message: '合同起始日期不能为空', trigger: 'blur' }
+          { required: true, message: '合同起始日期不能为空', trigger: 'blur' },
+          { validator: validBeginContract, trigger: 'blur' }
         ],
         endcontract: [
-          { required: true, message: '合同终止日期不能为空', trigger: 'blur' }
+          { required: true, message: '合同终止日期不能为空', trigger: 'blur' },
+          { validator: validEndContract, trigger: 'blur' }
+
         ]
       }
     }

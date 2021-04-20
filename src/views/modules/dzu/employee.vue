@@ -168,8 +168,6 @@
         <el-form-item label="联系地址：" prop="address">
           <el-input v-model="dataForm.address" placeholder="联系地址"></el-input>
         </el-form-item>
-
-
         <el-form-item label="所属专业：" prop="specialty">
           <el-input v-model="dataForm.specialty" placeholder="所属专业"></el-input>
         </el-form-item>

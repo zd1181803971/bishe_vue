@@ -106,13 +106,13 @@
         prop="joblevel"
         header-align="center"
         align="center"
-        label="职称ID">
+        label="职称">
       </el-table-column>
       <el-table-column
         prop="pos"
         header-align="center"
         align="center"
-        label="职位ID">
+        label="职位">
       </el-table-column>
       <el-table-column
         prop="engageform"
@@ -149,6 +149,10 @@
         header-align="center"
         align="center"
         label="在职状态">
+        <template slot-scope="scope">
+          <span v-if="scope.row.workstate === 0">离职</span>
+          <span v-if="scope.row.workstate === 1">在职</span>
+        </template>
       </el-table-column>
       <el-table-column
         prop="notworkdate"
@@ -175,8 +179,9 @@
         width="150"
         label="操作">
         <template slot-scope="scope">
-          <el-button type="primary" size="small" @click="addOrUpdateHandle(scope.row.id)">修改</el-button>
-          <el-button type="danger" size="small" @click="deleteHandle(scope.row.id)">删除</el-button>
+          <el-button v-if="scope.row.workstate === 1" type="primary" size="small" @click="addOrUpdateHandle(scope.row.id)">修改</el-button>
+          <el-button v-if="scope.row.workstate === 1" type="danger" size="small" @click="deleteHandle(scope.row.id)">删除</el-button>
+          <el-button v-if="scope.row.workstate === 0" type="danger" size="small">已离职！</el-button>
         </template>
       </el-table-column>
     </el-table>
