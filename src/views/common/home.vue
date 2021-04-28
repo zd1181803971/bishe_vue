@@ -44,8 +44,10 @@
       </el-form-item>
     </el-form>
       <span>
-      <el-button type="primary" @click="dataFormSubmit()">立即报工</el-button>
-    </span></div>
+      <el-button :disabled="empFlag" type="primary" @click="dataFormSubmit()">立即报工</el-button>
+    </span>
+      <span v-if="empFlag"><el-tag type="danger">今日报工已完成！</el-tag></span>
+    </div>
   </div>
 </template>
 <script>
@@ -61,6 +63,7 @@ export default {
       }
     }
     return {
+      empFlag: false,
       entity: '',
       echours: [
         {
@@ -118,8 +121,8 @@ export default {
         url: this.$http.adornUrl(`/dzu/employeeec/getEmpClockByEid/${this.$store.state.user.name}`),
         method: 'get'
       }).then(({data}) => {
-        console.log(data)
         if (data.entity !== null) {
+          this.empFlag = true
           this.entity = data.entity
           this.dataForm.ecdate = this.entity.ecdate
           this.dataForm.ecreason = this.entity.ecreason

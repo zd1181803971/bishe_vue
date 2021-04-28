@@ -180,7 +180,7 @@
         label="操作">
         <template slot-scope="scope">
           <el-button v-if="scope.row.workstate === 1" type="primary" size="small" @click="addOrUpdateHandle(scope.row.id)">修改</el-button>
-          <el-button v-if="scope.row.workstate === 1" type="danger" size="small" @click="deleteHandle(scope.row.id)">删除</el-button>
+          <el-button v-if="scope.row.workstate === 1" type="danger" size="small" @click="deleteHandle(scope.row.id,scope.row.jobnumber)">删除</el-button>
           <el-button v-if="scope.row.workstate === 0" type="danger" size="small">已离职！</el-button>
         </template>
       </el-table-column>
@@ -258,6 +258,7 @@ export default {
     },
     // 多选
     selectionChangeHandle (val) {
+      console.log(val)
       this.dataListSelections = val
     },
     // 新增 / 修改
@@ -268,11 +269,14 @@ export default {
       })
     },
     // 删除
-    deleteHandle (id) {
-      var ids = id ? [id] : this.dataListSelections.map(item => {
-        return item.id
+    deleteHandle (id, numberId) {
+      var jobnumberIds = numberId ? [numberId] : this.dataListSelections.map(item => {
+        return item.jobnumber
       })
-      this.$confirm(`确定对[id=${ids.join(',')}]进行[${id ? '删除' : '批量删除'}]操作?`, '提示', {
+      var ids = id ? [id] : this.dataListSelections.map(item => {
+        return item.jobnumber
+      })
+      this.$confirm(`确定要删除[员工工号=${jobnumberIds.join(',')}]的资料?`, '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'

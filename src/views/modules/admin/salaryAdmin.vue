@@ -17,7 +17,7 @@
         prop="name"
         header-align="center"
         align="center"
-        label="姓名">
+        label="员工姓名">
       </el-table-column>
       <el-table-column
         prop="jobnumber"

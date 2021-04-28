@@ -8,11 +8,12 @@
           v-model="dataForm.empTime"
           type="date"
           value-format="yyyy-MM-dd"
-          placeholder="选择日期">
+          placeholder="选择报工日期"
+          :default-value="new Date()">
         </el-date-picker>
       </el-form-item>
       <el-form-item>
-        <el-button @click="getDataList()">查询全部报工</el-button>
+        <el-button @click="getDataList()">查询报工</el-button>
         <el-button  type="primary" @click="addOrUpdateHandle()">新增</el-button>
         <el-button  type="danger" @click="deleteHandle()" :disabled="dataListSelections.length <= 0">批量删除</el-button>
       </el-form-item>
@@ -30,7 +31,13 @@
         width="50">
       </el-table-column>
       <el-table-column
-        prop="eid"
+        prop="name"
+        header-align="center"
+        align="center"
+        label="员工姓名">
+      </el-table-column>
+      <el-table-column
+        prop="jobnumber"
         header-align="center"
         align="center"
         label="员工工号">
@@ -48,12 +55,12 @@
         label="工作内容">
       </el-table-column>
       <el-table-column
-        prop="ecpoint"
+        prop="echour"
         header-align="center"
         align="center"
         label="工作时长">
         <template slot-scope="scope">
-          <span>{{scope.row.ecpoint}}小时</span>
+          <span>{{scope.row.echour}}小时</span>
         </template>
       </el-table-column>
       <el-table-column
@@ -81,7 +88,7 @@
         label="操作">
         <template slot-scope="scope">
           <el-button type="primary" size="small" @click="addOrUpdateHandle(scope.row.id)">修改</el-button>
-          <el-button type="danger" size="small" @click="deleteHandle(scope.row.id)">删除</el-button>
+          <el-button type="danger" size="small" @click="deleteHandle(scope.row.id,scope.row.jobnumber)">删除</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -121,14 +128,12 @@
       AddOrUpdate
     },
     activated () {
-      this.getDataListByToday()
+      this.getDataListByNow()
     },
     methods: {
-      getDataListByToday () {
-        // http://localhost:8080/dzu/employeeec/getCurrentData
-        this.dataListLoading = true
+      getDataListByNow () {
         this.$http({
-          url: this.$http.adornUrl('/dzu/employeeec/getCurrentData'),
+          url: this.$http.adornUrl('/dzu/employeeec/getEmployeeecFormListByNow'),
           method: 'get',
           params: this.$http.adornParams({
             'page': this.pageIndex,
@@ -151,7 +156,7 @@
         this.totalPage = 0
         this.dataListLoading = true
         this.$http({
-          url: this.$http.adornUrl('/dzu/employeeec/list'),
+          url: this.$http.adornUrl('/dzu/employeeec/getEmployeeecFormList'),
           method: 'get',
           params: this.$http.adornParams({
             'page': this.pageIndex,
@@ -193,11 +198,14 @@
         })
       },
       // 删除
-      deleteHandle (id) {
+      deleteHandle (id, jobnumber) {
+        var jobnumberIds = jobnumber ? [jobnumber] : this.dataListSelections.map(item => {
+          return item.jobnumber
+        })
         var ids = id ? [id] : this.dataListSelections.map(item => {
           return item.id
         })
-        this.$confirm(`确定对[id=${ids.join(',')}]进行[${id ? '删除' : '批量删除'}]操作?`, '提示', {
+        this.$confirm(`确定要删除[员工工号=${jobnumberIds.join(',')}]的报工记录?`, '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
           type: 'warning'

@@ -26,7 +26,7 @@
         prop="name"
         header-align="center"
         align="center"
-        label="民族">
+        label="民族名称">
       </el-table-column>
       <el-table-column
         prop="count"
@@ -45,7 +45,7 @@
         label="操作">
         <template slot-scope="scope">
           <el-button type="primary" size="small" @click="addOrUpdateHandle(scope.row.id)">修改</el-button>
-          <el-button type="danger" size="small" @click="deleteHandle(scope.row.id)">删除</el-button>
+          <el-button type="danger" size="small" @click="deleteHandle(scope.row.id,scope.row.name)">删除</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -137,11 +137,15 @@
         })
       },
       // 删除
-      deleteHandle (id) {
+      deleteHandle (id, name) {
+        var nameIds = name ? [name] : this.dataListSelections.map(item => {
+          return item.name
+        })
+
         var ids = id ? [id] : this.dataListSelections.map(item => {
           return item.id
         })
-        this.$confirm(`确定对[id=${ids.join(',')}]进行[${id ? '删除' : '批量删除'}]操作?`, '提示', {
+        this.$confirm(`确定要删除[民族名称=${nameIds.join(',')}]的民族记录吗?`, '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
           type: 'warning'

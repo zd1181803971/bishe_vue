@@ -4,21 +4,13 @@
 
       <el-form-item>
         <el-button  type="primary" @click="addOrUpdateHandle()">新增首页通知</el-button>
-        <el-button  type="danger" @click="deleteHandle()" :disabled="dataListSelections.length <= 0">批量删除</el-button>
       </el-form-item>
     </el-form>
     <el-table
       :data="dataList"
       border
       v-loading="dataListLoading"
-      @selection-change="selectionChangeHandle"
       style="width: 100%;">
-      <el-table-column
-        type="selection"
-        header-align="center"
-        align="center"
-        width="50">
-      </el-table-column>
       <el-table-column
         prop="title"
         header-align="center"
@@ -45,7 +37,7 @@
         label="操作">
         <template slot-scope="scope">
           <el-button type="primary" size="small" @click="addOrUpdateHandle(scope.row.id)">修改</el-button>
-          <el-button type="danger" size="small" @click="deleteHandle(scope.row.id)">删除</el-button>
+          <el-button type="danger" size="small" @click="deleteHandle(scope.row.id,scope.row.title)">删除</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -118,10 +110,6 @@
         this.pageIndex = val
         this.getDataList()
       },
-      // 多选
-      selectionChangeHandle (val) {
-        this.dataListSelections = val
-      },
       // 新增 / 修改
       addOrUpdateHandle (id) {
         this.addOrUpdateVisible = true
@@ -130,11 +118,11 @@
         })
       },
       // 删除
-      deleteHandle (id) {
+      deleteHandle (id, title) {
         var ids = id ? [id] : this.dataListSelections.map(item => {
           return item.id
         })
-        this.$confirm(`确定对[id=${ids.join(',')}]进行[${id ? '删除' : '批量删除'}]操作?`, '提示', {
+        this.$confirm(`确定删除[通知标题=${title}]的首页通知单吗?`, '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
           type: 'warning'

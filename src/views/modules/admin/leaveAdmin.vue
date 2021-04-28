@@ -77,7 +77,7 @@
         label="操作">
         <template slot-scope="scope">
           <el-button type="primary" size="mini" @click="addOrUpdateHandle(scope.row.id)">审批</el-button>
-          <el-button type="danger" size="mini" @click="deleteHandle(scope.row.id)">删除</el-button>
+          <el-button type="danger" size="mini" @click="deleteHandle(scope.row.id,scope.row.jobnumber)">删除</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -164,11 +164,14 @@
         })
       },
       // 删除
-      deleteHandle (id) {
+      deleteHandle (id, jobnumber) {
+        var jobnumberIds = jobnumber ? [jobnumber] : this.dataListSelections.map(item => {
+          return item.jobnumber
+        })
         var ids = id ? [id] : this.dataListSelections.map(item => {
           return item.id
         })
-        this.$confirm(`确定对[id=${ids.join(',')}]进行[${id ? '删除' : '批量删除'}]操作?`, '提示', {
+        this.$confirm(`确定要删除[员工工号=${jobnumberIds.join(',')}]的请假记录?`, '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
           type: 'warning'
