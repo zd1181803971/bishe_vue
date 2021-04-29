@@ -205,9 +205,10 @@ export default {
   data () {
     var validBeginDate = (rule, value, callback) => {
       if (this.dataForm.id === 0) {
-        const nowDate = new Date().getDate()
-        const dateVal = new Date(value).getDate()
+        const nowDate = new Date()
+        const dateVal = new Date(value)
         if (nowDate < dateVal) {
+          this.dataForm.begincontract = value
           callback()
         } else {
           callback(new Error('入职日期不能在当前日期之前！'))
@@ -243,18 +244,27 @@ export default {
       }
     }
     var validEndContract = (rule, value, callback) => {
-      const dateVal = new Date(this.dataForm.begincontract).getDate()
-      const dateVal2 = new Date(value).getDate()
+      const dateVal = new Date(this.dataForm.begincontract).getMonth()
+      const dateVal2 = new Date(value).getMonth()
       const dateValYear1 = new Date(this.dataForm.begincontract).getFullYear()
       const dateValYear2 = new Date(value).getFullYear()
-      if (dateVal < dateVal2) {
-        if ((dateValYear2 - dateValYear1) >= 1) {
-          callback()
-        } else {
+      console.log(dateValYear1)
+      console.log(dateValYear2)
+      if ((dateValYear2 - dateValYear1) > 1) {
+        callback()
+      } else {
+        if ((dateValYear2 - dateValYear1) === 1) {
+          console.log(dateVal)
+          console.log(dateVal2)
+          if (dateVal < dateVal2) {
+            callback()
+          } else {
+            callback(new Error('合同终止日期必须大于合同起始日期一年的下个月！'))
+          }
+        }
+        if ((dateValYear2 - dateValYear1) < 1) {
           callback(new Error('合同终止日期必须大于合同起始日期一年！'))
         }
-      } else {
-        callback(new Error('合同终止日期必须大于合同起始日期！'))
       }
     }
     return {

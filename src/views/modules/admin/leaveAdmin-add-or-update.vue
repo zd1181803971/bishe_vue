@@ -28,7 +28,7 @@
       </el-select>
     </el-form-item>
     <el-form-item label="备注信息" prop="message">
-      <el-input v-model="dataForm.message" placeholder="备注信息"></el-input>
+      <el-input disabled v-model="dataForm.message" placeholder="备注信息"></el-input>
     </el-form-item>
     </el-form>
     <span slot="footer" class="dialog-footer">

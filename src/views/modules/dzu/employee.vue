@@ -226,6 +226,14 @@ export default {
         callback(new Error('错误的手机号！'))
       }
     }
+    var checkIsChinese = (rule, value, callback) => {
+      let nameR = /^[\u4E00-\u9FA5]*$/
+      if (nameR.test(value)) {
+        callback()
+      } else {
+        callback(new Error('请输入正确的中文汉字！'))
+      }
+    }
     return {
       posids: [],
       joblevelids: [],
@@ -327,7 +335,8 @@ export default {
           {required: true, message: '民族不能为空', trigger: 'blur'}
         ],
         nativeplace: [
-          {required: true, message: '籍贯不能为空', trigger: 'blur'}
+          {required: true, message: '籍贯不能为空', trigger: 'blur'},
+          {validator: checkIsChinese, trigger: 'blur'}
         ],
         politicid: [
           {required: true, message: '政治面貌不能为空', trigger: 'blur'}
@@ -342,13 +351,19 @@ export default {
 
         ],
         address: [
-          {required: true, message: '联系地址不能为空', trigger: 'blur'}
+          {required: true, message: '联系地址不能为空', trigger: 'blur'},
+          {validator: checkIsChinese, trigger: 'blur'}
+
         ],
         specialty: [
-          {required: true, message: '所属专业不能为空', trigger: 'blur'}
+          {required: true, message: '所属专业不能为空', trigger: 'blur'},
+          {validator: checkIsChinese, trigger: 'blur'}
+
         ],
         school: [
-          {required: true, message: '毕业院校不能为空', trigger: 'blur'}
+          {required: true, message: '毕业院校不能为空', trigger: 'blur'},
+          {validator: checkIsChinese, trigger: 'blur'}
+
         ]
       }
     }

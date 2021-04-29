@@ -58,9 +58,26 @@
         align="center"
         label="请假状态">
         <template slot-scope="scope">
-          <span v-if="scope.row.status === 0">待审批</span>
-          <span v-if="scope.row.status === 1">通过</span>
-          <span v-if="scope.row.status === 2">不通过</span>
+          <span v-if="scope.row.status === 0">
+            <div slot="reference" class="name-wrapper">
+              <el-tag size="medium">待批准</el-tag>
+            </div>
+          </span>
+          <span v-if="scope.row.status === 1">
+          <div slot="reference" class="name-wrapper">
+              <el-tag type="success" size="medium">通过</el-tag>
+            </div>
+          </span>
+          <span v-if="scope.row.status === 2">
+           <div slot="reference" class="name-wrapper">
+              <el-tag type="danger" size="medium">不通过</el-tag>
+            </div>
+          </span>
+          <span v-if="scope.row.status === 3">
+           <div slot="reference" class="name-wrapper">
+              <el-tag type="info" size="medium">已销假</el-tag>
+            </div>
+          </span>
         </template>
       </el-table-column>
       <el-table-column
@@ -76,7 +93,7 @@
         width="150"
         label="操作">
         <template slot-scope="scope">
-          <el-button type="primary" size="mini" @click="addOrUpdateHandle(scope.row.id)">审批</el-button>
+          <el-button v-if="scope.row.status === 0" type="primary" size="mini" @click="addOrUpdateHandle(scope.row.id)">审批</el-button>
           <el-button type="danger" size="mini" @click="deleteHandle(scope.row.id,scope.row.jobnumber)">删除</el-button>
         </template>
       </el-table-column>

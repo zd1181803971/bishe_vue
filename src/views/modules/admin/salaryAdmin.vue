@@ -62,7 +62,7 @@
         width="150"
         label="操作">
         <template slot-scope="scope">
-          <el-button type="primary" size="small" @click="addOrUpdateHandle(scope.row.id)">调整薪资</el-button>
+          <el-button type="primary" size="small" @click="addOrUpdateHandle(scope.row.id,scope.row.jobnumber)">调整薪资</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -138,10 +138,10 @@
         this.getDataList()
       },
       // 新增 / 修改
-      addOrUpdateHandle (id) {
+      addOrUpdateHandle (id, jobNumber) {
         this.addOrUpdateVisible = true
         this.$nextTick(() => {
-          this.$refs.addOrUpdate.init(id)
+          this.$refs.addOrUpdate.init(id, jobNumber)
         })
       }
     }

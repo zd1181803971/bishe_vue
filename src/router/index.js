@@ -72,11 +72,11 @@ router.beforeEach((to, from, next) => {
         fnAddDynamicMenuRoutes(data.menuList)
         router.options.isAddDynamicMenuRoutes = true
         sessionStorage.setItem('menuList', JSON.stringify(data.menuList || '[]'))
-        sessionStorage.setItem('permissions', JSON.stringify(data.permissions || '[]'))
+        // sessionStorage.setItem('permissions', JSON.stringify(data.permissions || '[]'))
         next({ ...to, replace: true })
       } else {
         sessionStorage.setItem('menuList', '[]')
-        sessionStorage.setItem('permissions', '[]')
+        // sessionStorage.setItem('permissions', '[]')
         next()
       }
     }).catch((e) => {

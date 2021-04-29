@@ -1,6 +1,6 @@
 <template>
   <el-dialog
-    :title="!dataForm.id ? '新增' : '修改'"
+    :title="'薪资调整'"
     :close-on-click-modal="false"
     :visible.sync="visible">
     <el-form :model="dataForm" :rules="dataRule" ref="dataForm" @keyup.enter.native="dataFormSubmit()"
@@ -35,7 +35,7 @@
 export default {
   data () {
     return {
-      jobName: this.$store.state.user.name,
+      jobName: '',
       visible: false,
       dataForm: {
         id: 0,
@@ -69,7 +69,8 @@ export default {
     }
   },
   methods: {
-    init (id) {
+    init (id,jobNumber) {
+      this.jobName = jobNumber
       this.dataForm.id = id || 0
       this.visible = true
       this.$nextTick(() => {

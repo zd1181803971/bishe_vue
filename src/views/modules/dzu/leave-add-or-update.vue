@@ -1,6 +1,6 @@
 <template>
   <el-dialog
-    :title="!dataForm.id ? '新增' : '修改'"
+    :title="'进行请假'"
     :close-on-click-modal="false"
     :visible.sync="visible">
     <el-form :model="dataForm" :rules="dataRule" ref="dataForm" @keyup.enter.native="dataFormSubmit()" label-width="80px">
@@ -39,6 +39,7 @@
     <el-form-item label="备注信息" prop="message">
       <el-input v-model="dataForm.message" placeholder="备注信息"></el-input>
     </el-form-item>
+
     </el-form>
     <span slot="footer" class="dialog-footer">
       <el-button @click="visible = false">取消</el-button>
@@ -53,7 +54,7 @@
       var validateTime2 = (rule, value, callback) => {
         const start = new Date(this.dataForm.starttime).getTime()
         const end = new Date(this.dataForm.endtime).getTime()
-        if (start < end) {
+        if (start <= end) {
           callback()
         } else {
           return callback(new Error('请假结束时间要在请假开始时间之后'))
@@ -62,7 +63,7 @@
       var validateTime1 = (rule, value, callback) => {
         const nowTime = new Date().getTime()
         const start = new Date(this.dataForm.starttime).getTime()
-        if (start > nowTime) {
+        if (start >= nowTime) {
           callback()
         } else {
           return callback(new Error('请假开始时间要在当前时间之后'))
