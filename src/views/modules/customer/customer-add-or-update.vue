@@ -94,6 +94,39 @@
 <script>
   export default {
     data () {
+      // var checkEmail = (rule, value, callback) => {
+      //   let emailR = /^[a-z\d]+(\.[a-z\d]+)*@([\da-z](-[\da-z])?)+(\.{1,2}[a-z]+)+$/
+      //   if (emailR.test(value)) {
+      //     callback()
+      //   } else {
+      //     callback(new Error('错误的邮箱格式！'))
+      //   }
+      // }
+      var checkphone = (rule, value, callback) => {
+        let phoneR = /^1[3|4|5|8][0-9]\d{4,8}$/
+        if (phoneR.test(value)) {
+          callback()
+        } else {
+          callback(new Error('错误的手机号！'))
+        }
+      }
+      var checkIsChinese = (rule, value, callback) => {
+        let nameR = /^[\u4E00-\u9FA5]*$/
+        if (nameR.test(value)) {
+          callback()
+        } else {
+          callback(new Error('请输入正确的中文汉字！'))
+        }
+      }
+    // ^[1-9]\\d{5}$
+      var checkpostCode = (rule, value, callback) => {
+        let nameR = /^[1-9]\\d{5}$/
+        if (nameR.test(value)) {
+          callback()
+        } else {
+          callback(new Error('请输入正确邮政编码！'))
+        }
+      }
       return {
         levels: [
           {
@@ -145,36 +178,41 @@
           // updateDate: ''
         },
         dataRule: {
-          number: [
-            { required: true, message: '客户编号不能为空', trigger: 'blur' }
-          ],
+          // number: [
+          //   { required: true, message: '客户编号不能为空', trigger: 'blur' }
+          // ],
           name: [
             { required: true, message: '客户公司名不能为空', trigger: 'blur' }
           ],
           area: [
-            { required: true, message: '地区不能为空', trigger: 'blur' }
+            { required: true, message: '地区不能为空', trigger: 'blur' },
+            {validator: checkIsChinese, trigger: 'blur'}
           ],
           manager: [
-            { required: true, message: '公司经理不能为空', trigger: 'blur' }
+            { required: true, message: '公司经理不能为空', trigger: 'blur' },
+            {validator: checkIsChinese, trigger: 'blur'}
+
           ],
           level: [
-            { required: true, message: '客户级别 1-5不能为空', trigger: 'blur' }
+            { required: true, message: '客户级别能为空', trigger: 'blur' }
           ],
           satisfied: [
             { required: true, message: '客户满意度不能为空', trigger: 'blur' }
           ],
           credit: [
             { required: true, message: '客户信用度不能为空', trigger: 'blur' }
-          ]
+          ],
           // address: [
           //   { required: true, message: '客户详细地址不能为空', trigger: 'blur' }
           // ],
-          // postCode: [
-          //   { required: true, message: '邮编不能为空', trigger: 'blur' }
-          // ],
-          // phone: [
-          //   { required: true, message: '电话不能为空', trigger: 'blur' }
-          // ],
+          postCode: [
+            // { required: true, message: '邮编不能为空', trigger: 'blur' }
+            {validator: checkpostCode, trigger: 'blur'}
+          ],
+          phone: [
+            // { required: true, message: '电话不能为空', trigger: 'blur' },
+            {validator: checkphone, trigger: 'blur'}
+          ]
           // webSite: [
           //   { required: true, message: '官网不能为空', trigger: 'blur' }
           // ],
