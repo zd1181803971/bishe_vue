@@ -65,7 +65,7 @@
         label="操作">
         <template slot-scope="scope">
           <el-button  type="primary" size="small" @click="addOrUpdateHandle(scope.row.menuId)">修改</el-button>
-          <el-button  type="danger" size="small" @click="deleteHandle(scope.row.menuId)">删除</el-button>
+          <el-button  type="danger" size="small" @click="deleteHandle(scope.row.menuId,scope.row.name)">删除</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -113,8 +113,8 @@
         })
       },
       // 删除
-      deleteHandle (id) {
-        this.$confirm(`确定对[id=${id}]进行[删除]操作?`, '提示', {
+      deleteHandle (id, name) {
+        this.$confirm(`确定要删除[菜单名称=${name}]的菜单吗?`, '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
           type: 'warning'

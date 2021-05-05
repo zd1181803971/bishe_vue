@@ -33,9 +33,9 @@
       <el-form-item v-if="dataForm.type === 1" label="菜单路由" prop="url">
         <el-input v-model="dataForm.url" placeholder="菜单路由"></el-input>
       </el-form-item>
-      <el-form-item v-if="dataForm.type !== 0" label="授权标识" prop="perms">
-        <el-input v-model="dataForm.perms" placeholder="多个用逗号分隔, 如: user:list,user:create"></el-input>
-      </el-form-item>
+<!--      <el-form-item v-if="dataForm.type !== 0" label="授权标识" prop="perms">-->
+<!--        <el-input v-model="dataForm.perms" placeholder="多个用逗号分隔, 如: user:list,user:create"></el-input>-->
+<!--      </el-form-item>-->
       <el-form-item v-if="dataForm.type !== 2" label="排序号" prop="orderNum">
         <el-input-number v-model="dataForm.orderNum" controls-position="right" :min="0" label="排序号"></el-input-number>
       </el-form-item>
@@ -99,7 +99,7 @@
           parentId: 0,
           parentName: '',
           url: '',
-          perms: '',
+          // perms: '',
           orderNum: 0,
           icon: '',
           iconList: []
@@ -155,7 +155,7 @@
               this.dataForm.name = data.menu.name
               this.dataForm.parentId = data.menu.parentId
               this.dataForm.url = data.menu.url
-              this.dataForm.perms = data.menu.perms
+              // this.dataForm.perms = data.menu.perms
               this.dataForm.orderNum = data.menu.orderNum
               this.dataForm.icon = data.menu.icon
               this.menuListTreeSetCurrentNode()
@@ -190,7 +190,7 @@
                 'name': this.dataForm.name,
                 'parentId': this.dataForm.parentId,
                 'url': this.dataForm.url,
-                'perms': this.dataForm.perms,
+                // 'perms': this.dataForm.perms,
                 'orderNum': this.dataForm.orderNum,
                 'icon': this.dataForm.icon
               })

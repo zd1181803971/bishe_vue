@@ -67,7 +67,6 @@ export default {
         method: 'get'
       }).then(({data}) => {
         this.chartLineData = data.data
-        console.log(this.chartLineData)
         for (let i = 0; i < Object.keys(this.chartLineData).length; i++) {
           this.chartLineList.push(Object.keys(this.chartLineData)[i])
         }

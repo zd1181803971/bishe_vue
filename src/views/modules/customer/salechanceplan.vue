@@ -1,8 +1,8 @@
 <template>
-  <div class="mod-role">
+  <div class="mod-config">
     <el-form :inline="true" :model="dataForm" @keyup.enter.native="getDataList()">
       <el-form-item>
-        <el-input v-model="dataForm.roleName" placeholder="角色名称" clearable></el-input>
+        <el-input v-model="dataForm.key" placeholder="参数名" clearable></el-input>
       </el-form-item>
       <el-form-item>
         <el-button @click="getDataList()">查询</el-button>
@@ -22,31 +22,53 @@
         align="center"
         width="50">
       </el-table-column>
-<!--      <el-table-column-->
-<!--        prop="roleId"-->
-<!--        header-align="center"-->
-<!--        align="center"-->
-<!--        width="80"-->
-<!--        label="ID">-->
-<!--      </el-table-column>-->
       <el-table-column
-        prop="roleName"
+        prop="id"
         header-align="center"
         align="center"
-        label="角色名称">
+        label="开发计划项ID">
       </el-table-column>
       <el-table-column
-        prop="remark"
+        prop="saleChanceId"
         header-align="center"
         align="center"
-        label="备注">
+        label="营销机会ID">
       </el-table-column>
       <el-table-column
-        prop="createTime"
+        prop="planItem"
         header-align="center"
         align="center"
-        width="180"
-        label="创建时间">
+        label="计划项内容">
+      </el-table-column>
+      <el-table-column
+        prop="planDate"
+        header-align="center"
+        align="center"
+        label="计划时间">
+      </el-table-column>
+      <el-table-column
+        prop="exeAffect"
+        header-align="center"
+        align="center"
+        label="执行效果">
+      </el-table-column>
+      <el-table-column
+        prop="createDate"
+        header-align="center"
+        align="center"
+        label="">
+      </el-table-column>
+      <el-table-column
+        prop="updateDate"
+        header-align="center"
+        align="center"
+        label="">
+      </el-table-column>
+      <el-table-column
+        prop="isValid"
+        header-align="center"
+        align="center"
+        label="">
       </el-table-column>
       <el-table-column
         fixed="right"
@@ -55,8 +77,8 @@
         width="150"
         label="操作">
         <template slot-scope="scope">
-          <el-button  type="primary" size="small" @click="addOrUpdateHandle(scope.row.roleId)">修改</el-button>
-          <el-button  type="danger" size="small" @click="deleteHandle(scope.row.roleId,scope.row.roleName)">删除</el-button>
+          <el-button type="text" size="small" @click="addOrUpdateHandle(scope.row.id)">修改</el-button>
+          <el-button type="text" size="small" @click="deleteHandle(scope.row.id)">删除</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -75,12 +97,12 @@
 </template>
 
 <script>
-  import AddOrUpdate from './role-add-or-update'
+  import AddOrUpdate from './salechanceplan-add-or-update'
   export default {
     data () {
       return {
         dataForm: {
-          roleName: ''
+          key: ''
         },
         dataList: [],
         pageIndex: 1,
@@ -102,12 +124,12 @@
       getDataList () {
         this.dataListLoading = true
         this.$http({
-          url: this.$http.adornUrl('/sys/role/list'),
+          url: this.$http.adornUrl('/dzu/salechanceplan/list'),
           method: 'get',
           params: this.$http.adornParams({
             'page': this.pageIndex,
             'limit': this.pageSize,
-            'roleName': this.dataForm.roleName
+            'key': this.dataForm.key
           })
         }).then(({data}) => {
           if (data && data.code === 0) {
@@ -143,20 +165,17 @@
         })
       },
       // 删除
-      deleteHandle (id, roleName) {
-        var roleNames = roleName ? [roleName] : this.dataListSelections.map(item => {
-          return item.roleName
-        })
+      deleteHandle (id) {
         var ids = id ? [id] : this.dataListSelections.map(item => {
-          return item.roleId
+          return item.id
         })
-        this.$confirm(`确定删除[角色名称=${roleNames.join(',')}]的角色吗?`, '提示', {
+        this.$confirm(`确定对[id=${ids.join(',')}]进行[${id ? '删除' : '批量删除'}]操作?`, '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
           type: 'warning'
         }).then(() => {
           this.$http({
-            url: this.$http.adornUrl('/sys/role/delete'),
+            url: this.$http.adornUrl('/dzu/salechanceplan/delete'),
             method: 'post',
             data: this.$http.adornData(ids, false)
           }).then(({data}) => {
@@ -173,7 +192,7 @@
               this.$message.error(data.msg)
             }
           })
-        }).catch(() => {})
+        })
       }
     }
   }

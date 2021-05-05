@@ -1,13 +1,13 @@
 <template>
-  <div class="mod-role">
+  <div class="mod-config">
     <el-form :inline="true" :model="dataForm" @keyup.enter.native="getDataList()">
       <el-form-item>
-        <el-input v-model="dataForm.roleName" placeholder="角色名称" clearable></el-input>
+          <el-input v-model="dataForm.name" placeholder="公司名称" clearable></el-input>
       </el-form-item>
       <el-form-item>
-        <el-button @click="getDataList()">查询</el-button>
-        <el-button  type="primary" @click="addOrUpdateHandle()">新增</el-button>
-        <el-button  type="danger" @click="deleteHandle()" :disabled="dataListSelections.length <= 0">批量删除</el-button>
+        <el-button @click="getDataList()">查询客户</el-button>
+<!--        <el-button  type="primary" @click="addOrUpdateHandle()">新增</el-button>-->
+<!--        <el-button  type="danger" @click="deleteHandle()" :disabled="dataListSelections.length <= 0">批量删除</el-button>-->
       </el-form-item>
     </el-form>
     <el-table
@@ -23,31 +23,79 @@
         width="50">
       </el-table-column>
 <!--      <el-table-column-->
-<!--        prop="roleId"-->
+<!--        prop="id"-->
 <!--        header-align="center"-->
 <!--        align="center"-->
-<!--        width="80"-->
-<!--        label="ID">-->
+<!--        label="流失客户id">-->
 <!--      </el-table-column>-->
       <el-table-column
-        prop="roleName"
+        prop="cusNumber"
         header-align="center"
         align="center"
-        label="角色名称">
+        label="客户编号">
       </el-table-column>
       <el-table-column
-        prop="remark"
+        prop="cusName"
         header-align="center"
         align="center"
-        label="备注">
+        label="公司名称">
       </el-table-column>
       <el-table-column
-        prop="createTime"
+        prop="cusManager"
         header-align="center"
         align="center"
-        width="180"
-        label="创建时间">
+        label="客户经理">
       </el-table-column>
+      <el-table-column
+        prop="state"
+        header-align="center"
+        align="center"
+        label="状态">
+        <template slot-scope="scope">
+          <span v-if="scope.row.state === 0">
+              <el-tag type="info" size="medium">暂缓流失</el-tag>
+          </span>
+          <span v-if="scope.row.state === 1">
+              <el-tag type="danger" size="medium">已流失</el-tag>
+          </span>
+        </template>
+      </el-table-column>
+      <el-table-column
+        prop="lossReason"
+        header-align="center"
+        align="center"
+        label="流失原因">
+      </el-table-column>
+<!--      <el-table-column-->
+<!--        prop="isValid"-->
+<!--        header-align="center"-->
+<!--        align="center"-->
+<!--        label="">-->
+<!--      </el-table-column>-->
+      <el-table-column
+        prop="createDate"
+        header-align="center"
+        align="center"
+        label="流失时间">
+      </el-table-column>
+      <el-table-column
+        prop="confirmLossTime"
+        header-align="center"
+        align="center"
+        label="确认流失时间">
+      </el-table-column>
+      <el-table-column
+        prop="lastOrderTime"
+        header-align="center"
+        align="center"
+        label="最后交易时间">
+      </el-table-column>
+<!--      <el-table-column-->
+<!--        prop="updateDate"-->
+<!--        header-align="center"-->
+<!--        align="center"-->
+<!--        label="">-->
+<!--      </el-table-column>-->
       <el-table-column
         fixed="right"
         header-align="center"
@@ -55,8 +103,8 @@
         width="150"
         label="操作">
         <template slot-scope="scope">
-          <el-button  type="primary" size="small" @click="addOrUpdateHandle(scope.row.roleId)">修改</el-button>
-          <el-button  type="danger" size="small" @click="deleteHandle(scope.row.roleId,scope.row.roleName)">删除</el-button>
+          <el-button v-if="scope.row.state === 0" type="primary" size="small" @click="addOrUpdateHandle(scope.row.id)">流失客户</el-button>
+<!--          <el-button type="danger" size="small" @click="deleteHandle(scope.row.id)">删除</el-button>-->
         </template>
       </el-table-column>
     </el-table>
@@ -75,12 +123,12 @@
 </template>
 
 <script>
-  import AddOrUpdate from './role-add-or-update'
+  import AddOrUpdate from './customerloss-add-or-update'
   export default {
     data () {
       return {
         dataForm: {
-          roleName: ''
+          name: ''
         },
         dataList: [],
         pageIndex: 1,
@@ -102,12 +150,12 @@
       getDataList () {
         this.dataListLoading = true
         this.$http({
-          url: this.$http.adornUrl('/sys/role/list'),
+          url: this.$http.adornUrl('/dzu/customerloss/list'),
           method: 'get',
           params: this.$http.adornParams({
             'page': this.pageIndex,
             'limit': this.pageSize,
-            'roleName': this.dataForm.roleName
+            'cusName': this.dataForm.name
           })
         }).then(({data}) => {
           if (data && data.code === 0) {
@@ -143,20 +191,17 @@
         })
       },
       // 删除
-      deleteHandle (id, roleName) {
-        var roleNames = roleName ? [roleName] : this.dataListSelections.map(item => {
-          return item.roleName
-        })
+      deleteHandle (id) {
         var ids = id ? [id] : this.dataListSelections.map(item => {
-          return item.roleId
+          return item.id
         })
-        this.$confirm(`确定删除[角色名称=${roleNames.join(',')}]的角色吗?`, '提示', {
+        this.$confirm(`确定对[id=${ids.join(',')}]进行[${id ? '删除' : '批量删除'}]操作?`, '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
           type: 'warning'
         }).then(() => {
           this.$http({
-            url: this.$http.adornUrl('/sys/role/delete'),
+            url: this.$http.adornUrl('/dzu/customerloss/delete'),
             method: 'post',
             data: this.$http.adornData(ids, false)
           }).then(({data}) => {
@@ -173,7 +218,7 @@
               this.$message.error(data.msg)
             }
           })
-        }).catch(() => {})
+        })
       }
     }
   }

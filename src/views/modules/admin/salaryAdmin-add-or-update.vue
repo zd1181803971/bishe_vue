@@ -69,7 +69,7 @@ export default {
     }
   },
   methods: {
-    init (id,jobNumber) {
+    init (id, jobNumber) {
       this.jobName = jobNumber
       this.dataForm.id = id || 0
       this.visible = true
