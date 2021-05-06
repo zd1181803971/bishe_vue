@@ -4,29 +4,29 @@
     :close-on-click-modal="false"
     :visible.sync="visible">
     <el-form :model="dataForm" :rules="dataRule" ref="dataForm" @keyup.enter.native="dataFormSubmit()" label-width="auto">
-      <el-form-item label="机会来源" prop="chanceSource">
+      <el-form-item label="机会来源：" prop="chanceSource">
         <el-input disabled v-model="dataForm.chanceSource" placeholder="机会来源"></el-input>
       </el-form-item>
-      <el-form-item label="客户名称" prop="customerName">
+      <el-form-item label="客户名称：" prop="customerName">
         <el-input disabled v-model="dataForm.customerName" placeholder="客户名称"></el-input>
       </el-form-item>
-      <el-form-item label="成功几率" prop="probability">
+      <el-form-item label="成功几率：" prop="probability">
         <!--      <el-input v-model="dataForm.probability" placeholder="成功几率"></el-input>-->
         <el-progress :percentage="dataForm.probability"></el-progress>
       </el-form-item>
-      <el-form-item label="概要" prop="overview">
+      <el-form-item label="概要：" prop="overview">
         <el-input disabled v-model="dataForm.overview" placeholder="概要"></el-input>
       </el-form-item>
-      <el-form-item  label="联系人" prop="linkMan">
+      <el-form-item  label="联系人：" prop="linkMan">
         <el-input disabled v-model="dataForm.linkMan" placeholder="联系人"></el-input>
       </el-form-item>
-      <el-form-item label="联系号码" prop="linkPhone">
+      <el-form-item label="联系号码：" prop="linkPhone">
         <el-input disabled v-model="dataForm.linkPhone" placeholder="联系号码"></el-input>
       </el-form-item>
-      <el-form-item label="描述" prop="description">
+      <el-form-item label="描述：" prop="description">
         <el-input disabled v-model="dataForm.description" placeholder="描述"></el-input>
       </el-form-item>
-      <el-form-item v-if="flagdev" label="开发状态" prop="devResult">
+      <el-form-item v-if="flagdev" label="开发状态：" prop="devResult">
               <el-select v-model="dataForm.devResult" placeholder="请选择开发状态">
                 <el-option
                   v-for="item in devResults"
@@ -90,7 +90,7 @@ export default {
     }
   },
   methods: {
-    init (id) {
+    init (id, customerName) {
       this.dataForm.id = id || 0
       this.visible = true
       this.$nextTick(() => {
@@ -102,8 +102,11 @@ export default {
             params: this.$http.adornParams()
           }).then(({data}) => {
             if (data && data.code === 0) {
+              if (data.saleChance.devResult !== 1) {
+                this.flagdev = false
+              }
               this.dataForm.chanceSource = data.saleChance.chanceSource
-              this.dataForm.customerName = data.saleChance.customerName
+              this.dataForm.customerName = customerName
               this.dataForm.probability = data.saleChance.probability
               this.dataForm.overview = data.saleChance.overview
               this.dataForm.linkMan = data.saleChance.linkMan
@@ -117,9 +120,6 @@ export default {
               this.dataForm.isValid = data.saleChance.isValid
               this.dataForm.createDate = data.saleChance.createDate
               this.dataForm.updateDate = data.saleChance.updateDate
-              if (this.dataForm.devResult !== 1) {
-                this.flagdev = false
-              }
             }
           })
         }
@@ -127,6 +127,10 @@ export default {
     },
     // 表单提交
     dataFormSubmit () {
+      if (!this.flagdev) {
+        this.visible = false
+        return
+      }
       this.$refs['dataForm'].validate((valid) => {
         if (valid) {
           this.$http({

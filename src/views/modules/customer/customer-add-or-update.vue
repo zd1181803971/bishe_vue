@@ -103,6 +103,8 @@
       //   }
       // }
       var checkphone = (rule, value, callback) => {
+        callback()
+
         let phoneR = /^1[3|4|5|8][0-9]\d{4,8}$/
         if (phoneR.test(value)) {
           callback()
@@ -111,6 +113,8 @@
         }
       }
       var checkIsChinese = (rule, value, callback) => {
+        callback()
+
         let nameR = /^[\u4E00-\u9FA5]*$/
         if (nameR.test(value)) {
           callback()
@@ -120,6 +124,8 @@
       }
     // ^[1-9]\\d{5}$
       var checkpostCode = (rule, value, callback) => {
+        callback()
+
         let nameR = /^[1-9]\\d{5}$/
         if (nameR.test(value)) {
           callback()

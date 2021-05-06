@@ -11,7 +11,7 @@
       <el-input disabled v-model="dataForm.startTime" placeholder="开始时间"></el-input>
     </el-form-item>
     <el-form-item label="结束时间" prop="endTime">
-      <el-input disabled v-model="dataForm.end/Time" placeholder="结束时间"></el-input>
+      <el-input disabled v-model="dataForm.end" placeholder="结束时间"></el-input>
     </el-form-item>
     <el-form-item label="请假原因" prop="reason">
       <el-input disabled v-model="dataForm.reason" placeholder="请假原因"></el-input>

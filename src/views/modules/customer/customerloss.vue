@@ -50,7 +50,7 @@
         prop="state"
         header-align="center"
         align="center"
-        label="状态">
+        label="流失状态">
         <template slot-scope="scope">
           <span v-if="scope.row.state === 0">
               <el-tag type="info" size="medium">暂缓流失</el-tag>
@@ -103,7 +103,7 @@
         width="150"
         label="操作">
         <template slot-scope="scope">
-          <el-button v-if="scope.row.state === 0" type="primary" size="small" @click="addOrUpdateHandle(scope.row.id)">流失客户</el-button>
+          <el-button v-if="scope.row.state === 0" type="primary" size="small" @click="addOrUpdateHandle(scope.row.id)">修改流失状态</el-button>
 <!--          <el-button type="danger" size="small" @click="deleteHandle(scope.row.id)">删除</el-button>-->
         </template>
       </el-table-column>

@@ -8,7 +8,6 @@
     <div style="width: 30%;margin: 0 auto">
       <h1>员工姓名：{{empname}}</h1>
       <h2>欢迎登录运营支撑系统,请及时报工</h2>
-
       <el-form :model="dataForm" :rules="dataRule" ref="dataForm" @keyup.enter.native="dataFormSubmit()" label-width="auto">
       <el-form-item label="员工工号：" prop="name">
         <el-input disabled v-model="dataForm.name" placeholder="员工编号"></el-input>
@@ -180,6 +179,7 @@ export default {
                 type: 'success',
                 duration: 1500
               })
+              this.getDataEntity()
             } else {
               this.$message.error(data.msg)
             }

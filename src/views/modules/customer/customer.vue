@@ -6,8 +6,8 @@
       </el-form-item>
       <el-form-item>
         <el-button @click="getDataList()">查询</el-button>
-        <el-button  type="primary" @click="addOrUpdateHandle()">新增</el-button>
-        <el-button  type="danger" @click="deleteHandle()"
+        <el-button type="primary" @click="addOrUpdateHandle()">新增</el-button>
+        <el-button type="danger" @click="deleteHandle()"
                    :disabled="dataListSelections.length <= 0">批量删除
         </el-button>
       </el-form-item>
@@ -15,6 +15,7 @@
     <el-table
       :data="dataList"
       border
+      fit
       v-loading="dataListLoading"
       @selection-change="selectionChangeHandle"
       style="width: 100%;">
@@ -24,12 +25,12 @@
         align="center"
         width="50">
       </el-table-column>
-<!--      <el-table-column-->
-<!--        prop="id"-->
-<!--        header-align="center"-->
-<!--        align="center"-->
-<!--        label="客户ID">-->
-<!--      </el-table-column>-->
+      <!--      <el-table-column-->
+      <!--        prop="id"-->
+      <!--        header-align="center"-->
+      <!--        align="center"-->
+      <!--        label="客户ID">-->
+      <!--      </el-table-column>-->
       <el-table-column
         prop="number"
         header-align="center"
@@ -103,7 +104,7 @@
         prop="state"
         header-align="center"
         align="center"
-        label="流失客户">
+        label="暂缓流失客户">
         <template slot-scope="scope">
           <el-switch
             v-model="scope.row.state"
@@ -118,7 +119,7 @@
         header-align="center"
         align="center"
         label="详细地址"
-         width="180px">
+        width="180px">
       </el-table-column>
       <el-table-column
         prop="postCode"
@@ -160,7 +161,7 @@
         align="center"
         label="注册资金">
         <template slot-scope="scope">
-          {{scope.row.registeredCapital}} 万
+          {{ scope.row.registeredCapital }} <span v-if="scope.row.registeredCapital">万</span>
         </template>
       </el-table-column>
       <el-table-column
@@ -169,7 +170,7 @@
         align="center"
         label="营业额">
         <template slot-scope="scope">
-          {{scope.row.turnover}} 万
+          {{ scope.row.turnover }} <span v-if="scope.row.turnover">万</span>
         </template>
       </el-table-column>
       <el-table-column
@@ -200,37 +201,24 @@
         width="200px">
       </el-table-column>
       <el-table-column
-        prop="state"
+        prop="createDate"
         header-align="center"
         align="center"
-        label="流失客户">
-        <template slot-scope="scope">
-          <el-switch
-            v-model="scope.row.state"
-            :active-value="1"
-            :inactive-value="0"
-            @change="updateBrandStatus(scope.row)">
-          </el-switch>
-        </template>
+        label="创建时间">
       </el-table-column>
-<!--      <el-table-column-->
-<!--        prop="isValid"-->
-<!--        header-align="center"-->
-<!--        align="center"-->
-<!--        label="有效状态 0删除 1正常">-->
-<!--      </el-table-column>-->
-<!--      <el-table-column-->
-<!--        prop="createDate"-->
-<!--        header-align="center"-->
-<!--        align="center"-->
-<!--        label="创建时间">-->
-<!--      </el-table-column>-->
-<!--      <el-table-column-->
-<!--        prop="updateDate"-->
-<!--        header-align="center"-->
-<!--        align="center"-->
-<!--        label="更新时间">-->
-<!--      </el-table-column>-->
+      <!--      <el-table-column-->
+      <!--        prop="isValid"-->
+      <!--        header-align="center"-->
+      <!--        align="center"-->
+      <!--        label="有效状态 0删除 1正常">-->
+      <!--      </el-table-column>-->
+
+      <!--      <el-table-column-->
+      <!--        prop="updateDate"-->
+      <!--        header-align="center"-->
+      <!--        align="center"-->
+      <!--        label="更新时间">-->
+      <!--      </el-table-column>-->
       <el-table-column
         fixed="right"
         header-align="center"
@@ -262,7 +250,6 @@ import AddOrUpdate from './customer-add-or-update'
 
 export default {
   data () {
-
     return {
       dataForm: {
         name: ''
@@ -290,14 +277,13 @@ export default {
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
-        console.log('最新信息', data)
-        let { id, state } = data
+        let {id, state} = data
         // 发送请求修改状态
         this.$http({
           url: this.$http.adornUrl('/dzu/customer/lossCustomer'),
           method: 'post',
-          data: this.$http.adornData({ id, state }, false)
-        }).then(({ data }) => {
+          data: this.$http.adornData({id, state}, false)
+        }).then(({data}) => {
           this.$message({
             type: 'success',
             message: '状态更新成功'
@@ -324,6 +310,7 @@ export default {
         })
       }).then(({data}) => {
         if (data && data.code === 0) {
+          console.log(data)
           this.dataList = data.page.list
           this.totalPage = data.page.totalCount
         } else {

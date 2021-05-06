@@ -164,7 +164,7 @@
         width="120"
         label="操作">
         <template slot-scope="scope">
-          <el-button v-if="scope.row.devResult === 1" type="primary" size="small" @click="addOrUpdateHandle(scope.row.id)">开发</el-button>
+          <el-button v-if="scope.row.devResult === 1" type="primary" size="small" @click="addOrUpdateHandle(scope.row.id,scope.row.customerName)">开发</el-button>
 <!--          <el-button v-if="scope.row.devResult === 1" type="primary" size="small" @click="addOrUpdateHandle(scope.row.id)">添加计划项</el-button>-->
           <el-button v-if="scope.row.devResult !== 1" type="primary" size="small" @click="addOrUpdateHandle(scope.row.id)">详情</el-button>
         </template>
@@ -224,7 +224,9 @@ export default {
       totalPage: 0,
       dataListLoading: false,
       dataListSelections: [],
-      addOrUpdateVisible: false
+      addOrUpdateVisible: false,
+      dataList2: [],
+      customerNames: []
     }
   },
   components: {
@@ -250,8 +252,23 @@ export default {
         })
       }).then(({data}) => {
         if (data && data.code === 0) {
-          this.dataList = data.page.list
+          this.dataList2 = data.page.list
           this.totalPage = data.page.totalCount
+          this.$http({
+            url: this.$http.adornUrl(`/dzu/customer/getCustomerAllNames`),
+            method: 'get'
+          }).then(({data}) => {
+            this.customerNames = data.list
+
+            for (let i = 0; i < this.dataList2.length; i++) {
+              for (let j = 0; j < this.customerNames.length; j++) {
+                if (this.dataList2[i].customerName === this.customerNames[j].value.toString()) {
+                  this.dataList2[i].customerName = this.customerNames[j].label
+                }
+              }
+            }
+            this.dataList = this.dataList2
+          })
         } else {
           this.dataList = []
           this.totalPage = 0
@@ -275,10 +292,10 @@ export default {
       this.dataListSelections = val
     },
     // 新增 / 修改
-    addOrUpdateHandle (id) {
+    addOrUpdateHandle (id, customerName) {
       this.addOrUpdateVisible = true
       this.$nextTick(() => {
-        this.$refs.addOrUpdate.init(id)
+        this.$refs.addOrUpdate.init(id, customerName)
       })
     }
   }

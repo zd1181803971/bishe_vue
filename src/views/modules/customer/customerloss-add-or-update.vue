@@ -1,22 +1,22 @@
 <template>
   <el-dialog
-    :title="!dataForm.id ? '新增' : '修改'"
+    :title="!dataForm.id ? '新增' : '修改客户流失状态'"
     :close-on-click-modal="false"
     :visible.sync="visible">
     <el-form :model="dataForm" :rules="dataRule" ref="dataForm" @keyup.enter.native="dataFormSubmit()" label-width="auto">
-    <el-form-item label="客户编号" prop="cusNumber">
+    <el-form-item label="客户编号：" prop="cusNumber">
       <el-input disabled v-model="dataForm.cusNumber" placeholder="客户编号"></el-input>
     </el-form-item>
-    <el-form-item label="客户公司名" prop="cusName">
+    <el-form-item label="客户公司名：" prop="cusName">
       <el-input disabled v-model="dataForm.cusName" placeholder="客户公司名"></el-input>
     </el-form-item>
-    <el-form-item label="客户经理" prop="cusManager">
+    <el-form-item label="客户经理：" prop="cusManager">
       <el-input disabled v-model="dataForm.cusManager" placeholder="客户经理"></el-input>
     </el-form-item>
-      <el-form-item label="流失原因" prop="lossReason">
+      <el-form-item label="流失原因：" prop="lossReason">
         <el-input v-model="dataForm.lossReason" placeholder="流失原因"></el-input>
       </el-form-item>
-      <el-form-item label="状态" prop="state">
+      <el-form-item label="当前状态：" prop="state">
 <!--        <el-input v-model="dataForm.state" placeholder="状态 0暂缓流失 1流失"></el-input>-->
         <el-select v-model="dataForm.state" placeholder="请选择">
           <el-option
@@ -27,16 +27,16 @@
           </el-option>
         </el-select>
       </el-form-item>
-    <el-form-item label="最后下单时间" prop="lastOrderTime">
+    <el-form-item label="最后下单时间：" prop="lastOrderTime">
 <!--      <el-input v-model="dataForm.lastOrderTime" placeholder="最后下单时间"></el-input>-->
       <el-date-picker
         v-model="dataForm.lastOrderTime"
         type="datetime"
         value-format="yyyy-MM-dd HH:mm:ss"
-        placeholder="选择日期时间">
+        placeholder="选择日期时间：">
       </el-date-picker>
     </el-form-item>
-    <el-form-item label="确认流失时间" prop="confirmLossTime">
+    <el-form-item label="确认流失时间：" prop="confirmLossTime">
 <!--      <el-input disabled v-model="dataForm.confirmLossTime" placeholder="确认流失时间"></el-input>-->
       <el-date-picker
         v-model="dataForm.confirmLossTime"
@@ -45,9 +45,9 @@
         placeholder="选择日期时间">
       </el-date-picker>
     </el-form-item>
-    <el-form-item label="流失时间" prop="createDate">
+    <el-form-item label="暂缓流失时间：" prop="createDate">
 <!--      <el-input v-model="dataForm.createDate" placeholder=""></el-input>-->
-      <el-date-picker
+      <el-date-picker disabled
         v-model="dataForm.createDate"
         type="datetime"
         value-format="yyyy-MM-dd HH:mm:ss"
@@ -91,35 +91,14 @@
           updateDate: ''
         },
         dataRule: {
-          cusNumber: [
-            { required: true, message: '客户编号不能为空', trigger: 'blur' }
-          ],
-          cusName: [
-            { required: true, message: '客户公司名不能为空', trigger: 'blur' }
-          ],
-          cusManager: [
-            { required: true, message: '客户经理不能为空', trigger: 'blur' }
-          ],
           lastOrderTime: [
             { required: true, message: '最后下单时间不能为空', trigger: 'blur' }
           ],
           confirmLossTime: [
             { required: true, message: '确认流失时间不能为空', trigger: 'blur' }
           ],
-          state: [
-            { required: true, message: '状态 0暂缓流失 1流失不能为空', trigger: 'blur' }
-          ],
           lossReason: [
             { required: true, message: '流失原因不能为空', trigger: 'blur' }
-          ],
-          isValid: [
-            { required: true, message: '不能为空', trigger: 'blur' }
-          ],
-          createDate: [
-            { required: true, message: '不能为空', trigger: 'blur' }
-          ],
-          updateDate: [
-            { required: true, message: '不能为空', trigger: 'blur' }
           ]
         }
       }

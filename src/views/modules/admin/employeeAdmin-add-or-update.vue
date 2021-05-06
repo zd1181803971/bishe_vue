@@ -126,72 +126,72 @@
           placeholder="选择日期">
         </el-date-picker>
       </el-form-item>
-      <el-form-item label="性别：" prop="gender">
-        <!--        <el-input v-model="dataForm.gender" placeholder="性别"></el-input>-->
-        <el-select v-model="dataForm.gender" placeholder="请选择">
-          <el-option
-            v-for="item in genders"
-            :key="item.value"
-            :label="item.label"
-            :value="item.value">
-          </el-option>
-        </el-select>
-      </el-form-item>
-      <el-form-item label="出生日期：" prop="birthday">
-        <!--        <el-input v-model="dataForm.birthday" placeholder="出生日期"></el-input>-->
-        <el-date-picker
-          v-model="dataForm.birthday"
-          type="date"
-          value-format="yyyy-MM-dd"
-          placeholder="选择日期">
-        </el-date-picker>
-      </el-form-item>
-      <el-form-item label="身份证号：" prop="idcard">
-        <el-input v-model="dataForm.idcard" placeholder="身份证号"></el-input>
-      </el-form-item>
-      <el-form-item label="婚姻状况：" prop="wedlock">
-        <!--        <el-input v-model="dataForm.wedlock" placeholder="婚姻状况"></el-input>-->
-        <el-select v-model="dataForm.wedlock" placeholder="请选择">
-          <el-option
-            v-for="item in wedlocks"
-            :key="item.value"
-            :label="item.label"
-            :value="item.value">
-          </el-option>
-        </el-select>
-      </el-form-item>
+<!--      <el-form-item label="性别：" prop="gender">-->
+<!--        &lt;!&ndash;        <el-input v-model="dataForm.gender" placeholder="性别"></el-input>&ndash;&gt;-->
+<!--        <el-select v-model="dataForm.gender" placeholder="请选择">-->
+<!--          <el-option-->
+<!--            v-for="item in genders"-->
+<!--            :key="item.value"-->
+<!--            :label="item.label"-->
+<!--            :value="item.value">-->
+<!--          </el-option>-->
+<!--        </el-select>-->
+<!--      </el-form-item>-->
+<!--      <el-form-item label="出生日期：" prop="birthday">-->
+<!--        &lt;!&ndash;        <el-input v-model="dataForm.birthday" placeholder="出生日期"></el-input>&ndash;&gt;-->
+<!--        <el-date-picker-->
+<!--          v-model="dataForm.birthday"-->
+<!--          type="date"-->
+<!--          value-format="yyyy-MM-dd"-->
+<!--          placeholder="选择日期">-->
+<!--        </el-date-picker>-->
+<!--      </el-form-item>-->
+<!--      <el-form-item label="身份证号：" prop="idcard">-->
+<!--        <el-input v-model="dataForm.idcard" placeholder="身份证号"></el-input>-->
+<!--      </el-form-item>-->
+<!--      <el-form-item label="婚姻状况：" prop="wedlock">-->
+<!--        &lt;!&ndash;        <el-input v-model="dataForm.wedlock" placeholder="婚姻状况"></el-input>&ndash;&gt;-->
+<!--        <el-select v-model="dataForm.wedlock" placeholder="请选择">-->
+<!--          <el-option-->
+<!--            v-for="item in wedlocks"-->
+<!--            :key="item.value"-->
+<!--            :label="item.label"-->
+<!--            :value="item.value">-->
+<!--          </el-option>-->
+<!--        </el-select>-->
+<!--      </el-form-item>-->
 
-      <el-form-item label="籍贯：" prop="nativeplace">
-        <el-input v-model="dataForm.nativeplace" placeholder="籍贯"></el-input>
-      </el-form-item>
+<!--      <el-form-item label="籍贯：" prop="nativeplace">-->
+<!--        <el-input v-model="dataForm.nativeplace" placeholder="籍贯"></el-input>-->
+<!--      </el-form-item>-->
 
-      <el-form-item label="邮箱：" prop="email">
-        <el-input v-model="dataForm.email" placeholder="邮箱"></el-input>
-      </el-form-item>
-      <el-form-item label="电话号码：" prop="phone">
-        <el-input v-model="dataForm.phone" placeholder="电话号码"></el-input>
-      </el-form-item>
-      <el-form-item label="联系地址：" prop="address">
-        <el-input v-model="dataForm.address" placeholder="联系地址"></el-input>
-      </el-form-item>
+<!--      <el-form-item label="邮箱：" prop="email">-->
+<!--        <el-input v-model="dataForm.email" placeholder="邮箱"></el-input>-->
+<!--      </el-form-item>-->
+<!--      <el-form-item label="电话号码：" prop="phone">-->
+<!--        <el-input v-model="dataForm.phone" placeholder="电话号码"></el-input>-->
+<!--      </el-form-item>-->
+<!--      <el-form-item label="联系地址：" prop="address">-->
+<!--        <el-input v-model="dataForm.address" placeholder="联系地址"></el-input>-->
+<!--      </el-form-item>-->
 
-      <el-form-item label="最高学历：" prop="tiptopdegree">
-        <!--      <el-input v-model="dataForm.tiptopdegree" placeholder="最高学历"></el-input>-->
-        <el-select v-model="dataForm.tiptopdegree" placeholder="请选择">
-          <el-option
-            v-for="item in tiptopdegrees"
-            :key="item.value"
-            :label="item.label"
-            :value="item.value">
-          </el-option>
-        </el-select>
-      </el-form-item>
-      <el-form-item label="所属专业：" prop="specialty">
-        <el-input v-model="dataForm.specialty" placeholder="所属专业"></el-input>
-      </el-form-item>
-      <el-form-item label="毕业院校：" prop="school">
-        <el-input v-model="dataForm.school" placeholder="毕业院校"></el-input>
-      </el-form-item>
+<!--      <el-form-item label="最高学历：" prop="tiptopdegree">-->
+<!--        &lt;!&ndash;      <el-input v-model="dataForm.tiptopdegree" placeholder="最高学历"></el-input>&ndash;&gt;-->
+<!--        <el-select v-model="dataForm.tiptopdegree" placeholder="请选择">-->
+<!--          <el-option-->
+<!--            v-for="item in tiptopdegrees"-->
+<!--            :key="item.value"-->
+<!--            :label="item.label"-->
+<!--            :value="item.value">-->
+<!--          </el-option>-->
+<!--        </el-select>-->
+<!--      </el-form-item>-->
+<!--      <el-form-item label="所属专业：" prop="specialty">-->
+<!--        <el-input v-model="dataForm.specialty" placeholder="所属专业"></el-input>-->
+<!--      </el-form-item>-->
+<!--      <el-form-item label="毕业院校：" prop="school">-->
+<!--        <el-input v-model="dataForm.school" placeholder="毕业院校"></el-input>-->
+<!--      </el-form-item>-->
     </el-form>
     <span slot="footer" class="dialog-footer">
       <el-button @click="visible = false">取消</el-button>
