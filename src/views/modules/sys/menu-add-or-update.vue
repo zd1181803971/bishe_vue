@@ -155,7 +155,6 @@
               this.dataForm.name = data.menu.name
               this.dataForm.parentId = data.menu.parentId
               this.dataForm.url = data.menu.url
-              // this.dataForm.perms = data.menu.perms
               this.dataForm.orderNum = data.menu.orderNum
               this.dataForm.icon = data.menu.icon
               this.menuListTreeSetCurrentNode()

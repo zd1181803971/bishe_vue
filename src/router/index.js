@@ -67,7 +67,7 @@ router.beforeEach((to, from, next) => {
       method: 'get',
       params: http.adornParams()
     }).then(({data}) => {
-      console.log(data, '11111111111')
+      console.log('获取菜单列表')
       if (data && data.code === 0) {
         fnAddDynamicMenuRoutes(data.menuList)
         router.options.isAddDynamicMenuRoutes = true

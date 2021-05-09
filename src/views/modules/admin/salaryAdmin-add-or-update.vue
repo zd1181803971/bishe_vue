@@ -34,6 +34,14 @@
 <script>
 export default {
   data () {
+    var validDouble = (rule, value, callback) => {
+      const DoubleR = /^([0-9]*[.]{0,1}[0-9]{1,2})$/
+      if (DoubleR.test(value)) {
+        callback()
+      } else {
+        callback(new Error('请输入正确的薪资（保留小数点后两位）'))
+      }
+    }
     return {
       jobName: '',
       visible: false,
@@ -51,24 +59,34 @@ export default {
           {required: true, message: '不能为空', trigger: 'blur'}
         ],
         basicsalary: [
-          {required: true, message: '基本工资不能为空', trigger: 'blur'}
+          {required: true, message: '基本工资不能为空', trigger: 'blur'},
+          { validator: validDouble, trigger: 'blur' }
         ],
         bonus: [
-          {required: true, message: '奖金不能为空', trigger: 'blur'}
+          {required: true, message: '奖金不能为空', trigger: 'blur'},
+          { validator: validDouble, trigger: 'blur' }
+
         ],
         lunchsalary: [
-          {required: true, message: '午餐补助不能为空', trigger: 'blur'}
+          {required: true, message: '午餐补助不能为空', trigger: 'blur'},
+          { validator: validDouble, trigger: 'blur' }
+
         ],
         trafficsalary: [
-          {required: true, message: '交通补助不能为空', trigger: 'blur'}
+          {required: true, message: '交通补助不能为空', trigger: 'blur'},
+          { validator: validDouble, trigger: 'blur' }
+
         ],
         allsalary: [
-          {required: true, message: '应发工资不能为空', trigger: 'blur'}
+          {required: true, message: '应发工资不能为空', trigger: 'blur'},
+          { validator: validDouble, trigger: 'blur' }
+
         ]
       }
     }
   },
   methods: {
+
     init (id, jobNumber) {
       this.jobName = jobNumber
       this.dataForm.id = id || 0
@@ -87,7 +105,7 @@ export default {
               this.dataForm.bonus = data.salary.bonus
               this.dataForm.lunchsalary = data.salary.lunchsalary
               this.dataForm.trafficsalary = data.salary.trafficsalary
-              this.dataForm.allsalary = data.salary.basicsalary + data.salary.bonus + data.salary.lunchsalary + data.salary.trafficsalary
+              this.dataForm.allsalary = data.salary.allsalary
             }
           })
         }
@@ -130,16 +148,16 @@ export default {
   },
   watch: {
     'dataForm.basicsalary': function (val) {
-      this.dataForm.allsalary = parseFloat(this.dataForm.trafficsalary) + parseFloat(this.dataForm.lunchsalary) + parseFloat(this.dataForm.bonus) + parseFloat(this.dataForm.basicsalary)
+      this.dataForm.allsalary = (parseFloat(this.dataForm.trafficsalary) + parseFloat(this.dataForm.lunchsalary) + parseFloat(this.dataForm.bonus) + parseFloat(this.dataForm.basicsalary)).toFixed(2)
     },
     'dataForm.bonus': function (val) {
-      this.dataForm.allsalary = parseFloat(this.dataForm.trafficsalary) + parseFloat(this.dataForm.lunchsalary) + parseFloat(this.dataForm.bonus) + parseFloat(this.dataForm.basicsalary)
+      this.dataForm.allsalary = (parseFloat(this.dataForm.trafficsalary) + parseFloat(this.dataForm.lunchsalary) + parseFloat(this.dataForm.bonus) + parseFloat(this.dataForm.basicsalary)).toFixed(2)
     },
     'dataForm.trafficsalary': function (val) {
-      this.dataForm.allsalary = parseFloat(this.dataForm.trafficsalary) + parseFloat(this.dataForm.lunchsalary) + parseFloat(this.dataForm.bonus) + parseFloat(this.dataForm.basicsalary)
+      this.dataForm.allsalary = (parseFloat(this.dataForm.trafficsalary) + parseFloat(this.dataForm.lunchsalary) + parseFloat(this.dataForm.bonus) + parseFloat(this.dataForm.basicsalary))
     },
     'dataForm.lunchsalary': function (val) {
-      this.dataForm.allsalary = parseFloat(this.dataForm.trafficsalary) + parseFloat(this.dataForm.lunchsalary) + parseFloat(this.dataForm.bonus) + parseFloat(this.dataForm.basicsalary)
+      this.dataForm.allsalary = (parseFloat(this.dataForm.trafficsalary) + parseFloat(this.dataForm.lunchsalary) + parseFloat(this.dataForm.bonus) + parseFloat(this.dataForm.basicsalary)).toFixed(2)
     }
   }
 }
