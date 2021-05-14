@@ -51,22 +51,34 @@
 <script>
   export default {
     data () {
-      var validateTime2 = (rule, value, callback) => {
+      // 校验开始日期是否在当前日期之后
+      var validateTime1 = (rule, value, callback) => {
+        // 获取系统当前时间
+        const nowTime = new Date().getTime()
+        // 获取页面选择的开始时间
         const start = new Date(this.dataForm.starttime).getTime()
-        const end = new Date(this.dataForm.endtime).getTime()
-        if (start <= end) {
+        // 开始时间与当前时间做比较
+        if (start >= nowTime) {
+          // 开始时间大于当前时间则成功回调
           callback()
         } else {
-          return callback(new Error('请假结束时间要在请假开始时间之后'))
+          // 否则返回错误回调，并携带错误信息
+          return callback(new Error('请假开始时间要在当前时间之后'))
         }
       }
-      var validateTime1 = (rule, value, callback) => {
-        const nowTime = new Date().getTime()
+      // 校验结束时间是否在开始时间之后
+      var validateTime2 = (rule, value, callback) => {
+        // 获取页面选择的开始时间
         const start = new Date(this.dataForm.starttime).getTime()
-        if (start >= nowTime) {
+        // 获取页面选择的结束时间
+        const end = new Date(this.dataForm.endtime).getTime()
+        // 开始时间与结束时间比较
+        if (start <= end) {
+          // 结束时间大于开始时间，成功回调
           callback()
         } else {
-          return callback(new Error('请假开始时间要在当前时间之后'))
+          // 否则错误回调，并返回错误信息
+          return callback(new Error('请假结束时间要在请假开始时间之后'))
         }
       }
       return {

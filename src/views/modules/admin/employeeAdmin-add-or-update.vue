@@ -1,6 +1,6 @@
 <template>
   <el-dialog
-    :title="!dataForm.id ? '新增' : '修改'"
+    :title="!dataForm.id ? '新增员工' : '修改员工信息'"
     :close-on-click-modal="false"
     :visible.sync="visible">
     <el-form :model="dataForm" :rules="dataRule" ref="dataForm" @keyup.enter.native="dataFormSubmit()"
@@ -419,12 +419,19 @@ export default {
     },
     getDataList () {
       this.clearList()
+      // 通过Axios发送Http请求
       this.$http({
+        // 添加URL地址
         url: this.$http.adornUrl(`/dzu/nation/listAll`),
+        // 通过Get方法
         method: 'get'
+        // 发送成功的回调函数，将后端返回的数据data解构出来
       }).then(({data}) => {
+        // 判断是否为空
         if (data.page !== null) {
+          // 遍历data，将data列表里的每个id和name提取出来
           for (let i = 0; i < data.page.length; i++) {
+            // 将Select选择器需要的Value和Label通过Push()方法添加进去
             this.nationids.push({
               value: data.page[i].id,
               label: data.page[i].name
@@ -471,7 +478,6 @@ export default {
           }
         }
       })
-
       this.$http({
         url: this.$http.adornUrl(`/dzu/position/listAll`),
         method: 'get'
